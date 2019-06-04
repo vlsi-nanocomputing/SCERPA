@@ -1,0 +1,9 @@
+%% Files Analysed:
+%%    ../Layout/Database/Data_Molecule_1.mat
+%%    ../Layout/Database/Data_Driver.mat
+%%    ../Layout/Database/Fake_Phases.mat
+%%    ../Layout/Database/Values_Driver.mat
+
+
+%%    Configuration of data output: 
+%%    ID - Vin - Q1 ... QN: 
