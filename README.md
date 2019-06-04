@@ -1,6 +1,6 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Download the code and see the SCERPA.m and example files to understand how it works
 
 ### What is this repository for? ###
 
@@ -25,5 +25,5 @@ This README would normally document whatever steps are necessary to get your app
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+* Repo owner or admin: Yuri Ardesi (yuri.ardesi@polito.it)
+* Other community or team contact: Mariagrazia Graziano (mariagrazia.graziano@polito.it), Gianluca Piccinini (gianluca.piccinini@polito.it)
