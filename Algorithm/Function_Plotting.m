@@ -193,8 +193,12 @@ end
 
 end
 
-figure(23423432),hold on
+figure(500000),hold on
+title('Input Voltage on each molecule');
+xlabel('Molecule number')
+ylabel('Input Voltage [V]')
 plot(Vout)
+grid on, grid minor
 
 end
 
