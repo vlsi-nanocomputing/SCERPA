@@ -295,6 +295,8 @@ for time = 2:n_times+1
                 legend ('preV','V','driver')
                 grid on, grid minor
                 axis([1 stack_mol.num -Inf +Inf])
+                xlabel('Molecule number')
+                ylabel('Input Voltage [V]')
 
                 drawnow
                 

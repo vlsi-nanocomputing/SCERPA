@@ -18,12 +18,12 @@ circuit.Values_Dr = {
     'Dr2' +4.5 -4.5 'end'};
 
 %clock
-circuit.stack_phase(1,:) = [2];
+circuit.stack_phase(1,:) = [2 -2];
 
 %SCERPA settings
 settings.solver='E';
 settings.immediateUpdate = 0;
-settings.plotIntermediateSteps = 0;
+settings.plotIntermediateSteps = 1;
 settings.pauseStep = 0;
 settings.damping = 0.2;
 
