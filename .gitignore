@@ -5,7 +5,7 @@ Algorithm/FIGURE/*.eps
 Algorithm/Simulation_Output.log
 
 # ignore layout files
-Layout/Database/Data_Driver.mat
+Layout/Database/*.mat
 
 # ignore documentation aux files
 Documentation/documentation.aux
