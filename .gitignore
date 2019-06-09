@@ -4,5 +4,9 @@ Algorithm/FIGURE/*.eps
 # ignore generated output log file
 Algorithm/Simulation_Output.log
 
-# ingore layout files
+# ignore layout files
 Layout/Database/Data_Driver.mat
+
+# ignore documentation aux files
+Documentation/documentation.aux
+Documentation/documentation.synctex.gz
