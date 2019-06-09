@@ -1,0 +1,8 @@
+# ignore generated output figures
+Algorithm/FIGURE/*.eps
+
+# ignore generated output log file
+Algorithm/Simulation_Output.log
+
+# ingore layout files
+Layout/Database/Data_Driver.mat
