@@ -415,8 +415,8 @@ fprintf('[DONE] \n')
 % else    
 
 for jj=1:stack_mol.num
-    phase = stack_mol.stack(jj).phase(1);
-    matrix_phase(jj,:) = [stack_mol.stack(jj).identifier num2cell(stack_phase(str2num(phase),:))];
+    phase = str2num(stack_mol.stack(jj).phase);
+    matrix_phase(jj,:) = [stack_mol.stack(jj).identifier num2cell(stack_phase(phase,:))];
 end
 % end
 

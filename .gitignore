@@ -1,5 +1,6 @@
 # ignore generated output figures
 Algorithm/FIGURE/*.eps
+Algorithm/FIGURE/*.png
 
 # ignore generated output log file
 Algorithm/Simulation_Output.log

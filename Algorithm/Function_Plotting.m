@@ -1,5 +1,7 @@
 function [] = Function_Plotting(Vout, Charge_on_wire_done_set, stack_mol, stack_driver,fig_saver, ii )
 disable=0;
+print_molnum = 0;
+
 if disable==0
 Charge_on_wire_done = Charge_on_wire_done_set;
 
@@ -67,8 +69,9 @@ for i = 1:size(charge_mol,2)
                 surface(Z,Y,-X,'FaceColor','y', 'EdgeColor', 'none');  %# Plot sphere
           else
                surface(Z,Y,-X,'FaceColor','b', 'EdgeColor', 'none');  %# Plot sphere
+               if print_molnum==1
                 text(mean(mean(Z)),mean(mean(Y)),mean(mean(-X)),strcat('Mol: ',int2str(i)),'HorizontalAlignment','center','FontSize',10);
-      
+               end
           end
           hold on;
     end 
