@@ -2,6 +2,9 @@
 Algorithm/FIGURE/*.eps
 Algorithm/FIGURE/*.png
 
+# ignore temp files
+*.asv
+
 # ignore generated output log file
 Algorithm/Simulation_Output.log
 

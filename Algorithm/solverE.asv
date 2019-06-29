@@ -5,8 +5,6 @@ CK=reshapeTC(CK);
 % autodamping
 % interaction range auto-enlargement
 % AR threshold auto-decrease
-% better plots
-% output waveforms
 
 
 %find the interaction tree for each molecule, this has to be done if the IR
@@ -143,18 +141,15 @@ for time = 2:n_times+1
     max_error=settings.conv_threshold_HP;
     scfStep=0;
     convergence_flag=0;
-    
-    %print step header
     disp('Starting SCF Evaluation')
     fprintf('STEP - ERROR - MAX_ERROR - DAMPING - IR - AR\n')
     fprintf('--------------------------------------------\n')
-    
     while(~convergence_flag)
         
         scfStep=scfStep+1; 
         err=0; %assume error=0 (next evaluations will chenage the value if larger)
-        
-        %disp(scfStep)
+        fprintf
+        disp(scfStep)
         
         %evaluate max_step reached
         if (scfStep==settings.max_step)
@@ -313,7 +308,6 @@ for time = 2:n_times+1
             if settings.pauseStep == 1
                 pause
             end
-            
         end
         
 %         %save energy
@@ -323,12 +317,11 @@ for time = 2:n_times+1
 %         stack_energy(time-1).W_ex(stack_energy(time-1).steps) = W_ex;
 %         stack_energy(time-1).W_clk(stack_energy(time-1).steps) = W_clk;
 %         stack_energy(time-1).W_tot(stack_energy(time-1).steps) = W_tot;
-
-    %print log of scf step to console
-    fprintf('%d   - %f - %f - %f - %d - %d\n',...
-        scfStep,...
-        max(voltageVariation(evaluationRange)),...
-        max_error,...
+    fprintf('STEP - ERROR - MAX_ERROR - DAMPING - IR - AR\n')   
+    fprintf('%n   - %f - %f - DAMPING - IR - AR\n',...
+        step,...
+        max(voltageVariation(evaluationRange),...
+        max_error,
         settings.y.damping,...
         interactionRadiusMode,...
         activeRegionMode);
@@ -354,7 +347,6 @@ for time = 2:n_times+1
     
     %plot and save data
     Function_Plotting(Vout, Charge_on_wire_done, stack_mol, stack_driver,settings.fig_saver, 3*time-2);
-    Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
-    
+    Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);        
 end %end of time loop
 
