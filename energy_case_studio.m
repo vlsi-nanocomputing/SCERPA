@@ -8,9 +8,11 @@ circuit.dist_z = 6;
 circuit.molecule = 'butaneCam';
 
 %layout
-circuit.structure = { 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '1' '1' }; 
+circuit.structure = { 'Dr1' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '1' '1' }; 
 
-% circuit.rotation_x = { '0' '0' '0' '0' '0' '0' '0' '0'}; 
+circuit.shift_y = { '0' '0' '0' '0' '0' '0' '10' '0' '0' '0' '0' '0'}; 
+
+circuit.shift_z = { '0' '0' '0' '0' '0' '0' '10' '0' '0' '0' '0' '0'}; 
                     
 %drivers and clock
 circuit.Values_Dr = {'Dr1'}
@@ -32,5 +34,5 @@ settings.pauseStep = 0;
 settings.molecule = "butaneCam";
 settings.damping = 0.4;
 
-generation_status = SCERPA('generateLaunch', circuit, settings);
+generation_status = SCERPA('generate', circuit, settings);
 

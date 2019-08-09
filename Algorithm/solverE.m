@@ -103,24 +103,31 @@ for time = 2:n_times+1
 %     end
 
     %evaluate driver changes
-    %WARNING: qui al posto di mettere il controllo su time si puÃ² fare sul
+    %WARNING: qui al posto di mettere il controllo su time si può fare sul
     %flag del driver cambiato
+    
     if time>2 %not the first time
+        
         %save current voltage (before changing)
         preV_beforeDriverChange = Vout;
+        
         %Evaluate voltage of the new driver
         V_driver = yDrivers_effect( stack_driver, stack_mol);
+        
         %switch off the previous driver and switch on the new driver
         Vout = Vout - pre_driver_effect + V_driver;
+        
         %determine voltage variation
         voltageVariation = abs(Vout - preV_beforeDriverChange);
         
         %Initialize clocks
         for ii_mol =1:stack_mol.num
             if stack_mol.stack(ii_mol).clock ~= stack_clock{ii_mol,time}
-                %update clock if different and add molecule to active
-                %region
+                
+                %update clock if different
                 stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time};
+                
+                %insert molecule in the AR list
                 voltageVariation(ii_mol) = 2*settings.activeRegionThreshold;
             end
         end
