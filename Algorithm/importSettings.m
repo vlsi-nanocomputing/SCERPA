@@ -18,6 +18,7 @@ scerpaSettings.plotActiveRegionWindow = 0;
 scerpaSettings.plotIntermediateSteps = 0;
 scerpaSettings.fig_saver = 'no';
 scerpaSettings.pauseStep = 0;
+scerpaSettings.verbosity = 0; %0 no data, 1 step number, 2 converge info
 
 %convergence settings
 scerpaSettings.max_step = 1000;
@@ -66,6 +67,9 @@ if isfield(userSettings,'plotActiveRegionWindow')
 end
 if isfield(userSettings,'plotIntermediateSteps')
     scerpaSettings.plotIntermediateSteps = userSettings.plotIntermediateSteps;
+end
+if isfield(userSettings,'verbosity')
+    scerpaSettings.verbosity = userSettings.verbosity;
 end
 if isfield(userSettings,'pauseStep')
     scerpaSettings.pauseStep = userSettings.pauseStep;

@@ -160,16 +160,20 @@ for time = 2:n_times+1
     convergence_flag=0;
     
     %print step header
-    disp('Starting SCF Evaluation')
-    fprintf('STEP - ERROR - MAX_ERROR - DAMPING - IR - AR\n')
-    fprintf('--------------------------------------------\n')
+    if settings.verbosity==2
+            disp('Starting SCF Evaluation')
+            fprintf('STEP - ERROR - MAX_ERROR - DAMPING - IR - AR\n')
+            fprintf('--------------------------------------------\n')
+    end
     
     while(~convergence_flag)
         
         scfStep=scfStep+1; 
         err=0; %assume error=0 (next evaluations will chenage the value if larger)
         
-        %disp(scfStep)
+        if settings.verbosity==1 %verbosity mode only scfStep
+            disp(scfStep)
+        end
         
         %evaluate max_step reached
         if (scfStep==settings.max_step)
@@ -339,14 +343,16 @@ for time = 2:n_times+1
 %         stack_energy(time-1).W_clk(stack_energy(time-1).steps) = W_clk;
 %         stack_energy(time-1).W_tot(stack_energy(time-1).steps) = W_tot;
 
-    %print log of scf step to console
-    fprintf('%d   - %f - %f - %f - %d - %d\n',...
-        scfStep,...
-        max(voltageVariation(evaluationRange)),...
-        max_error,...
-        settings.y.damping,...
-        interactionRadiusMode,...
-        activeRegionMode);
+        if settings.verbosity==2
+            %print log of scf step to console if verbosity mode 2
+            fprintf('%d   - %f - %f - %f - %d - %d\n',...
+                scfStep,...
+                max(voltageVariation(evaluationRange)),...
+                max_error,...
+                settings.y.damping,...
+                interactionRadiusMode,...
+                activeRegionMode);
+        end
         
     end %end of convergence loop
 
