@@ -103,7 +103,7 @@ for time = 2:n_times+1
 %     end
 
     %evaluate driver changes
-    %WARNING: qui al posto di mettere il controllo su time si può fare sul
+    %WARNING: qui al posto di mettere il controllo su time si pu? fare sul
     %flag del driver cambiato
     
     if time>2 %not the first time
@@ -127,8 +127,16 @@ for time = 2:n_times+1
                 %update clock if different
                 stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time};
                 
+                %update charges if new clock %added on 5/09/2019
+                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(ii_mol),stack_mol.stack(ii_mol).clock,CK);
+                stack_mol.stack(ii_mol).charge(1).q =  Q1;   
+                stack_mol.stack(ii_mol).charge(2).q =  Q2;   
+                stack_mol.stack(ii_mol).charge(3).q =  Q3;   
+                stack_mol.stack(ii_mol).charge(4).q =  Q4;   
+                
                 %insert molecule in the AR list
                 voltageVariation(ii_mol) = 2*settings.activeRegionThreshold;
+                
             end
         end
     else %first time
@@ -240,11 +248,11 @@ for time = 2:n_times+1
         for jj_mol=evaluationRange
 
             %insert effect of the driver on ii-th molecule
-            Vout(jj_mol)=V_driver(jj_mol); 
+            Vout(jj_mol)=V_driver(jj_mol);
 
             %if refining is active, evaluate the interaction with all
             %molecules
-            if interactionRadiusMode==1 %si puÃ² fare in modo piÃ¹ furbo
+            if interactionRadiusMode==1 %si può fare in modo più furbo
                 nearMolecules = stack_mol.stack(jj_mol).interactionRXlist;
             else
                 nearMolecules = 1:stack_mol.num;
@@ -364,4 +372,3 @@ for time = 2:n_times+1
     Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
     
 end %end of time loop
-
