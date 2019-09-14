@@ -48,7 +48,7 @@ scerpaSettings.enableJit = 1;
 
 %%%%%%%%%%% 
 
-if isfield(userSettings,'molecule'),
+if isfield(userSettings,'molecule')
     scerpaSettings.molecule=userSettings.molecule;
 end
 if isfield(userSettings,'Ncharges')
