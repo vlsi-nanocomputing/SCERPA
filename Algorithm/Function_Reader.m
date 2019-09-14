@@ -56,7 +56,7 @@ for i=1:7:size(raw_dr,1)
         f = f + 1;
     end           
         stack_driver.stack(k).identifier = raw_dr(i, 2);
-        stack_driver.stack(k).position = raw_mol(i+1, 5);
+        stack_driver.stack(k).position = raw_dr(i+1, 5);
         stack_driver.num = k;
         k = k + 1;
 end

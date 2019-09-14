@@ -18,6 +18,8 @@ function [status] = SCERPA(command,option1,option2)
                 ScerpaRun();
                 status = 0;
             end
+            %open log file
+            open('Simulation_Output.log')
             cd ..
         case char('generate') % Generate SCERPA Layout files
             close all
