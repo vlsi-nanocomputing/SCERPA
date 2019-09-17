@@ -45,6 +45,8 @@ scerpaSettings.conv_threshold_LLP = 0.005;
 %MATLAB optimizations
 scerpaSettings.enableJit = 1;
 
+%driver saturation
+scerpaSettings.driverSaturation = 0;
 
 %%%%%%%%%%% 
 
@@ -133,6 +135,10 @@ end
 %MATLAB configurations
 if isfield(userSettings,'enableJit')
     scerpaSettings.enableJit = userSettings.enableJit;
+end
+
+if isfield(userSettings,'driverSauration')
+    scerpaSettings.driverSauration=userSettings.driverSauration;
 end
 
 

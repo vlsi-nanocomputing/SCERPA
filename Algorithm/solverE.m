@@ -88,6 +88,23 @@ for time = 2:n_times+1
         for tt=1:size(driver_values,1)
             if strcmp(stack_driver.stack(ff).identifier{1},driver_values{tt,1})
                 [Q1, Q2, Q3, Q4] = applyTranschar(driver_values{tt,time},+2,CK);
+                
+                %saturation of driver charges (if required)
+                if settings.driverSaturation == 1
+                    if Q1 > 0.6
+                        Q1 = 1;
+                        Q2 = 0;
+                    elseif Q1 < 0.6
+                        Q1 = 0;
+                        Q2 = 0;
+                    else
+                        Q1 = 0.5;
+                        Q2 = 0.5;
+                    end
+                    Q3 = 0;
+                    Q4 = 0;
+                end
+                
                 stack_driver.stack(ff).charge(1).q =  Q1;    
                 stack_driver.stack(ff).charge(2).q =  Q2;   
                 stack_driver.stack(ff).charge(3).q =  Q3;   
