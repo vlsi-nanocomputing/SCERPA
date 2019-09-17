@@ -92,5 +92,7 @@ fclose(fileID);
 myicon = imread('good.png');
 h=msgbox('Brave Yourself... The Operation is Completed', 'Success!!!!', 'custom', myicon);
    
+%save workspace for analysis
+save('simulation_output');
 end
 
