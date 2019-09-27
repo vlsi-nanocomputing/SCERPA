@@ -7,9 +7,11 @@ Algorithm/FIGURE/*.png
 
 # ignore generated output log file
 Algorithm/Simulation_Output.log
+Algorithm/simulation_output.mat
 
 # ignore layout files
 Layout/Database/*.mat
+Layout/Database/*.txt
 
 # ignore documentation aux files
 Documentation/documentation.aux
