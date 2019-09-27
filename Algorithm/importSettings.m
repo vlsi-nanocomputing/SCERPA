@@ -137,8 +137,8 @@ if isfield(userSettings,'enableJit')
     scerpaSettings.enableJit = userSettings.enableJit;
 end
 
-if isfield(userSettings,'driverSauration')
-    scerpaSettings.driverSauration=userSettings.driverSauration;
+if isfield(userSettings,'driverSaturation')
+    scerpaSettings.driverSaturation=userSettings.driverSaturation;
 end
 
 

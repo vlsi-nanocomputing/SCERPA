@@ -96,7 +96,7 @@ for time = 2:n_times+1
                         Q2 = 0;
                     elseif Q1 < 0.6
                         Q1 = 0;
-                        Q2 = 0;
+                        Q2 = 1;
                     else
                         Q1 = 0.5;
                         Q2 = 0.5;
