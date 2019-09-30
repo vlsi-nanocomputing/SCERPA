@@ -21,6 +21,15 @@ function [status] = SCERPA(command,option1,option2)
             %open log file
             open('Simulation_Output.log')
             cd ..
+        case char('topoLaunch') %work in progress
+            if exist('option1','var')
+                option2.circuit = option1;
+                option2.magcadImporter=1;
+                status = SCERPA('launch',option2);
+            else
+                status = 1;
+                return
+            end
         case char('generate') % Generate SCERPA Layout files
             close all
             disp('Generating SCERPA layout!')

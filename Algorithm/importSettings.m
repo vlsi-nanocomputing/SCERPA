@@ -10,6 +10,9 @@ function scerpaSettings = importSettings(userSettings)%molecule
 scerpaSettings.molecule='bisfe4_ox_counterionOnThiol';
 scerpaSettings.Ncharges=4;
 
+%topo integration
+scerpaSettings.magcadImporter=0;
+
 %Solver to be used for the calculation of charges (r/y/scfHTSA2/E)
 scerpaSettings.solver='E';
 
@@ -49,6 +52,11 @@ scerpaSettings.enableJit = 1;
 scerpaSettings.driverSaturation = 0;
 
 %%%%%%%%%%% 
+
+%topo integration
+if isfield(userSettings,'magcadImporter')
+    scerpaSettings.magcadImporter=userSettings.magcadImporter;
+end
 
 if isfield(userSettings,'molecule')
     scerpaSettings.molecule=userSettings.molecule;

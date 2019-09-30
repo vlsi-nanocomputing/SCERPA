@@ -53,7 +53,16 @@ if settings.enableJit == 0
     feature jit off
 end
 
-run('Function_Reader.m');
+%import layout data
+if settings.magcadImporter ==0
+    run('Function_Reader.m');
+else
+    [stack_mol,stack_driver,stack_clock,driver_values] = importQLL(...
+        settingsArg.circuit.qllFile,...
+        settingsArg.circuit.Values_Dr,...
+        settingsArg.circuit.stack_phase);
+end
+
 [CK] = Interp_coeff_bilinear(settings.molecule);
 
 switch  settings.solver
