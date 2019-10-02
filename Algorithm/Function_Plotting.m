@@ -1,16 +1,9 @@
-function [] = Function_Plotting(Vout, Charge_on_wire_done_set, stack_mol, stack_driver,fig_saver, ii )
+function [] = Function_Plotting(Vout, Charge_on_wire_done_set, stack_mol, stack_driver,settings, ii)
 
 disable=0;
-plot_3dfig = 1;
-plot_voltage = 1;
-plot_chargeFig = 1;
-plot_logic = 1;
-print_molnum = 1;
-
-
 
 if disable==0
-    if plot_logic ==1
+    if settings.plot_logic ==1
         P_map = 0;
         
         %consider molecules 2-by-2
@@ -39,7 +32,7 @@ if disable==0
         
     end
     
-    if plot_3dfig ==1
+    if settings.plot_3dfig ==1
             %WARNING: x-z axis are swapped
             
         %charge plot function
@@ -87,7 +80,7 @@ if disable==0
             end
 
             %plot names
-            if print_molnum==1
+            if settings.plot_molnum==1
                 text(stack_mol.stack(ii).charge(n_charge).z-textOffset,...
                     stack_mol.stack(ii).charge(n_charge).y-textOffset,...
                     stack_mol.stack(ii).charge(n_charge).x-textOffset,stack_mol.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10); 
@@ -120,7 +113,7 @@ if disable==0
             end
 
             %plot names
-            if print_molnum==1
+            if settings.plot_molnum==1
                 text(stack_driver.stack(ii).charge(n_charge).z-textOffset,...
                     stack_driver.stack(ii).charge(n_charge).y-textOffset,...
                     stack_driver.stack(ii).charge(n_charge).x-textOffset,stack_driver.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10); 
@@ -134,7 +127,7 @@ if disable==0
 % % % Charge_on_wire_done = Charge_on_wire_done_set;
 % % % 
 % % % 
-    if plot_chargeFig==1
+    if settings.plot_chargeFig==1
 
         fig_1 = figure(3*ii-2);
         plot(Charge_on_wire_done_set(:,1)',Charge_on_wire_done_set(:,2)','b--*',Charge_on_wire_done_set(:,1)',Charge_on_wire_done_set(:,3),'r--*','Linewidth',4,'MarkerSize',10);
@@ -201,7 +194,7 @@ if disable==0
 % % %                 surface(Z,Y,-X,'FaceColor','y', 'EdgeColor', 'none');  %# Plot sphere
 % % %           else
 % % %                surface(Z,Y,-X,'FaceColor','b', 'EdgeColor', 'none');  %# Plot sphere
-% % %                if print_molnum==1
+% % %                if settings.plot_molnum==1
 % % %                 text(mean(mean(Z)),mean(mean(Y)),mean(mean(-X)),strcat('Mol: ',int2str(i)),'HorizontalAlignment','center','FontSize',10);
 % % %                end
 % % %           end
@@ -315,7 +308,7 @@ if disable==0
 
 
 
-if strcmp(fig_saver,'yes')
+if strcmp(settings.fig_saver,'yes')
     
     %manage figure folder
     if exist('FIGURE') == 7 && ii==1 % ==7 beacuse the function 'exist' used for directory has as output 7
@@ -334,7 +327,7 @@ end
 
 end
 
-if plot_voltage==1
+if settings.plot_voltage==1
     figure(500000),hold on, grid on, grid minor
     title('Input Voltage on each molecule');
     xlabel('Molecule number'), ylabel('Input Voltage [V]')

@@ -22,6 +22,12 @@ scerpaSettings.plotIntermediateSteps = 0;
 scerpaSettings.fig_saver = 'no';
 scerpaSettings.pauseStep = 0;
 scerpaSettings.verbosity = 0; %0 no data, 1 step number, 2 converge info
+scerpaSettings.plot_3dfig = 1;
+scerpaSettings.plot_voltage = 1;
+scerpaSettings.plot_chargeFig = 1;
+scerpaSettings.plot_logic = 1;
+scerpaSettings.plot_molnum = 1;
+
 
 %convergence settings
 scerpaSettings.max_step = 1000;
@@ -78,6 +84,28 @@ end
 if isfield(userSettings,'plotIntermediateSteps')
     scerpaSettings.plotIntermediateSteps = userSettings.plotIntermediateSteps;
 end
+
+if isfield(userSettings,'plot_3dfig')
+    scerpaSettings.plot_3dfig = userSettings.plot_3dfig;
+end
+
+if isfield(userSettings,'plot_voltage')
+    scerpaSettings.plot_voltage = userSettings.plot_voltage;
+end
+
+if isfield(userSettings,'plot_chargeFig')
+    scerpaSettings.plot_chargeFig = userSettings.plot_chargeFig;
+end
+
+if isfield(userSettings,'plot_logic')
+    scerpaSettings.plot_logic = userSettings.plot_logic;
+end
+
+if isfield(userSettings,'plot_molnum')
+    scerpaSettings.plot_molnum = userSettings.plot_molnum;
+end
+
+
 if isfield(userSettings,'verbosity')
     scerpaSettings.verbosity = userSettings.verbosity;
 end
