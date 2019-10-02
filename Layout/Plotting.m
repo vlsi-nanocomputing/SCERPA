@@ -36,7 +36,7 @@ for ii=1:stack_mol.num
                  stack_mol.stack(ii).charge(cc).x, ...
                  max(stack_mol.stack(ii).charge(cc).q,0.01)*190, 'MarkerEdgeColor',[0 0 0],'MarkerFaceColor',[0 0 0]);
         
-    %change colors for first 2 dots
+        %change colors for first 2 dots
         if cc==1
             set(sphere,'MarkerEdgeColor',[1 0 0],'MarkerFaceColor',[1 0 0]);
         elseif cc==2
@@ -66,11 +66,19 @@ for ii=1:stack_driver.num
     %plot charges
     n_charge = length(stack_driver.stack(ii).charge);
     for cc=1:n_charge
-        scatter3(stack_driver.stack(ii).charge(cc).z, ...
+        sphere = scatter3(stack_driver.stack(ii).charge(cc).z, ...
                  stack_driver.stack(ii).charge(cc).y, ...
                  stack_driver.stack(ii).charge(cc).x, ...
                  150, 'MarkerEdgeColor',[0 0 1],'MarkerFaceColor',[0 0 1]);
+             
+        %change colors for first 2 dots
+        if cc==1
+            set(sphere,'MarkerEdgeColor',[1 0 0],'MarkerFaceColor',[1 0 0]);
+        elseif cc==2
+            set(sphere,'MarkerEdgeColor',[0 1 0],'MarkerFaceColor',[0 1 0]);
+        end
     end
+end
    
     %plot names
     text(stack_driver.stack(ii).charge(n_charge).z-textOffset,...
