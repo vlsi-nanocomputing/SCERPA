@@ -1,4 +1,4 @@
-function [] = Function_Plotting(Vout, Charge_on_wire_done_set, stack_mol, stack_driver,settings, ii)
+function [] = Function_Plotting(Vout, Charge_on_wire_done_set, stack_mol, stack_driver,settings, figure_index)
 
 disable=0;
 
@@ -23,7 +23,7 @@ if disable==0
         end
         
         map = [1 0 0; 0.5 0 0; 0 0 0; 0 0 0.5; 0 0 1];
-        fig_3 = figure(3*ii-3), hold on
+        fig_3 = figure(3*figure_index-3), hold on
         imagesc(P_map)
         colorbar
         colormap(map)
@@ -43,7 +43,7 @@ if disable==0
         textOffset = 2;
 
         %Figure definition
-        fig_2 = figure(3*ii-1), hold on, grid on
+        fig_2 = figure(3*figure_index-1), hold on, grid on
         set(gca, 'Projection','perspective'), view(-45,25)
         axis equal, axis vis3d, view(-40,50)
         xlabel('Z direction'); ylabel('Y direction'); zlabel('X direction');
@@ -129,7 +129,7 @@ if disable==0
 % % % 
     if settings.plot_chargeFig==1
 
-        fig_1 = figure(3*ii-2);
+        fig_1 = figure(3*figure_index-2);
         plot(Charge_on_wire_done_set(:,1)',Charge_on_wire_done_set(:,2)','b--*',Charge_on_wire_done_set(:,1)',Charge_on_wire_done_set(:,3),'r--*','Linewidth',4,'MarkerSize',10);
         grid on;
         axis([0 stack_mol.num+1 -0.2 1.2])
@@ -311,7 +311,7 @@ if disable==0
 if strcmp(settings.fig_saver,'yes')
     
     %manage figure folder
-    if exist('FIGURE') == 7 && ii==1 % ==7 beacuse the function 'exist' used for directory has as output 7
+    if exist('FIGURE') == 7 && figure_index==1 % ==7 beacuse the function 'exist' used for directory has as output 7
         delete('FIGURE/*');  % delete its content 
     else
         mkdir('FIGURE');     % if not present. It is created.
