@@ -23,12 +23,15 @@ if disable==0
         end
         
         map = [1 0 0; 0.5 0 0; 0 0 0; 0 0 0.5; 0 0 1];
-        fig_3 = figure(3*figure_index-3), hold on
+        fig_3 = figure(3*figure_index-3); hold on
         imagesc(P_map)
         colorbar
         colormap(map)
         caxis([-1 1])
         axis equal
+        xlabel('Z direction'); ylabel('Y direction'); zlabel('X direction');
+%         set(gca,'zdir','reverse') 
+        set(gca,'ydir','reverse') 
         
     end
     
@@ -103,13 +106,7 @@ if disable==0
             %plot charges
             n_charge = length(stack_driver.stack(ii).charge);
             for cc=1:n_charge
-                if cc==1
-                    plotCharge(stack_mol.stack(ii).charge(cc).q,stack_mol.stack(ii).charge(cc).x,stack_mol.stack(ii).charge(cc).y,stack_mol.stack(ii).charge(cc).z,'r');
-                elseif cc==2
-                    plotCharge(stack_mol.stack(ii).charge(cc).q,stack_mol.stack(ii).charge(cc).x,stack_mol.stack(ii).charge(cc).y,stack_mol.stack(ii).charge(cc).z,'g');
-                else
-                    plotCharge(stack_mol.stack(ii).charge(cc).q,stack_mol.stack(ii).charge(cc).x,stack_mol.stack(ii).charge(cc).y,stack_mol.stack(ii).charge(cc).z,'k');
-                end
+                plotCharge(stack_driver.stack(ii).charge(cc).q,stack_driver.stack(ii).charge(cc).x,stack_driver.stack(ii).charge(cc).y,stack_driver.stack(ii).charge(cc).z,'b');
             end
 
             %plot names
@@ -317,10 +314,19 @@ if strcmp(settings.fig_saver,'yes')
         mkdir('FIGURE');     % if not present. It is created.
     end
     
-    disp('Fig_saver is currently disabled')
-    %save figures
-%     saveas(fig_1,sprintf('FIGURE/FIG_3D_%d',ii),'png')
-%     saveas(fig_2,sprintf('FIGURE/FIG_charge_%d',ii),'png')
+    %save figures in png format
+    if settings.plot_chargeFig ==1
+        saveas(fig_1,sprintf('FIGURE/FIG_CHARGE_%d',figure_index),'png')
+    end
+    
+    if settings.plot_logic ==1
+        saveas(fig_3,sprintf('FIGURE/FIG_LOGIC_%d',figure_index),'png')
+    end
+    
+    if settings.plot_3dfig ==1
+        saveas(fig_2,sprintf('FIGURE/FIG_3D_%d',figure_index),'png')
+    end
+
 %     saveas(fig_1,sprintf('FIGURE/FIG_3D_%d',ii),'epsc2')
 %     saveas(fig_2,sprintf('FIGURE/FIG_charge_%d',ii),'epsc2')
 end
