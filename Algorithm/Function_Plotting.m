@@ -16,18 +16,18 @@ if disable==0
             
             [p1] = sscanf(stack_mol.stack(ii).position,'[%d %d %d]');
             [p2] = sscanf(stack_mol.stack(ii+1).position,'[%d %d %d]');
-            P_map(p1(2)+1,p1(3)+1) = P;
-            P_map(p2(2)+1,p2(3)+1) = P;
+            P_map(p1(2)+1,p1(3)+1) = P+2;
+            P_map(p2(2)+1,p2(3)+1) = P+2;
             
             
         end
         
-        map = [1 0 0; 0.5 0 0; 0 0 0; 0 0 0.5; 0 0 1];
+        map = [1 1 1; 1 1 1; 1 0 0; 0.5 0 0; 0 0 0; 0 0 0.5; 0 0 1];
         fig_3 = figure(3*figure_index-3); hold on
         imagesc(P_map)
-        colorbar
         colormap(map)
-        caxis([-1 1])
+        colorbar('XTickLabel',{'P = -1','P = 1'},'XTick',[0 2])
+        caxis([0 2])
         axis equal
         xlabel('Z direction'); ylabel('Y direction'); zlabel('X direction');
 %         set(gca,'zdir','reverse') 
