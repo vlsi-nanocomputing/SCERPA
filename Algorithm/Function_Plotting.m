@@ -26,8 +26,8 @@ if disable==0
         fig_3 = figure(3*figure_index-3); hold on
         imagesc(P_map)
         colormap(map)
-        colorbar('XTickLabel',{'P = -1','P = 1'},'XTick',[0 2])
-        caxis([0 2])
+        colorbar('XTickLabel',{'P = -1','P = 1'},'XTick',[1 3])
+        caxis([0 3])
         axis equal
         xlabel('Z direction'); ylabel('Y direction'); zlabel('X direction');
 %         set(gca,'zdir','reverse') 
