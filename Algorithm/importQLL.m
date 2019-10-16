@@ -79,15 +79,33 @@ for ii = 1:n_possibleDrivers %loop on possible drivers
         end
         stack_driver.stack(n_importedDrivers).position = sprintf('[%d %d %d]',z_driver,y_driver,x_driver);
         
+        try 
+            theta_driver = str2double(currentPinAttrib.angle);
+        catch
+            theta_driver = 0; 
+        end
+        
         %driver is automatically assigned to first available molecule
         molecule_type = 1;
         number_of_charges = length(molecule_data(molecule_type).dot_position(:,1));
 
+        %effective position of the cell (necesssary for rotation implementation)
+        y_cell_center = vertical_intermolecular_distance * y_driver; %position of cell center
+        z_cell_center = 2*intermolecular_distance *(0.5+x_driver);
+            
         %update driver charge and positions
         for cc=1:number_of_charges
-            stack_driver.stack(n_importedDrivers).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1) ; 
-            stack_driver.stack(n_importedDrivers).charge(cc).y = molecule_data(molecule_type).dot_position(cc,2) + vertical_intermolecular_distance*y_driver; %y_driver 
-            stack_driver.stack(n_importedDrivers).charge(cc).z = molecule_data(molecule_type).dot_position(cc,3) + 2*intermolecular_distance*(x_driver) + intermolecular_distance*1.50; 
+            stack_driver.stack(n_importedDrivers).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1); 
+%             % position of charge (without considering rotation)
+%             stack_driver.stack(n_importedDrivers).charge(cc).y = molecule_data(molecule_type).dot_position(cc,2) + vertical_intermolecular_distance*y_driver; %y_driver 
+%             stack_driver.stack(n_importedDrivers).charge(cc).z = molecule_data(molecule_type).dot_position(cc,3) + 2*intermolecular_distance*(x_driver) + intermolecular_distance*1.50; 
+            
+            %relative position of the charge in the cell
+            y_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,2)); %position inside the cell
+            z_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,3) + intermolecular_distance*0.5)  ;     
+          
+            stack_driver.stack(n_importedDrivers).charge(cc).y = y_dot_in_cell*cosd(theta_driver) + z_dot_in_cell*sind(theta_driver) +  y_cell_center;
+            stack_driver.stack(n_importedDrivers).charge(cc).z = z_dot_in_cell*cosd(theta_driver) - y_dot_in_cell*sind(theta_driver) + z_cell_center; 
             stack_driver.stack(n_importedDrivers).charge(cc).q = molecule_data(molecule_type).initial_charge(cc);
         end           
 
