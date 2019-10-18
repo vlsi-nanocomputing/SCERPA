@@ -306,14 +306,7 @@ if disable==0
 
 
 if strcmp(settings.fig_saver,'yes')
-    
-    %manage figure folder
-    if exist('FIGURE') == 7 && figure_index==1 % ==7 beacuse the function 'exist' used for directory has as output 7
-        delete('FIGURE/*');  % delete its content 
-    else
-        mkdir('FIGURE');     % if not present. It is created.
-    end
-    
+      
     %save figures in png format
     if settings.plot_chargeFig ==1
         saveas(fig_1,sprintf('FIGURE/FIG_CHARGE_%d',figure_index),'png')

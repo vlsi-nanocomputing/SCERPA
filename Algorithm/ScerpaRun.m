@@ -5,18 +5,26 @@ function ScerpaRun(settingsArg)
 %============================================================================================================================================%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   INITIALIZATION   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+disp('Loading SCERPA')
 if ~exist('settingsArg','var')
     settingsArg=0;
 end
 
+%prepare matlab
 close all;
 % clearvars -except n_tests testIndex elapsedTime;
-
 clc; 
-
 % feature jit off
 
-disp('Loading SCERPA')
+%delete old simulation files
+FigureDirectory = dir('FIGURE');
+FigureDirectory([FigureDirectory.isdir]) = [];
+oldPics = fullfile('FIGURE', {FigureDirectory.name});
+try
+    delete( oldPics{:} )
+catch
+    disp('No previous simulation found')
+end
 
 % Import cicuit Layout
 % % Files to read Windows (xlsx data)
