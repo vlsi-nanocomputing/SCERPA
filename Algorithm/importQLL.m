@@ -1,4 +1,4 @@
-function [stack_mol,stack_driver,stack_clock,driver_values] = importQLL(qllFile,Values_Dr,stack_phase)
+function [stack_mol,stack_driver,stack_clock,driver_values] = importQLL(qllFile,Values_Dr,stack_phase,settings)
 %IMPORTQLL Summary of this function goes here
 %   Detailed explanation goes here
 % stack_clock = -1;
@@ -56,8 +56,12 @@ for ii = 1:n_possibleDrivers %loop on possible drivers
     end
 
     if currentPinAttrib.direction == '0'
-        %this is an input driver
-        n_importedDrivers = n_importedDrivers +1;
+        %this is an input driver, increase number of driver
+        if settings.doubleMolDriverMode == 1
+            n_importedDrivers = n_importedDrivers +2;
+        elseif settings.doubleMolDriverMode == 0
+            n_importedDrivers = n_importedDrivers +1;
+        end
               
         %get driver position
         try 
@@ -77,7 +81,11 @@ for ii = 1:n_possibleDrivers %loop on possible drivers
         catch
             z_driver = 0; 
         end
-        stack_driver.stack(n_importedDrivers).position = sprintf('[%d %d %d]',z_driver,y_driver,x_driver);
+        
+        stack_driver.stack(n_importedDrivers).position = sprintf('[%d %d %d]',z_driver,y_driver,2*x_driver+1);
+        if settings.doubleMolDriverMode == 1
+            stack_driver.stack(n_importedDrivers - 1).position = sprintf('[%d %d %d]',z_driver,y_driver,2*x_driver);
+        end
         
         try 
             theta_driver = str2double(currentPinAttrib.angle);
@@ -93,12 +101,9 @@ for ii = 1:n_possibleDrivers %loop on possible drivers
         y_cell_center = vertical_intermolecular_distance * y_driver; %position of cell center
         z_cell_center = 2*intermolecular_distance *(0.5+x_driver);
             
-        %update driver charge and positions
+        %update driver charge and positions (mol 1)
         for cc=1:number_of_charges
             stack_driver.stack(n_importedDrivers).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1); 
-%             % position of charge (without considering rotation)
-%             stack_driver.stack(n_importedDrivers).charge(cc).y = molecule_data(molecule_type).dot_position(cc,2) + vertical_intermolecular_distance*y_driver; %y_driver 
-%             stack_driver.stack(n_importedDrivers).charge(cc).z = molecule_data(molecule_type).dot_position(cc,3) + 2*intermolecular_distance*(x_driver) + intermolecular_distance*1.50; 
             
             %relative position of the charge in the cell
             y_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,2)); %position inside the cell
@@ -107,10 +112,28 @@ for ii = 1:n_possibleDrivers %loop on possible drivers
             stack_driver.stack(n_importedDrivers).charge(cc).y = y_dot_in_cell*cosd(theta_driver) + z_dot_in_cell*sind(theta_driver) +  y_cell_center;
             stack_driver.stack(n_importedDrivers).charge(cc).z = z_dot_in_cell*cosd(theta_driver) - y_dot_in_cell*sind(theta_driver) + z_cell_center; 
             stack_driver.stack(n_importedDrivers).charge(cc).q = molecule_data(molecule_type).initial_charge(cc);
-        end           
+        end      
+        
+        %update driver charge and positions (mol 2)
+        if settings.doubleMolDriverMode == 1
+            for cc=1:number_of_charges
+                stack_driver.stack(n_importedDrivers-1).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1); 
+
+                %relative position of the charge in the cell
+                y_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,2)); %position inside the cell
+                z_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,3) - intermolecular_distance*0.5)  ;     
+
+                stack_driver.stack(n_importedDrivers-1).charge(cc).y = y_dot_in_cell*cosd(theta_driver) + z_dot_in_cell*sind(theta_driver) +  y_cell_center;
+                stack_driver.stack(n_importedDrivers-1).charge(cc).z = z_dot_in_cell*cosd(theta_driver) - y_dot_in_cell*sind(theta_driver) + z_cell_center; 
+                stack_driver.stack(n_importedDrivers-1).charge(cc).q = molecule_data(molecule_type).initial_charge(cc);
+            end  
+        end
 
         %set driver identifier
         stack_driver.stack(n_importedDrivers).identifier{1} = currentPinAttrib.name;
+        if settings.doubleMolDriverMode == 1
+            stack_driver.stack(n_importedDrivers-1).identifier{1} = sprintf('%s_c',currentPinAttrib.name);  
+        end
 %         stack_driver.stack(n_importedDrivers).identifier = currentPinAttrib.name;
 %         stack_driver.stack(n_importedDrivers).identifier{1} = sprintf('Dr%d',n_importedDrivers);
         

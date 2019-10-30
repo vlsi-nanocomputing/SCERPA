@@ -12,6 +12,7 @@ scerpaSettings.Ncharges=4;
 
 %topo integration
 scerpaSettings.magcadImporter=0;
+scerpaSettings.doubleMolDriverMode=0;
 
 %Solver to be used for the calculation of charges (r/y/scfHTSA2/E)
 scerpaSettings.solver='E';
@@ -62,6 +63,10 @@ scerpaSettings.driverSaturation = 0;
 %topo integration
 if isfield(userSettings,'magcadImporter')
     scerpaSettings.magcadImporter=userSettings.magcadImporter;
+end
+
+if isfield(userSettings,'doubleMolDriverMode')
+    scerpaSettings.doubleMolDriverMode=userSettings.doubleMolDriverMode;
 end
 
 if isfield(userSettings,'molecule')
