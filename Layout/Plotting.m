@@ -85,7 +85,7 @@ end
         stack_driver.stack(ii).charge(n_charge).y-textOffset,...
         stack_driver.stack(ii).charge(n_charge).x-textOffset,stack_driver.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10); 
 
-end
+% end
 
 %run('GenerateElectrodesStackTest.m');
 %GenerateElectrodesStack(dot_position, dist_z, dist_y, QCA_circuit_structure, QCA_circuit_rotation, QCASurface, electrode_variation);
