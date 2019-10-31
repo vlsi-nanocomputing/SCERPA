@@ -98,7 +98,7 @@ for time = 2:n_times+1
                         Q1 = 0;
                         Q2 = 1;
                     else
-                        Q1 = 0.5;
+                        Q1 = 0.5; 
                         Q2 = 0.5;
                     end
                     Q3 = 0;
@@ -213,7 +213,12 @@ for time = 2:n_times+1
         end
 
         %save last voltage for error evaluation
-        preV_afterVoltageVariation = Vout;
+        if scfStep==1 %at first step, the driver effect should not be considered
+            preV_afterVoltageVariation = preV_beforeDriverChange;
+        else
+            preV_afterVoltageVariation = Vout;
+        end
+        
         newVout_wodamping = Vout;
         
         if activeRegionMode == 1
@@ -313,21 +318,25 @@ for time = 2:n_times+1
             end
         end
         
-        %convergence error
+        %convergence evaluation
         voltageVariation = abs(newVout_wodamping-preV_afterVoltageVariation);
         if (strcmp(convergence_absolute,'true'))
-            if max(voltageVariation(evaluationRange))< max_error
-                if refiningMode==0 && settings.enableRefining==1
-                    refiningMode=1;
-                    activeRegionMode=0;
-                    interactionRadiusMode=0;
-                    disp('Refining solution! ActiveRegion and InteractionRadius disabled!')
-                else
-                    convergence_flag=1;
+                if max(voltageVariation(evaluationRange))< max_error
+                    
+                    %continue evaluation if refining is required
+                    if refiningMode==0 && settings.enableRefining==1
+                        %activate Refining Mode and disable IR/AR Modes
+                        refiningMode=1;
+                        activeRegionMode=0;
+                        interactionRadiusMode=0;
+                        disp('Refining solution! ActiveRegion and InteractionRadius disabled!')
+                    else
+                        convergence_flag=1;
+                    end
                 end
-            end
         else
             %%%%% Not implemented
+            error("[SCERPA] Relative convergence is not implemented yet!")
         end
 
         if settings.y.show_intermediate_steps == 1
@@ -387,7 +396,7 @@ for time = 2:n_times+1
         end
     end
    
-    %run('ConvergenceTable.m')
+%     run('ConvergenceTable.m')
     timeComputation(time-1) = toc;
     disp(timeComputation(time-1))
     
