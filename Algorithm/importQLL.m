@@ -211,6 +211,12 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
         z_cell = 0; 
     end
     
+    try 
+        theta_cell = str2double(cell.Attributes.angle);
+    catch
+        theta_cell = 0; 
+    end
+    
     %default paramters
     mol1_angle = 0;
     mol1_xshift = 0;
@@ -264,33 +270,44 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
     molecule_type = str2double(cell.Attributes.comp) + 1; %add 1 so that 0 becomes first MATLAB molecule
     number_of_charges = length(molecule_data(molecule_type).dot_position(:,1));
     
-    %manage mol1
+    %effective position of the cell (necesssary for rotation implementation)
+    y_cell_center = vertical_intermolecular_distance * y_cell; %position of cell center
+    z_cell_center = 2*intermolecular_distance *(0.5+x_cell);
+            
+    %update driver charge and positions (mol 1)
     if mol1_disable == 0
         mol_index = 1;
         stack.stack(mol_index).position = sprintf('[%d %d %d]',z_cell,y_cell,2*x_cell);
         
-        %update charges %%%%%%%% Rotations are not implemented
         for cc=1:number_of_charges
             stack.stack(mol_index).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1) ; 
-            stack.stack(mol_index).charge(cc).y = molecule_data(molecule_type).dot_position(cc,2) + vertical_intermolecular_distance*y_cell; %y_driver 
-            stack.stack(mol_index).charge(cc).z = molecule_data(molecule_type).dot_position(cc,3) + 2*intermolecular_distance*(x_cell) + intermolecular_distance*0.5; 
+            
+            %relative position of the charge in the cell
+            y_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,2)); %position inside the cell
+            z_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,3) + intermolecular_distance*0.5)  ;  
+                       
+            stack.stack(mol_index).charge(cc).y = y_dot_in_cell*cosd(theta_cell) + z_dot_in_cell*sind(theta_cell) +  y_cell_center;
+            stack.stack(mol_index).charge(cc).z = z_dot_in_cell*cosd(theta_cell) - y_dot_in_cell*sind(theta_cell) + z_cell_center; 
             stack.stack(mol_index).charge(cc).q = molecule_data(molecule_type).initial_charge(cc);
-        end     
+        end       
     end
-    
-    %manage mol2
+        
+    %update driver charge and positions (mol 1)
     if mol2_disable == 0
-        mol_index = 2 - mol1_disable;
-        stack.stack(mol_index).position = sprintf('[%d %d %d]',z_cell,y_cell,2*x_cell + 1);
+        mol2_index = 2 - mol1_disable;
+        stack.stack(mol2_index).position = sprintf('[%d %d %d]',z_cell,y_cell,2*x_cell + 1);
         
-        %update charges %%%%%%%% Rotations are not implemented
         for cc=1:number_of_charges
-            stack.stack(mol_index).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1) ; 
-            stack.stack(mol_index).charge(cc).y = molecule_data(molecule_type).dot_position(cc,2) + vertical_intermolecular_distance*y_cell; %y_driver 
-            stack.stack(mol_index).charge(cc).z = molecule_data(molecule_type).dot_position(cc,3) + 2*intermolecular_distance*(x_cell) + intermolecular_distance*1.50; 
-            stack.stack(mol_index).charge(cc).q = molecule_data(molecule_type).initial_charge(cc);
-        end     
-        
+            stack.stack(mol2_index).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1) ; 
+            
+            %relative position of the charge in the cell
+            y_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,2)); %position inside the cell
+            z_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,3) - intermolecular_distance*0.5)  ;  
+                       
+            stack.stack(mol2_index).charge(cc).y = y_dot_in_cell*cosd(theta_cell) + z_dot_in_cell*sind(theta_cell) +  y_cell_center;
+            stack.stack(mol2_index).charge(cc).z = z_dot_in_cell*cosd(theta_cell) - y_dot_in_cell*sind(theta_cell) + z_cell_center; 
+            stack.stack(mol2_index).charge(cc).q = molecule_data(molecule_type).initial_charge(cc);
+        end       
     end
     
 end
