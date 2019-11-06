@@ -1,4 +1,4 @@
-function [] = Function_Plotting(Vout, Charge_on_wire_done_set, stack_mol, stack_driver,settings, figure_index)
+function [] = Function_Plotting(Vout, Charge_on_wire_done_set, stack_mol, stack_driver, stack_output, settings, figure_index)
 
 disable=0;
 
@@ -114,6 +114,33 @@ if disable==0
                 text(stack_driver.stack(ii).charge(n_charge).z-textOffset,...
                     stack_driver.stack(ii).charge(n_charge).y-textOffset,...
                     stack_driver.stack(ii).charge(n_charge).x-textOffset,stack_driver.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10); 
+            end
+
+        end
+        
+        %plot outputs
+        for ii=1:stack_output.num
+
+            %plot connections
+            n_connections = length(draw_association(:,1));
+            for cncn =1:n_connections
+                plot3([stack_output.stack(ii).charge(draw_association(cncn,1)).z stack_output.stack(ii).charge(draw_association(cncn,2)).z],...
+                    [stack_output.stack(ii).charge(draw_association(cncn,1)).y stack_output.stack(ii).charge(draw_association(cncn,2)).y],...
+                    [stack_output.stack(ii).charge(draw_association(cncn,1)).x stack_output.stack(ii).charge(draw_association(cncn,2)).x],...
+                    'r','LineWidth',3);
+            end
+
+            %plot charges
+            n_charge = length(stack_output.stack(ii).charge);
+            for cc=1:n_charge
+                plotCharge(0.3,stack_output.stack(ii).charge(cc).x,stack_output.stack(ii).charge(cc).y,stack_output.stack(ii).charge(cc).z,'r');
+            end
+
+            %plot names
+            if settings.plot_molnum==1
+                text(stack_output.stack(ii).charge(n_charge).z-textOffset,...
+                    stack_output.stack(ii).charge(n_charge).y-textOffset,...
+                    stack_output.stack(ii).charge(n_charge).x-textOffset,stack_output.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10); 
             end
 
         end

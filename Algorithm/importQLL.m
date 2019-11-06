@@ -1,4 +1,4 @@
-function [stack_mol,stack_driver,stack_clock,driver_values] = importQLL(qllFile,Values_Dr,stack_phase,settings)
+function [stack_mol,stack_driver,stack_clock,driver_values,stack_output] = importQLL(qllFile,Values_Dr,stack_phase,settings)
 %IMPORTQLL Summary of this function goes here
 %   Detailed explanation goes here
 % stack_clock = -1;
@@ -48,6 +48,8 @@ end
 %Driver (and output) creation
 n_possibleDrivers = length(xmlStruct.qcalayout.layout.pin);
 n_importedDrivers = 0;
+n_importedOutputs = 0;
+stack_output.num = 0; %assign the value in case of no output
 for ii = 1:n_possibleDrivers %loop on possible drivers
     if n_possibleDrivers == 1
         currentPinAttrib = xmlStruct.qcalayout.layout.pin.Attributes;
@@ -141,7 +143,69 @@ for ii = 1:n_possibleDrivers %loop on possible drivers
         stack_driver.num = n_importedDrivers;
         
     elseif currentPinAttrib.direction == '1'
-        %output is not yet implemented
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %this is an output cell, increase number of output: output are
+        %single molecules by default
+
+        n_importedOutputs = n_importedOutputs +1;
+
+              
+        %get output position
+        try 
+            x_output = str2double(currentPinAttrib.x);
+        catch
+            x_output = 0; 
+        end
+        
+        try 
+            y_output = str2double(currentPinAttrib.y);
+        catch
+            y_output = 0; 
+        end
+        
+        try 
+            z_output = str2double(currentPinAttrib.z);
+        catch
+            z_output = 0; 
+        end
+        
+        stack_output.stack(n_importedOutputs).position = sprintf('[%d %d %d]',z_output,y_output,2*x_output+1);
+        
+        try 
+            theta_output = str2double(currentPinAttrib.angle);
+        catch
+            theta_output = 0; 
+        end
+        
+        %driver is automatically assigned to first available molecule
+        molecule_type = 1;
+        number_of_charges = length(molecule_data(molecule_type).dot_position(:,1));
+
+        %effective position of the cell (necesssary for rotation implementation)
+        y_cell_center = vertical_intermolecular_distance * y_output; %position of cell center
+        z_cell_center = 2*intermolecular_distance *(0.5+x_output);
+            
+        %update driver charge and positions (mol 1)
+        for cc=1:number_of_charges
+            stack_output.stack(n_importedOutputs).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1); 
+            
+            %relative position of the charge in the cell
+            y_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,2)); %position inside the cell
+            z_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,3) - intermolecular_distance*0.5)  ;     
+          
+            stack_output.stack(n_importedOutputs).charge(cc).y = y_dot_in_cell*cosd(theta_output) + z_dot_in_cell*sind(theta_output) +  y_cell_center;
+            stack_output.stack(n_importedOutputs).charge(cc).z = z_dot_in_cell*cosd(theta_output) - y_dot_in_cell*sind(theta_output) + z_cell_center; 
+        end      
+        
+
+
+        %set output identifier
+        stack_output.stack(n_importedOutputs).identifier{1} = currentPinAttrib.name;
+
+        
+        %update number of drivers
+        stack_output.num = n_importedOutputs;
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     end
 end
 
