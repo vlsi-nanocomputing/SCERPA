@@ -5,7 +5,7 @@ clear all
 circuit.dist_z = 10;   
 
 %molecule
-circuit.molecule = 'bisfe_4';
+%circuit.molecule = 'bisfe_4';
 
 %layout
 circuit.structure = { 'Dr1' 'Dr2' '1' '1' '1' '1' '1' '1' '1' '1' };     
