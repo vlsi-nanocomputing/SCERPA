@@ -26,7 +26,7 @@ scerpaSettings.verbosity = 0; %0 no data, 1 step number, 2 converge info
 scerpaSettings.plot_3dfig = 1;
 scerpaSettings.plot_voltage = 1;
 scerpaSettings.plot_chargeFig = 1;
-scerpaSettings.plot_logic = 1;
+scerpaSettings.plot_logic = 0;
 scerpaSettings.plot_molnum = 1;
 
 
