@@ -5,8 +5,7 @@ CK=reshapeTC(CK);
 % autodamping
 % interaction range auto-enlargement
 % AR threshold auto-decrease
-% better plots
-% output waveforms
+
 
 
 %find the interaction tree for each molecule, this has to be done if the IR
@@ -288,6 +287,7 @@ for time = 2:n_times+1
             for ii_mol = nearMolecules
                 if ii_mol~=jj_mol
                     Vout(jj_mol) = Vout(jj_mol) + ChargeBased_CalPotential(stack_mol.stack(ii_mol), stack_mol.stack(jj_mol));
+%                     Vout(jj_mol) = Vout(jj_mol) + ChargeBased_CalPotential_DIST(stack_mol,ii_mol,jj_mol,DIST_MATRIX);
                 end    
             end
 

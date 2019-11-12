@@ -74,7 +74,13 @@ else
         settings);
 end
 
+%Import molecule library data
+disp('Importing Libraries...')
 [CK] = Interp_coeff_bilinear(settings.molecule);
+
+%create distance matrix
+disp('Creating distance matrix...')
+DIST_MATRIX = createDistanceMatrix(stack_mol);
 
 switch  settings.solver
     case char('r')
@@ -97,7 +103,6 @@ end
 %%%%%%%% DEBUG: IMPORTANT: this code should not create dependances on the
 %%%%%%%% rest of the code, if this part is erased the computaiton should
 %%%%%%%% not be affected. ALl variables should start with DEBUG_
-
 
 
 %run('yfullEnergy.m')
