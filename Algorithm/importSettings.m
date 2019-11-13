@@ -16,6 +16,7 @@ scerpaSettings.doubleMolDriverMode=0;
 
 %Solver to be used for the calculation of charges (r/y/scfHTSA2/E)
 scerpaSettings.solver='E';
+scerpaSettings.energyEval=0;
 
 %plot
 scerpaSettings.plotActiveRegionWindow = 0;
@@ -77,6 +78,9 @@ if isfield(userSettings,'Ncharges')
 end
 if isfield(userSettings,'solver')
     scerpaSettings.solver=userSettings.solver;
+end
+if isfield(userSettings,'energyEval')
+    scerpaSettings.energyEval=userSettings.energyEval;
 end
 
 %output
