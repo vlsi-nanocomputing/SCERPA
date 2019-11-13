@@ -62,7 +62,9 @@ if settings.enableJit == 0
 end
 
 %import layout data (output are imported from QLL, not yet used in the
-%algorithm, though)
+%algorithm, though, available for viewer)
+
+disp('Importing Layout...')
 if settings.magcadImporter ==0
     run('Function_Reader.m');
     stack_output.num = 0; %no output
@@ -73,10 +75,20 @@ else
         settingsArg.circuit.stack_phase,...
         settings);
 end
+           
+%roughness management
+if isfield(settingsArg.circuit,'substrate')
+    if isfield(settingsArg.circuit.substrate,'PVenable')
+        if settingsArg.circuit.substrate.PVenable ==1
+            [stack_mol,stack_driver] = applyRoughness(stack_mol,stack_driver,settingsArg);
+        end    
+    end
+end
 
 %Import molecule library data
 disp('Importing Libraries...')
-[CK] = Interp_coeff_bilinear(settings.molecule);
+[CK] = Interp_coeff_bilinear(settings.molecule); %transchar
+
 
 %create distance matrix
 disp('Creating distance matrix...')

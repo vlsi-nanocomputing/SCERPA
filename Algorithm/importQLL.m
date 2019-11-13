@@ -314,7 +314,7 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
             case 'yshift_1'
                 mol1_yshift = str2double(currentPropertyValue)/100;
             case 'zshift_1'    
-                mol1_zshift = str2double(currentPropertyValue)/100;
+                mol1_zshift = - str2double(currentPropertyValue)/100;
             case 'disabled_1'   
                 mol1_disable = 1;
             case 'angle_2'
@@ -324,7 +324,7 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
             case 'yshift_2'
                 mol2_yshift = str2double(currentPropertyValue)/100;
             case 'zshift_2'    
-                mol2_zshift = str2double(currentPropertyValue)/100;
+                mol2_zshift = - str2double(currentPropertyValue)/100;
             case 'disabled_2'   
                 mol2_disable = 1;
         end
@@ -344,14 +344,14 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
         stack.stack(mol_index).position = sprintf('[%d %d %d]',z_cell,y_cell,2*x_cell);
         
         for cc=1:number_of_charges
-            stack.stack(mol_index).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1) ; 
+            stack.stack(mol_index).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1) + mol1_zshift; 
             
             %relative position of the charge in the cell
             y_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,2)); %position inside the cell
             z_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,3) + intermolecular_distance*0.5)  ;  
                        
-            stack.stack(mol_index).charge(cc).y = y_dot_in_cell*cosd(theta_cell) + z_dot_in_cell*sind(theta_cell) +  y_cell_center;
-            stack.stack(mol_index).charge(cc).z = z_dot_in_cell*cosd(theta_cell) - y_dot_in_cell*sind(theta_cell) + z_cell_center; 
+            stack.stack(mol_index).charge(cc).y = y_dot_in_cell*cosd(theta_cell) + z_dot_in_cell*sind(theta_cell) + y_cell_center + mol1_yshift;
+            stack.stack(mol_index).charge(cc).z = z_dot_in_cell*cosd(theta_cell) - y_dot_in_cell*sind(theta_cell) + z_cell_center + mol1_xshift; 
             stack.stack(mol_index).charge(cc).q = molecule_data(molecule_type).initial_charge(cc);
         end       
     end
@@ -362,14 +362,14 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
         stack.stack(mol2_index).position = sprintf('[%d %d %d]',z_cell,y_cell,2*x_cell + 1);
         
         for cc=1:number_of_charges
-            stack.stack(mol2_index).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1) ; 
+            stack.stack(mol2_index).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1) + mol2_zshift; 
             
             %relative position of the charge in the cell
             y_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,2)); %position inside the cell
             z_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,3) - intermolecular_distance*0.5)  ;  
                        
-            stack.stack(mol2_index).charge(cc).y = y_dot_in_cell*cosd(theta_cell) + z_dot_in_cell*sind(theta_cell) +  y_cell_center;
-            stack.stack(mol2_index).charge(cc).z = z_dot_in_cell*cosd(theta_cell) - y_dot_in_cell*sind(theta_cell) + z_cell_center; 
+            stack.stack(mol2_index).charge(cc).y = y_dot_in_cell*cosd(theta_cell) + z_dot_in_cell*sind(theta_cell) +  y_cell_center + mol2_yshift;
+            stack.stack(mol2_index).charge(cc).z = z_dot_in_cell*cosd(theta_cell) - y_dot_in_cell*sind(theta_cell) + z_cell_center + mol2_xshift; 
             stack.stack(mol2_index).charge(cc).q = molecule_data(molecule_type).initial_charge(cc);
         end       
     end
