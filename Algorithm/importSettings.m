@@ -28,6 +28,7 @@ scerpaSettings.plot_3dfig = 1;
 scerpaSettings.plot_voltage = 1;
 scerpaSettings.plot_chargeFig = 1;
 scerpaSettings.plot_logic = 0;
+scerpaSettings.plot_clock = 0;
 scerpaSettings.plot_molnum = 1;
 
 
@@ -108,6 +109,10 @@ end
 
 if isfield(userSettings,'plot_logic')
     scerpaSettings.plot_logic = userSettings.plot_logic;
+end
+
+if isfield(userSettings,'plot_clock')
+    scerpaSettings.plot_clock = userSettings.plot_clock;
 end
 
 if isfield(userSettings,'plot_molnum')

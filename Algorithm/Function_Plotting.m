@@ -35,6 +35,33 @@ if disable==0
         
     end
     
+    %%%%%
+    % Plot the clock 
+    %%%%%
+    if settings.plot_clock==1
+        clockMap = 0;
+        
+        %consider clock of each molecule
+        for ii=1:stack_mol.num
+            
+            [coord] = sscanf(stack_mol.stack(ii).position,'[%d %d %d]');
+            clockMap(coord(2)+1,coord(3)+1) = stack_mol.stack(ii).clock;
+            
+        end
+        
+        fig_4 = figure(3*figure_index-2); hold on
+        imagesc(clockMap)
+        colormap summer
+        colorbar
+        axis equal
+        title('Distribution of clock [V/nm]')
+        xlabel('Z direction'); ylabel('Y direction'); zlabel('X direction');
+%         set(gca,'zdir','reverse') 
+        set(gca,'ydir','reverse') 
+        caxis([-2 2])
+        
+    end
+    
     if settings.plot_3dfig ==1
             %WARNING: x-z axis are swapped
             
