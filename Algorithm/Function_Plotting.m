@@ -373,6 +373,10 @@ if strcmp(settings.fig_saver,'yes')
     if settings.plot_3dfig ==1
         saveas(fig_2,sprintf('FIGURE/FIG_3D_%d',figure_index),'png')
     end
+    
+    if settings.plot_clock ==1
+        saveas(fig_4,sprintf('FIGURE/FIG_CLK_%d',figure_index),'png')
+    end
 
 %     saveas(fig_1,sprintf('FIGURE/FIG_3D_%d',ii),'epsc2')
 %     saveas(fig_2,sprintf('FIGURE/FIG_charge_%d',ii),'epsc2')
