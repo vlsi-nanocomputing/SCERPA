@@ -1,14 +1,14 @@
 function stack_clock = createClockTable(stack_mol,circuit)
 
     switch circuit.clockMode
-        case "phase"
+        case 'phase'
             for ii_mol=1:stack_mol.num
 
                 %add to stack_clock
                 stack_clock(ii_mol,:) =[stack_mol.stack(ii_mol).identifier, num2cell(circuit.stack_phase(stack_mol.stack(ii_mol).phase,:))];
             end
             
-        case "phase_level"
+        case 'phase_level'
             
             %initially set clock of the phase
             for ii_mol=1:stack_mol.num

@@ -340,7 +340,7 @@ for time = 2:n_times+1
                 end
         else
             %%%%% Not implemented
-            error("[SCERPA] Relative convergence is not implemented yet!")
+            error('[SCERPA] Relative convergence is not implemented yet!')
         end
 
         if settings.y.show_intermediate_steps == 1

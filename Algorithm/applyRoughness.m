@@ -3,7 +3,7 @@ function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,setti
     plot_substrate_map = 0;
 %   plot_substrate_map = 0;
     switch settingsArg.circuit.substrate.mode 
-        case "map"
+        case 'map'
             disp('Applying substrate map...')
           %plot map
           if plot_substrate_map==1
@@ -14,7 +14,7 @@ function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,setti
                   xlabel('mesh y'),ylabel('mesh z')
           end
 
-        case "random"
+        case 'random'
             fprintf('Using random substrate map [%.2f nm]...\n',settingsArg.circuit.substrate.averageRoughness/10);
     end
 
@@ -29,7 +29,7 @@ function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,setti
         y_anchor = stack_mol.stack(ii).charge(end).y;
 
         %getshift
-        if settingsArg.circuit.substrate.mode == "random"
+        if strcmp(settingsArg.circuit.substrate.mode,'random')
             %random roughness
             roughness_shift = settingsArg.circuit.substrate.averageRoughness*(rand(1) - 0.5);
         else
@@ -69,7 +69,7 @@ function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,setti
         y_anchor = stack_driver.stack(ii).charge(end).y;
 
         %getshift
-        if settingsArg.circuit.substrate.mode == "random"
+        if strcmp(settingsArg.circuit.substrate.mode,'random')
             %random roughness
             roughness_shift = settingsArg.circuit.substrate.averageRoughness*(rand(1) - 0.5);
         else

@@ -77,7 +77,7 @@ else
     %clock management (Atm compatible only with QLL version, as it needs
     %the phase defined in stack_mol)
     if ~isfield(settingsArg.circuit,'clockMode')
-        settingsArg.circuit.clockMode = "phase";
+        settingsArg.circuit.clockMode = 'phase';
     end
     
     stack_clock = createClockTable(stack_mol,settingsArg.circuit);
