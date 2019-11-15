@@ -1,4 +1,4 @@
-function [stack_mol,stack_driver,stack_clock,driver_values,stack_output] = importQLL(qllFile,Values_Dr,stack_phase,settings)
+function [stack_mol,stack_driver,driver_values,stack_output] = importQLL(qllFile,Values_Dr,settings)
 %IMPORTQLL Summary of this function goes here
 %   Detailed explanation goes here
 % stack_clock = -1;
@@ -234,10 +234,8 @@ for jj = 1:number_of_cells_in_layout %loop on possible mols
         stack_mol.stack(stack_mol.num).identifier = sprintf('Mol_%d',stack_mol.num);
         
         %get molecule phase
-        mol_phase = phase + 1;
-    
-        %add to stack_clock
-        stack_clock(stack_mol.num,:) =[stack_mol.stack(jj).identifier, num2cell(stack_phase(mol_phase,:))];
+        stack_mol.stack(stack_mol.num).phase = phase + 1;
+
     end
     
        

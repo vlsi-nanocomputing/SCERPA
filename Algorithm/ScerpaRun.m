@@ -69,11 +69,18 @@ if settings.magcadImporter ==0
     run('Function_Reader.m');
     stack_output.num = 0; %no output
 else
-    [stack_mol,stack_driver,stack_clock,driver_values, stack_output] = importQLL(...
+    [stack_mol,stack_driver,driver_values, stack_output] = importQLL(...
         settingsArg.circuit.qllFile,...
         settingsArg.circuit.Values_Dr,...
-        settingsArg.circuit.stack_phase,...
         settings);
+    
+    %clock management (Atm compatible only with QLL version, as it needs
+    %the phase defined in stack_mol)
+    if ~isfield(settingsArg.circuit,'clockMode')
+        settingsArg.circuit.clockMode = "phase";
+    end
+    
+    stack_clock = createClockTable(stack_mol,settingsArg.circuit);
 end
            
 %roughness management
@@ -84,6 +91,10 @@ if isfield(settingsArg.circuit,'substrate')
         end    
     end
 end
+
+
+
+
 
 %Import molecule library data
 disp('Importing Libraries...')
