@@ -41,6 +41,7 @@ function [status] = SCERPA(command,option1,option2)
                 status = SCERPA('generate', option1);
                 if status == 0
                      if exist('option2','var')
+                        option2.circuit = option1; %pass things which are not managed by the layour generator directly to scerpa (compatibility)
                         status = SCERPA('launch',option2);
                      else
                          status = SCERPA('launch');

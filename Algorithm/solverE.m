@@ -13,10 +13,38 @@ CK=reshapeTC(CK);
 %find the interaction tree for each molecule, this has to be done if the IR
 %mode is active or if the AR mode is active (the IR mode is necessary as it
 %defines the AR list)
+% if settings.enableInteractionRadiusMode == 1 || settings.enableActiveRegion
+%     for ii_mol =1:stack_mol.num
+%         %get position of ith molecule (NOT THE BEST WAY TO DO IT)
+%         pos_ii = [stack_mol.stack(ii_mol).charge(4).x stack_mol.stack(ii_mol).charge(4).y stack_mol.stack(ii_mol).charge(4).z];
+% 
+%         %create structure for the interaction (RX)
+%         stack_mol.stack(ii_mol).interactionRXlist = 0;
+%         number_of_RX_molecules = 0;
+% 
+%         %check all the other molecules
+%         for jj_mol =1:stack_mol.num
+% 
+%             if jj_mol ~= ii_mol
+% 
+%                 %get position of jth molecule
+%                 pos_jj = [stack_mol.stack(jj_mol).charge(4).x stack_mol.stack(jj_mol).charge(4).y stack_mol.stack(jj_mol).charge(4).z];
+% 
+%                 %evaluate distance
+%                 ii_jj_distance = norm(pos_ii - pos_jj);
+% 
+%                 %evaluate interaction condition
+%                 if ii_jj_distance <= settings.interactionRadius
+%                     number_of_RX_molecules = number_of_RX_molecules + 1;
+%                     stack_mol.stack(ii_mol).interactionRXlist(number_of_RX_molecules) = jj_mol;
+%                 end
+%             end
+%         end
+%     end
+% end
+
 if settings.enableInteractionRadiusMode == 1 || settings.enableActiveRegion
     for ii_mol =1:stack_mol.num
-        %get position of ith molecule (NOT THE BEST WAY TO DO IT)
-        pos_ii = [stack_mol.stack(ii_mol).charge(4).x stack_mol.stack(ii_mol).charge(4).y stack_mol.stack(ii_mol).charge(4).z];
 
         %create structure for the interaction (RX)
         stack_mol.stack(ii_mol).interactionRXlist = 0;
@@ -27,11 +55,8 @@ if settings.enableInteractionRadiusMode == 1 || settings.enableActiveRegion
 
             if jj_mol ~= ii_mol
 
-                %get position of jth molecule
-                pos_jj = [stack_mol.stack(jj_mol).charge(4).x stack_mol.stack(jj_mol).charge(4).y stack_mol.stack(jj_mol).charge(4).z];
-
                 %evaluate distance
-                ii_jj_distance = norm(pos_ii - pos_jj);
+                ii_jj_distance = DIST_MATRIX(ii_mol,jj_mol,end,end);
 
                 %evaluate interaction condition
                 if ii_jj_distance <= settings.interactionRadius
@@ -241,8 +266,9 @@ for time = 2:n_times+1
 %                 plot_evaluationMol(find(activeListMolecule==1)) = 1;
                 plot_evaluationMol(activeListMolecule==1) = 0.05;
 
-                figure(2000000)
+                figure(2000000), clf, hold on
                     plot(1:stack_mol.num,voltageVariation, [1 stack_mol.num], [settings.activeRegionThreshold settings.activeRegionThreshold], 1:stack_mol.num, plot_activeMol, 1:stack_mol.num, plot_evaluationMol)
+                    legend('Voltage variation','TH','active','evaluated')
                     drawnow
             end
             
@@ -254,6 +280,7 @@ for time = 2:n_times+1
                 activeRegionMode=0;
                 disp('Disabling Active Region Mode');
             end
+            
         elseif activeRegionMode==0
             evaluationRange = 1:stack_mol.num;
             activeRegionMode = 2; %avoid re-evaluation in refining mode
@@ -268,8 +295,9 @@ for time = 2:n_times+1
     %                 plot_evaluationMol(find(activeListMolecule==1)) = 1;
             plot_evaluationMol(activeListMolecule==1) = 0.05;
 
-            figure(2000000)
+            figure(2000000), clf, hold on
                 plot(1:stack_mol.num,voltageVariation, [1 stack_mol.num], [settings.activeRegionThreshold settings.activeRegionThreshold], 1:stack_mol.num, plot_activeMol, 1:stack_mol.num, plot_evaluationMol)
+                legend('Voltage variation','TH','active','evaluated')
                 drawnow
         end
             

@@ -40,9 +40,9 @@ scerpaSettings.damping = 0.0; %value must be in range [0 - 1) %hint: 0.2
 %convergence accelerations
 scerpaSettings.enableRefining = 1;
 scerpaSettings.enableActiveRegion = 1;
-scerpaSettings.activeRegionThreshold = 0.0001;
+scerpaSettings.activeRegionThreshold = 0.0015;
 scerpaSettings.enableInteractionRadiusMode=1;
-scerpaSettings.interactionRadius = 80;
+scerpaSettings.interactionRadius = 101;
 
 %DEBUG informations
 scerpaSettings.printConvergenceTable = 0;

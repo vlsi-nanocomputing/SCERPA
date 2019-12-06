@@ -14,8 +14,8 @@ if disable==0
                 (stack_mol.stack(ii).charge(1).q + stack_mol.stack(ii+1).charge(2).q + stack_mol.stack(ii).charge(2).q + stack_mol.stack(ii+1).charge(1).q);
             
             
-            [p1] = sscanf(stack_mol.stack(ii).position,'[%d %d %d]');
-            [p2] = sscanf(stack_mol.stack(ii+1).position,'[%d %d %d]');
+            [p1] = sscanf(char(stack_mol.stack(ii).position),'[%d %d %d]');
+            [p2] = sscanf(char(stack_mol.stack(ii+1).position),'[%d %d %d]');
             P_map(p1(2)+1,p1(3)+1) = P+2;
             P_map(p2(2)+1,p2(3)+1) = P+2;
             
@@ -43,8 +43,8 @@ if disable==0
         
         %consider clock of each molecule
         for ii=1:stack_mol.num
-            
-            [coord] = sscanf(stack_mol.stack(ii).position,'[%d %d %d]');
+%             [coord] = sscanf(stack_mol.stack(ii).position,'[%d %d %d]');
+            [coord] = sscanf(char(stack_mol.stack(ii).position),'[%d %d %d]');
             clockMap(coord(2)+1,coord(3)+1) = stack_mol.stack(ii).clock;
             
         end
@@ -113,7 +113,7 @@ if disable==0
             if settings.plot_molnum==1
                 text(stack_mol.stack(ii).charge(n_charge).z-textOffset,...
                     stack_mol.stack(ii).charge(n_charge).y-textOffset,...
-                    stack_mol.stack(ii).charge(n_charge).x-textOffset,stack_mol.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10); 
+                    stack_mol.stack(ii).charge(n_charge).x-textOffset,stack_mol.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10,'Interpreter','none'); 
             end
 
         end

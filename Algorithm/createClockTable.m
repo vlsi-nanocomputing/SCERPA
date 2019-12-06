@@ -122,7 +122,7 @@ function stack_clock = createClockTable(stack_mol,circuit)
                             
                         end
                         
-                        gap_reduction_factor = 0.82;%0.25*distanceFromElectrode*intermolecular_distance;
+                        gap_reduction_factor = 0.25*distanceFromElectrode*10;%0.82;
                         
                         %Apply all corrections
                         stack_clock(centerMol_inStack,[2:end]) = num2cell(min(max(gap_reduction_factor*cell2mat(stack_clock_nolevel(centerMol_inStack,2:end)) + sum(interphaseClockContrib,1),-2),2));
