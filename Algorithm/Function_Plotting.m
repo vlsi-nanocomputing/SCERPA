@@ -67,8 +67,12 @@ if disable==0
             
         %charge plot function
         [c_x,c_y,c_z] = sphere();
-        %plotCharge = @(q,x,y,z,col) surface(2*c_z*(abs(q)+q)/2 + z,2*c_y*(abs(q)+q)/2 + y,2*c_x*(abs(q)+q)/2 + x,'FaceColor',col, 'EdgeColor', 'none');
-        plotCharge = @(q,x,y,z,col) surface(2*c_z*abs(q) + z,2*c_y*abs(q) + y,2*c_x*abs(q) + x,'FaceColor',col, 'EdgeColor', 'none');
+        if settings.plot_plotAbsoluteCharge == 1
+            plotCharge = @(q,x,y,z,col) surface(2*c_z*abs(q) + z,2*c_y*abs(q) + y,2*c_x*abs(q) + x,'FaceColor',col, 'EdgeColor', 'none');
+        else
+            plotCharge = @(q,x,y,z,col) surface(2*c_z*(abs(q)+q)/2 + z,2*c_y*(abs(q)+q)/2 + y,2*c_x*(abs(q)+q)/2 + x,'FaceColor',col, 'EdgeColor', 'none');
+        end
+        
 
         %Offset for displaying text on plots
         textOffset = 2;

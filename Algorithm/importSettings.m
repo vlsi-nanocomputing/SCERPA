@@ -10,6 +10,9 @@ function scerpaSettings = importSettings(userSettings)%molecule
 scerpaSettings.molecule='bisfe4_ox_counterionOnThiol';
 scerpaSettings.Ncharges=4;
 
+%time definitions
+scerpaSettings.timestep=1;
+
 %topo integration
 scerpaSettings.magcadImporter=0;
 scerpaSettings.doubleMolDriverMode=0;
@@ -20,6 +23,7 @@ scerpaSettings.energyEval=0;
 
 %plot
 scerpaSettings.plotActiveRegionWindow = 0;
+scerpaSettings.plot_plotAbsoluteCharge = 1
 scerpaSettings.plotIntermediateSteps = 0;
 scerpaSettings.fig_saver = 'no';
 scerpaSettings.pauseStep = 0;
@@ -62,6 +66,11 @@ scerpaSettings.driverSaturation = 0;
 
 %%%%%%%%%%% 
 
+%time definitions
+if isfield(userSettings,'timestep')
+    scerpaSettings.timestep=userSettings.timestep;
+end
+
 %topo integration
 if isfield(userSettings,'magcadImporter')
     scerpaSettings.magcadImporter=userSettings.magcadImporter;
@@ -85,6 +94,10 @@ if isfield(userSettings,'energyEval')
 end
 
 %output
+if isfield(userSettings,'plot_plotAbsoluteCharge')
+    scerpaSettings.plot_plotAbsoluteCharge=userSettings.plot_plotAbsoluteCharge;
+end
+
 if isfield(userSettings,'plotIntermediateSteps')
     scerpaSettings.plotIntermediateSteps=userSettings.plotIntermediateSteps;
 end
