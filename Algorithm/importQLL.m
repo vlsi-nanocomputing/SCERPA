@@ -133,8 +133,11 @@ for ii = 1:n_possibleDrivers %loop on possible drivers
 
         %set driver identifier
         stack_driver.stack(n_importedDrivers).identifier{1} = currentPinAttrib.name;
+        stack_driver.stack(n_importedDrivers).identifier_qll{1} = currentPinAttrib.name;
         if settings.doubleMolDriverMode == 1
-            stack_driver.stack(n_importedDrivers-1).identifier{1} = sprintf('%s_c',currentPinAttrib.name);  
+            stack_driver.stack(n_importedDrivers-1).identifier{1} = sprintf('%s_c',currentPinAttrib.name); 
+            stack_driver.stack(n_importedDrivers).identifier_qll{1} = sprintf('%sa',currentPinAttrib.name); 
+            stack_driver.stack(n_importedDrivers-1).identifier_qll{1} = sprintf('%sb',currentPinAttrib.name); 
         end
 %         stack_driver.stack(n_importedDrivers).identifier = currentPinAttrib.name;
 %         stack_driver.stack(n_importedDrivers).identifier{1} = sprintf('Dr%d',n_importedDrivers);
@@ -232,6 +235,17 @@ for jj = 1:number_of_cells_in_layout %loop on possible mols
         
         %set identifier
         stack_mol.stack(stack_mol.num).identifier = sprintf('Mol_%d',stack_mol.num);
+        
+        %set identifier qll
+        if number_of_cell_mols==2
+            if nn==1
+                stack_mol.stack(stack_mol.num).identifier_qll = sprintf('%.4db',str2double(currentCell.Attributes.id));
+            elseif nn==2
+                stack_mol.stack(stack_mol.num).identifier_qll = sprintf('%.4da',str2double(currentCell.Attributes.id));
+            end
+        else
+            stack_mol.stack(stack_mol.num).identifier_qll = sprintf('%.4d',str2double(currentCell.Attributes.id));
+        end
         
         %get molecule phase
         stack_mol.stack(stack_mol.num).phase = phase + 1;
