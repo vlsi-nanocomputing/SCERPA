@@ -438,5 +438,8 @@ for time = 2:n_times+1
     Function_Plotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
     Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
     
+    clock_tmp(1,:) = [stack_mol.stack.clock];
+    output_txt(time-1,:) = [clock_tmp Vout];
+    
 end %end of time loop
 
