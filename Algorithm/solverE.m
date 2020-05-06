@@ -309,7 +309,7 @@ for time = 2:n_times+1
 
             %if refining is active, evaluate the interaction with all
             %molecules
-            if interactionRadiusMode==1 %si può fare in modo più furbo
+            if interactionRadiusMode==1 %si puï¿½ fare in modo piï¿½ furbo
                 nearMolecules = stack_mol.stack(jj_mol).interactionRXlist;
             else
                 nearMolecules = 1:stack_mol.num;
@@ -438,5 +438,9 @@ for time = 2:n_times+1
     Function_Plotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
     Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
     Function_SaveQSS(time, stack_mol, stack_driver);    
+    
+    clock_tmp(1,:) = [stack_mol.stack.clock];
+    output_txt(time-1,:) = [clock_tmp Vout];
+    
 end %end of time loop
 
