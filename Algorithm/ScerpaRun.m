@@ -147,7 +147,7 @@ for ii = 1:2*stack_mol.num
    formatSpec = strcat(formatSpec, '\t%f');
 end
 formatSpec = strcat(formatSpec, '\n');
-filename_out = 'Additional_Information.txt'; 
+filename_out = './OUTPUT_FILES/Additional_Information.txt'; 
 fileID = fopen(filename_out,'wt');
 for jj = 1:n_times
     fprintf(fileID,formatSpec,output_txt(jj,:));
