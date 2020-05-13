@@ -1,5 +1,0 @@
-Files Analysed:
-    ..\Layout\Database\Data_Molecule_1.xlsx
-    ..\Layout\Database\Data_Driver.xlsx
-    ..\Layout\Database\Fake_Phases.xlsx
-    ..\Layout\Database\Values_Driver.xlsx
