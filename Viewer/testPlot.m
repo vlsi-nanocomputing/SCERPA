@@ -10,7 +10,7 @@ QLLFile = 'D:\Dropbox\CondivisaGiuliana\topoIntegration\layout.qll';
 QSSFile = 'D:\scerpa\Algorithm\OUTPUT_FILES\0002.qss';
 
 addpath ../Algorithm/        
-settings.doubleMolDriverMode=0;
+settings.doubleMolDriverMode=1;
 settings.plot_molnum=0;
 [stack_mol,stack_driver,driver_values,stack_output] = importQLL(QLLFile,1,settings);
 [stack_mol,stack_driver] = importQSS(stack_mol,stack_driver,QSSFile);
