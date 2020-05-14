@@ -131,13 +131,13 @@ for ii = 1:n_possibleDrivers %loop on possible drivers
             end  
         end
 
-        %set driver identifier
+        %set driver identifier    
         stack_driver.stack(n_importedDrivers).identifier{1} = currentPinAttrib.name;
-        stack_driver.stack(n_importedDrivers).identifier_qll{1} = currentPinAttrib.name;
+        stack_driver.stack(n_importedDrivers).identifier_qll{1} = sprintf('%.4d',str2double(currentPinAttrib.id));
         if settings.doubleMolDriverMode == 1
             stack_driver.stack(n_importedDrivers-1).identifier{1} = sprintf('%s_c',currentPinAttrib.name); 
-            stack_driver.stack(n_importedDrivers).identifier_qll{1} = sprintf('%sa',currentPinAttrib.name); 
-            stack_driver.stack(n_importedDrivers-1).identifier_qll{1} = sprintf('%sb',currentPinAttrib.name); 
+            stack_driver.stack(n_importedDrivers).identifier_qll{1} =  sprintf('%.4da',str2double(currentPinAttrib.id));
+            stack_driver.stack(n_importedDrivers-1).identifier_qll{1} = sprintf('%.4db',str2double(currentPinAttrib.id));
         end
 %         stack_driver.stack(n_importedDrivers).identifier = currentPinAttrib.name;
 %         stack_driver.stack(n_importedDrivers).identifier{1} = sprintf('Dr%d',n_importedDrivers);
