@@ -1,6 +1,3 @@
-%reshape transcharacteristics to avoid true interpolation
-CK=reshapeTC(CK);
-
 %TODO
 % autodamping
 % interaction range auto-enlargement
@@ -8,42 +5,12 @@ CK=reshapeTC(CK);
 % flag system (i.e. settings stracture but that can be modified by the
 %   software)
 
-
+Ncharges = 4; 
 
 %find the interaction tree for each molecule, this has to be done if the IR
 %mode is active or if the AR mode is active (the IR mode is necessary as it
 %defines the AR list)
-% if settings.enableInteractionRadiusMode == 1 || settings.enableActiveRegion
-%     for ii_mol =1:stack_mol.num
-%         %get position of ith molecule (NOT THE BEST WAY TO DO IT)
-%         pos_ii = [stack_mol.stack(ii_mol).charge(4).x stack_mol.stack(ii_mol).charge(4).y stack_mol.stack(ii_mol).charge(4).z];
-% 
-%         %create structure for the interaction (RX)
-%         stack_mol.stack(ii_mol).interactionRXlist = 0;
-%         number_of_RX_molecules = 0;
-% 
-%         %check all the other molecules
-%         for jj_mol =1:stack_mol.num
-% 
-%             if jj_mol ~= ii_mol
-% 
-%                 %get position of jth molecule
-%                 pos_jj = [stack_mol.stack(jj_mol).charge(4).x stack_mol.stack(jj_mol).charge(4).y stack_mol.stack(jj_mol).charge(4).z];
-% 
-%                 %evaluate distance
-%                 ii_jj_distance = norm(pos_ii - pos_jj);
-% 
-%                 %evaluate interaction condition
-%                 if ii_jj_distance <= settings.interactionRadius
-%                     number_of_RX_molecules = number_of_RX_molecules + 1;
-%                     stack_mol.stack(ii_mol).interactionRXlist(number_of_RX_molecules) = jj_mol;
-%                 end
-%             end
-%         end
-%     end
-% end
-
-if settings.enableInteractionRadiusMode == 1 || settings.enableActiveRegion
+if settings.enableInteractionRadiusMode || settings.enableActiveRegion
     for ii_mol =1:stack_mol.num
 
         %create structure for the interaction (RX)
@@ -79,50 +46,46 @@ n_times = size(stack_clock,2)-1;
 timeComputation =zeros(1,n_times);
 
 %%Time loop
-for time = 2:n_times+1
+for time = 1:n_times
     disp('Preparing Time evaluation')
-%     disp('Time = ')
-%     disp(time)
-    fprintf('Evaluation of time = %.2f\n',time);
+    
+    %disp('Time = ')
+    %disp(time)
+
+    fprintf('Evaluation of time = %.2f\n',time); 
     
     tic
+    
     %enable approximations
     refiningMode=0;
-    
-    %activate interactionRadiusmode if enabled
-    %     if settings.interactionRadiusMode ==1
-    %         interactionRadiusMode=1;
-    %     else
-    %         interactionRadiusMode = 0;
-    %     end
+
     interactionRadiusMode = settings.enableInteractionRadiusMode;
-    
-    %activate the ActiveRegion mode if enabled
-    %     if settings.enableActiveRegion ==1
-    %         activeRegionMode=1;
-    %     else
-    %         activeRegionMode=0;
-    %     end
+
     activeRegionMode = settings.enableActiveRegion;
-    
+
     %prepare energy stack for this time
     if settings.energyEval==1
-        stack_energy(time-1).time = time;
-        stack_energy(time-1).steps = 0;
+        stack_energy(time).time = time;
+        stack_energy(time).steps = 0;
     end
    
     %Initialize drivers
     for ff=1:stack_driver.num
         for tt=1:size(driver_values,1)
             if strcmp(stack_driver.stack(ff).identifier{1},driver_values{tt,1})
-                [Q1, Q2, Q3, Q4] = applyTranschar(driver_values{tt,time},+2,CK);
+                for mm = 1:CK.length
+                    if cell2mat(stack_driver.stack(ff).molType) == CK.stack(mm).molID
+                        break
+                    end
+                end
+                [Q1, Q2, Q3, Q4] = applyTranschar(driver_values{tt,time+1},+2,CK.stack(mm));
                 
                 %saturation of driver charges (if required)
                 if settings.driverSaturation == 1
                     if Q1 > 0.6
                         Q1 = 1;
                         Q2 = 0;
-                    elseif Q1 < 0.6
+                    elseif Q1 < 0.4
                         Q1 = 0;
                         Q2 = 1;
                     else
@@ -136,22 +99,17 @@ for time = 2:n_times+1
                 stack_driver.stack(ff).charge(1).q =  Q1;    
                 stack_driver.stack(ff).charge(2).q =  Q2;   
                 stack_driver.stack(ff).charge(3).q =  Q3;   
-                stack_driver.stack(ff).charge(4).q =  Q4;   
-                driverIsChangedFlag=1;
+                stack_driver.stack(ff).charge(4).q =  Q4; 
             end
         end
     end 
     
-%     %Initialize clocks
-%     for ii_mol =1:stack_mol.num
-%         stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time};
-%     end
-
+    
     %evaluate driver changes
     %WARNING: qui al posto di mettere il controllo su time si pu? fare sul
     %flag del driver cambiato
     
-    if time>2 %not the first time
+    if time>1 %not the first time
         
         %save current voltage (before changing)
         preV_beforeDriverChange = Vout;
@@ -167,13 +125,18 @@ for time = 2:n_times+1
         
         %Initialize clocks
         for ii_mol =1:stack_mol.num
-            if stack_mol.stack(ii_mol).clock ~= stack_clock{ii_mol,time}
+            if stack_mol.stack(ii_mol).clock ~= stack_clock{ii_mol,time+1}
                 
                 %update clock if different
-                stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time};
+                stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time+1};
                 
                 %update charges if new clock %added on 5/09/2019
-                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(ii_mol),stack_mol.stack(ii_mol).clock,CK);
+                for mm = 1:CK.length
+                    if cell2mat(stack_mol.stack(ii_mol).molType) == CK.stack(mm).molID
+                        break
+                    end
+                end
+                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(ii_mol),stack_mol.stack(ii_mol).clock,CK.stack(mm));
                 stack_mol.stack(ii_mol).charge(1).q =  Q1;   
                 stack_mol.stack(ii_mol).charge(2).q =  Q2;   
                 stack_mol.stack(ii_mol).charge(3).q =  Q3;   
@@ -186,18 +149,18 @@ for time = 2:n_times+1
         end
     else %first time
         V_driver = yDrivers_effect( stack_driver, stack_mol);
-        Vout = zeros(1,stack_mol.num);
+        Vext = cell2mat([stack_mol.stack(:).Vext]);
+        Vout = zeros(1,stack_mol.num) + Vext;
         preV_beforeDriverChange = zeros(1,stack_mol.num);
         newVout_wodamping = zeros(1,stack_mol.num);
-        voltageVariation = abs(V_driver); % It should be abs(V_driver - 0)
+        voltageVariation = abs(V_driver + Vext); % It should be abs(V_driver - 0)
         
         %Initialize clocks
         for ii_mol =1:stack_mol.num
-            stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time};
+            stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time+1};
         end
     end
     
-    %Function_Saver(1, time, fileID, 0, Charge_on_wire_done, stack_mol, stack_driver);     
     
     %Self-Consistent Field evaluation
     max_error=settings.conv_threshold_HP;
@@ -300,12 +263,13 @@ for time = 2:n_times+1
                 legend('Voltage variation','TH','active','evaluated')
                 drawnow
         end
-            
+         
+        
         %evaluate voltage on each molecule
         for jj_mol=evaluationRange
-
+            
             %insert effect of the driver on ii-th molecule
-            Vout(jj_mol)=V_driver(jj_mol);
+            Vout(jj_mol)=V_driver(jj_mol) + Vext(jj_mol);
 
             %if refining is active, evaluate the interaction with all
             %molecules
@@ -327,7 +291,13 @@ for time = 2:n_times+1
                 %update charges
                 newVout_wodamping(jj_mol) = Vout(jj_mol); %save to evaluate convergence
                 Vout(jj_mol) = preV_afterVoltageVariation(jj_mol) + (1-settings.y.damping)*(Vout(jj_mol) - preV_afterVoltageVariation(jj_mol));
-                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK);
+                
+                for mm = 1:CK.length
+                    if cell2mat(stack_mol.stack(jj_mol).molType) == CK.stack(mm).molID
+                        break
+                    end
+                end
+                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK.stack(mm));
                 stack_mol.stack(jj_mol).charge(1).q =  Q1;    
                 stack_mol.stack(jj_mol).charge(2).q =  Q2;   
                 stack_mol.stack(jj_mol).charge(3).q =  Q3;   
@@ -341,8 +311,13 @@ for time = 2:n_times+1
             newVout_wodamping = Vout;
             Vout = preV_afterVoltageVariation + (1-settings.y.damping)*(Vout - preV_afterVoltageVariation);
             for jj_mol=1:stack_mol.num
+                for mm = 1:CK.length
+                    if cell2mat(stack_mol.stack(jj_mol).molType) == CK.stack(mm).molID
+                        break
+                    end
+                end
                 %update charges
-                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK);
+                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK.stack(mm));
                 stack_mol.stack(jj_mol).charge(1).q =  Q1;   
                 stack_mol.stack(jj_mol).charge(2).q =  Q2;   
                 stack_mol.stack(jj_mol).charge(3).q =  Q3;   
@@ -396,11 +371,11 @@ for time = 2:n_times+1
         %save energy
         if settings.energyEval==1
             [W_int,W_ex,W_clk,W_tot] = EvaluateEnergy(stack_driver, stack_mol, Vout, CK);
-            stack_energy(time-1).steps = stack_energy(time-1).steps+1;
-            stack_energy(time-1).W_int(stack_energy(time-1).steps) = W_int;
-            stack_energy(time-1).W_ex(stack_energy(time-1).steps) = W_ex;
-            stack_energy(time-1).W_clk(stack_energy(time-1).steps) = W_clk;
-            stack_energy(time-1).W_tot(stack_energy(time-1).steps) = W_tot;
+            stack_energy(time).steps = stack_energy(time).steps+1;
+            stack_energy(time).W_int(stack_energy(time).steps) = W_int;
+            stack_energy(time).W_ex(stack_energy(time).steps) = W_ex;
+            stack_energy(time).W_clk(stack_energy(time).steps) = W_clk;
+            stack_energy(time).W_tot(stack_energy(time).steps) = W_tot;
         end
         
         if settings.verbosity==2
@@ -425,14 +400,14 @@ for time = 2:n_times+1
         %number of molecule in the first col
         Charge_on_wire_done(cc_mol,1) = cc_mol; 
         %charges in other cols
-        for ii_charge = 1:settings.Ncharges     
+        for ii_charge = 1:Ncharges     
             Charge_on_wire_done(cc_mol,ii_charge+1) = stack_mol.stack(cc_mol).charge(ii_charge).q;
         end
     end
    
 %     run('ConvergenceTable.m')
-    timeComputation(time-1) = toc;
-    disp(timeComputation(time-1))
+    timeComputation(time) = toc;
+    disp(timeComputation(time))
     
     %plot and save data
     Function_Plotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
@@ -440,7 +415,7 @@ for time = 2:n_times+1
     Function_SaveQSS(time, stack_mol, stack_driver);    
     
     clock_tmp(1,:) = [stack_mol.stack.clock];
-    output_txt(time-1,:) = [clock_tmp Vout];
+    output_txt(time,:) = [clock_tmp Vout];
     
 end %end of time loop
 

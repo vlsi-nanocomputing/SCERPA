@@ -38,10 +38,12 @@ for ii = 1:n_possibleMolecules %loop on possible molecules and obtan associated 
             %import dot data for bisferrocene
             n_layoutMols = n_layoutMols +1;
             [molecule_data(n_layoutMols).initial_charge, molecule_data(n_layoutMols).dot_position, molecule_data(n_layoutMols).draw_association] = GetMoleculeData('bisfe_4');
+            components(ii) = 1; %associate to the magCAD component the scerpa moleculeID from the list
         case 'Butane'
             %import dot data for bisferrocene
             n_layoutMols = n_layoutMols +1;
             [molecule_data(n_layoutMols).initial_charge, molecule_data(n_layoutMols).dot_position, molecule_data(n_layoutMols).draw_association] = GetMoleculeData('butane');
+            components(ii) = 7; %associate to the magCAD component the scerpa moleculeID from the list
     end
 end
 
@@ -142,6 +144,11 @@ for ii = 1:n_possibleDrivers %loop on possible drivers
 %         stack_driver.stack(n_importedDrivers).identifier = currentPinAttrib.name;
 %         stack_driver.stack(n_importedDrivers).identifier{1} = sprintf('Dr%d',n_importedDrivers);
         
+        %set molType for the Drivers
+        stack_driver.stack(n_importedDrivers).molType = num2cell(components(molecule_type));
+        if settings.doubleMolDriverMode == 1
+            stack_driver.stack(n_importedDrivers-1).molType = num2cell(components(molecule_type));
+        end
         %update number of drivers
         stack_driver.num = n_importedDrivers;
         
@@ -233,6 +240,16 @@ for jj = 1:number_of_cells_in_layout %loop on possible mols
         stack_mol.stack(stack_mol.num).charge = mol.stack(nn).charge;
         stack_mol.stack(stack_mol.num).position = mol.stack(nn).position;
         
+        %set molecule type
+        switch(xmlStruct.qcalayout.layout.item{1,jj}.Attributes.comp)
+            case '0' %pick the component in the first position
+                stack_mol.stack(stack_mol.num).molType = num2cell(components(1));
+            case '1' %pick the component in the second position
+                stack_mol.stack(stack_mol.num).molType = num2cell(components(2));
+            otherwise 
+                disp('[SCERPA ERROR] Unknown molecule')
+        end
+        
         %set identifier
         stack_mol.stack(stack_mol.num).identifier = sprintf('Mol_%d',stack_mol.num);
         
@@ -249,7 +266,9 @@ for jj = 1:number_of_cells_in_layout %loop on possible mols
         
         %get molecule phase
         stack_mol.stack(stack_mol.num).phase = phase + 1;
-
+        
+        %set external voltage (not implemented, set to zero for comptibility with matlab version)
+        stack_mol.stack(stack_mol.num).Vext = num2cell(0);
     end
     
        
