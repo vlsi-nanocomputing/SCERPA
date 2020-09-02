@@ -59,7 +59,7 @@ plotSettings.plotList = 0;
 this_path = pwd;
 scerpa_path = '..\';
 cd(scerpa_path)
-% generation_status = SCERPA('topoLaunch', circuit, settings);
+generation_status = SCERPA('topoLaunch', circuit, settings);
 % generation_status = SCERPA('generateLaunch', circuit, settings);
                     SCERPA('plotSteps', plotSettings);
 cd(this_path)

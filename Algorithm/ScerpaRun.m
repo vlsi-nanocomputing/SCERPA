@@ -159,9 +159,16 @@ for jj = 1:n_times
 end
 fclose(fileID);
 
-myicon = imread('good.png');
-h=msgbox('Brave Yourself... The Operation is Completed', 'Success!!!!', 'custom', myicon);
-   
+%%
+% myicon = imread('good.png');
+% h=msgbox('Brave Yourself... The Operation is Completed', 'Success!!!!', 'custom', myicon);
+disp(' ');
+disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+disp('%  Brave Yourself... The Operation is Completed %');
+disp('%                  SCERPA                       %');
+disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+disp(' ');
+
 %save workspace for analysis
 save('simulation_output');
 end

@@ -14,8 +14,8 @@ file = 'threePhasesWireMultiMol.qll';
 circuit.qllFile = sprintf('%s\\%s',pwd,file);
 
 %layout (Layout Generator)
-circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3'};
-circuit.components = {'0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '7' '7' '7' '7' '7' '7' '7' '7'};
+% circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3'};
+% circuit.components = {'0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '7' '7' '7' '7' '7' '7' '7' '7'};
 
 %drivers and clock
 D0 = num2cell(-4.5*ones(1,clock_step*4));
@@ -57,7 +57,7 @@ plotSettings.plot_potential_tipHeight = -10;
 this_path = pwd;
 scerpa_path = '..\';
 cd(scerpa_path)
-% generation_status = SCERPA('topoLaunch', circuit, settings);
-generation_status = SCERPA('generateLaunch', circuit, settings);
+generation_status = SCERPA('topoLaunch', circuit, settings);
+% generation_status = SCERPA('generateLaunch', circuit, settings);
                     SCERPA('plotSteps', plotSettings);
 cd(this_path)
