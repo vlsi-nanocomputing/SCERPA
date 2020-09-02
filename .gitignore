@@ -10,6 +10,7 @@ Algorithm/Simulation_Output.log
 Algorithm/simulation_output.mat
 Algorithm/OUTPUT_FILES/*.qss
 Algorithm/OUTPUT_FILES/*.txt
+Algorithm/OUTPUT_FILES/*.log
 
 # ignore layout files
 Layout/Database/*.mat
