@@ -410,7 +410,7 @@ for time = 1:n_times
     disp(timeComputation(time))
     
     %plot and save data
-    Function_Plotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
+    RunTimePlotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
     Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
     Function_SaveQSS(time, stack_mol, stack_driver);    
     

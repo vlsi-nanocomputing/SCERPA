@@ -54,22 +54,17 @@ end
 if isfield(userSettings,'plot_3dfig')
     scerpaSettings.plot_3dfig = userSettings.plot_3dfig;
 else 
-    scerpaSettings.plot_3dfig = 1; % default value
+    scerpaSettings.plot_3dfig = 0; % default value
 end
 if isfield(userSettings,'plot_voltage')
     scerpaSettings.plot_voltage = userSettings.plot_voltage;
 else
-    scerpaSettings.plot_voltage = 1; % default value
+    scerpaSettings.plot_voltage = 0; % default value
 end
 if isfield(userSettings,'plot_chargeFig')
     scerpaSettings.plot_chargeFig = userSettings.plot_chargeFig;
 else
-    scerpaSettings.plot_chargeFig = 1; % default value
-end
-if isfield(userSettings,'plot_logic')
-    scerpaSettings.plot_logic = userSettings.plot_logic;
-else
-    scerpaSettings.plot_logic = 0; % default value
+    scerpaSettings.plot_chargeFig = 0; % default value
 end
 if isfield(userSettings,'plot_clock')
     scerpaSettings.plot_clock = userSettings.plot_clock;

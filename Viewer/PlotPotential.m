@@ -1,14 +1,8 @@
 function out_fig = PlotPotential(stack_mol, stack_driver, stack_output, settings)
 
 %WARNING: x-z axis are swapped
-addpath ../Algorithm/
+pos.x = settings.plot_potential_tipHeight;
 
-settings.proceed=1;
-settings = importSettings(settings);
-
-pos.x = -3.5 -2;
-offset = 20;
-saturation_voltage = 6;
 
 %evaluation
 Nmolecules = stack_mol.num;
@@ -54,10 +48,10 @@ end
 
 %create potential grid
 grid_points = 200;
-y_min = min(systemMol.y) - offset;
-y_max = max(systemMol.y) + offset;
-z_min = min(systemMol.z) - offset; %-3 for deca, -5 for bisfe
-z_max = max(systemMol.z) + offset; %2 for deca, 1.5 for bisfe
+y_min = min(systemMol.y) - settings.plot_potential_padding;
+y_max = max(systemMol.y) + settings.plot_potential_padding;
+z_min = min(systemMol.z) - settings.plot_potential_padding; %-3 for deca, -5 for bisfe
+z_max = max(systemMol.z) + settings.plot_potential_padding; %2 for deca, 1.5 for bisfe
 yspan = linspace(y_min,y_max,grid_points);
 zspan = linspace(z_min,z_max,grid_points);
 [y,z] = meshgrid(yspan,zspan);
@@ -68,7 +62,7 @@ for ii=1:grid_points
     for jj=1:grid_points
         pos.y = y(ii,jj);
         pos.z = z(ii,jj);
-        voltage(ii,jj) = min(EvaluatePotential(systemMol,pos),saturation_voltage);
+        voltage(ii,jj) = min(EvaluatePotential(systemMol,pos),settings.plot_potential_saturationVoltage);
     end
 end
 

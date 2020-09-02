@@ -4,12 +4,11 @@ function out_fig = Plot3DAC(stack_mol, stack_driver, stack_output, settings)
 
 %charge plot function
 [c_x,c_y,c_z] = sphere();
-if settings.plot_plotAbsoluteCharge == 1
+if settings.plot_3dfig_plotAbsoluteCharge == 1
     plotCharge = @(q,x,y,z,col) surface(2*c_z*abs(q) + z,2*c_y*abs(q) + y,2*c_x*abs(q) + x,'FaceColor',col, 'EdgeColor', 'none');
 else
     plotCharge = @(q,x,y,z,col) surface(2*c_z*(abs(q)+q)/2 + z,2*c_y*(abs(q)+q)/2 + y,2*c_x*(abs(q)+q)/2 + x,'FaceColor',col, 'EdgeColor', 'none');
 end
-
 
 %Offset for displaying text on plots
 textOffset = 2;
@@ -52,7 +51,7 @@ for ii=1:stack_mol.num
     end
 
     %plot names
-    if settings.plot_molnum==1
+    if settings.plot_3dfig_molnum==1
         text(stack_mol.stack(ii).charge(n_charge).z-textOffset,...
             stack_mol.stack(ii).charge(n_charge).y-textOffset,...
             stack_mol.stack(ii).charge(n_charge).x-textOffset,stack_mol.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10,'Interpreter','none'); 
@@ -79,7 +78,7 @@ for ii=1:stack_driver.num
     end
 
     %plot names
-    if settings.plot_molnum==1
+    if settings.plot_3dfig_molnum==1
         text(stack_driver.stack(ii).charge(n_charge).z-textOffset,...
             stack_driver.stack(ii).charge(n_charge).y-textOffset,...
             stack_driver.stack(ii).charge(n_charge).x-textOffset,stack_driver.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10); 
@@ -106,7 +105,7 @@ for ii=1:stack_output.num
     end
 
     %plot names
-    if settings.plot_molnum==1
+    if settings.plot_3dfig_molnum==1
         text(stack_output.stack(ii).charge(n_charge).z-textOffset,...
             stack_output.stack(ii).charge(n_charge).y-textOffset,...
             stack_output.stack(ii).charge(n_charge).x-textOffset,stack_output.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10); 
