@@ -16,12 +16,22 @@ close all;
 clc; 
 % feature jit off
 
-%delete old simulation files
+%delete old simulation pictures
 FigureDirectory = dir('FIGURE');
 FigureDirectory([FigureDirectory.isdir]) = [];
 oldPics = fullfile('FIGURE', {FigureDirectory.name});
 try
     delete( oldPics{:} )
+catch
+    disp('No previous simulation found')
+end
+
+%delete old simulation files
+filesDirectory = dir('OUTPUT_FILES');
+filesDirectory([filesDirectory.isdir]) = [];
+oldSims = fullfile('OUTPUT_FILES', {filesDirectory.name});
+try
+    delete( oldSims{:} )
 catch
     disp('No previous simulation found')
 end

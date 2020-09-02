@@ -1,4 +1,5 @@
 clear all
+close all
 
 %% FROM SCERPA
 % load('../Algorithm/simulation_output.mat','stack_mol')
@@ -17,8 +18,8 @@ settings.plot_molnum=0;
 
 
 settings.proceed = 1; %to be removed
-Plot3DAC(stack_mol, stack_driver, stack_output, settings)
-PlotPotential(stack_mol, stack_driver, stack_output, settings)
-
+threeDfig = Plot3DAC(stack_mol, stack_driver, stack_output, settings);
+potFig = PlotPotential(stack_mol, stack_driver, stack_output, settings);
+logicFig = PlotLogic(stack_mol, stack_driver, stack_output, settings);
 
 
