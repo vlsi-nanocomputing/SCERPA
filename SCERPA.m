@@ -52,6 +52,12 @@ function [status] = SCERPA(command,option1,option2)
                 status = 1;
                 return
             end
+        case char('plotSteps')
+            close all
+            disp('Plotting Results!')
+            cd Viewer
+            SCERPAPlotSteps(option1)
+            cd ..
         case char('help') % Open help file
             edit(fullfile('Layout','inputSample.m'))
         otherwise

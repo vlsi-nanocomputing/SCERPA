@@ -1,10 +1,6 @@
 function out_fig = Plot3DAC(stack_mol, stack_driver, stack_output, settings)
 
 %WARNING: x-z axis are swapped
-addpath ../Algorithm/
-
-settings.proceed=1;
-settings = importSettings(settings);
 
 %charge plot function
 [c_x,c_y,c_z] = sphere();

@@ -12,6 +12,10 @@ Algorithm/OUTPUT_FILES/*.qss
 Algorithm/OUTPUT_FILES/*.txt
 Algorithm/OUTPUT_FILES/*.log
 
+# ignore viewer export files
+Viewer/EXPORT/*.jpg
+Viewer/EXPORT/*.fig
+
 # ignore layout files
 Layout/Database/*.mat
 Layout/Database/*.txt
