@@ -1,4 +1,6 @@
-function [] = Plotting(stack_mol, stack_driver,draw_association)
+function [] = Plotting(stack_mol, stack_driver)
+% The function Plotting plots the circuit layout based on information
+% stored in stack_mol and stack_driver
 
 %WARNING: x-z axis are swapped
 
@@ -20,6 +22,7 @@ set(gca,'ydir','reverse')
 for ii=1:stack_mol.num
     
     %plot connections
+    draw_association = stack_mol.stack(ii).association;
     n_connections = length(draw_association(:,1));
     for cncn =1:n_connections
         plot3([stack_mol.stack(ii).charge(draw_association(cncn,1)).z stack_mol.stack(ii).charge(draw_association(cncn,2)).z],...
@@ -55,6 +58,7 @@ end
 for ii=1:stack_driver.num
     
     %plot connections
+    draw_association = stack_driver.stack(ii).association;
     n_connections = length(draw_association(:,1));
     for cncn =1:n_connections
         plot3([stack_driver.stack(ii).charge(draw_association(cncn,1)).z stack_driver.stack(ii).charge(draw_association(cncn,2)).z],...
@@ -78,13 +82,15 @@ for ii=1:stack_driver.num
             set(sphere,'MarkerEdgeColor',[0 1 0],'MarkerFaceColor',[0 1 0]);
         end
     end
-end
-   
+    
     %plot names
     text(stack_driver.stack(ii).charge(n_charge).z-textOffset,...
         stack_driver.stack(ii).charge(n_charge).y-textOffset,...
         stack_driver.stack(ii).charge(n_charge).x-textOffset,stack_driver.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10); 
 
+end
+   
+    
 % end
 
 %run('GenerateElectrodesStackTest.m');

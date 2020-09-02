@@ -1,53 +1,57 @@
-function [driver_stack]=GenerateDriverStack(dist_z, dist_y, row, column, driver_stack, dot_position, driver_name, rotation_in, shift_x_in, shift_y_in, shift_z_in)
+function [driver_stack]=GenerateDriverStack(circuit, row, column, driver_stack, dot_position, draw_association)
+        % The function GenerateDriverStack is used to create an istance of
+        % the stack containing driver information. It extracts the
+        % information from the <<circuit>>, based on the actual position in 
+        % the structure specified by <<row>> and <<column>>. Also the
+        % <<dot_position>> and the association between the dots are
+        % provided as inputs. Data concerning the new driver are added to
+        % the <<driver_stack>>.
         
-        rotation = str2num(rotation_in);  
-        shift_x = str2num(shift_x_in);
-        shift_y = str2num(shift_y_in);
-        shift_z = str2num(shift_z_in);
-
-        Rx = [1,       0        ,       0         ;
-              0,  cosd(rotation), -sind(rotation) ;
-              0,  sind(rotation),  cosd(rotation)];
+        %casting of rotation and shift values
+        rotation_x = str2num(circuit.rotation_x{row,column});  
+        rotation_y = str2num(circuit.rotation_y{row,column});  
+        rotation_z = str2num(circuit.rotation_z{row,column});  
+        shift_x = str2num(circuit.shift_x{row,column});
+        shift_y = str2num(circuit.shift_y{row,column});
+        shift_z = str2num(circuit.shift_z{row,column});
+        
+        dist_y = circuit.dist_y;
+        dist_z = circuit.dist_z;
+        
+        % rotation matrices
+        Rx = [1,      0          ,       0           ;
+              0, cosd(rotation_x), -sind(rotation_x) ;
+              0, sind(rotation_x),  cosd(rotation_x)];
       
-        Ry = [1, 0, 0 ; 
-              0, 1, 0 ;
-              0, 0, 1];
+        Ry = [ cosd(rotation_y), 0, sind(rotation_y) ; 
+                    0          , 1,      0           ;
+              -sind(rotation_y), 0, cosd(rotation_y)];
 
-        Rz = [1, 0, 0 ;
-              0, 1, 0 ;
-              0,0 , 1];
+        Rz = [cosd(rotation_z), -sind(rotation_z), 0  ;
+              sind(rotation_z),  cosd(rotation_z), 0  ;
+              0               ,       0          , 1 ];
 
-        dot_1 = Rx*Ry*Rz*[dot_position(1,1); dot_position(1,2); dot_position(1,3)];
-        dot_2 = Rx*Ry*Rz*[dot_position(2,1); dot_position(2,2); dot_position(2,3)];
-        dot_3 = Rx*Ry*Rz*[dot_position(3,1); dot_position(3,2); dot_position(3,3)];
-        dot_4 = Rx*Ry*Rz*[dot_position(4,1); dot_position(4,2); dot_position(4,3)];
         
-    %% ====================Driver=========================     
-    %===============Dot1=================%
-        driver_para.charge(1).q = 0;
-        driver_para.charge(1).x = dot_1(1) + shift_x;
-        driver_para.charge(1).y = (row-1)*(dist_y)+dot_1(2) + shift_y;
-        driver_para.charge(1).z = (column-1)*dist_z+dot_1(3) + shift_z;
-    %=============Dot2==================%
-        driver_para.charge(2).q = 0;
-        driver_para.charge(2).x = dot_2(1) + shift_x;
-        driver_para.charge(2).y = (row-1)*(dist_y)+dot_2(2) + shift_y;
-        driver_para.charge(2).z = (column-1)*dist_z+dot_2(3) + shift_z;
-    %=============Carbazole==============%
-        driver_para.charge(3).q = 0;
-        driver_para.charge(3).x = dot_3(1) + shift_x;
-        driver_para.charge(3).y = (row-1)*(dist_y)+dot_3(2) + shift_y;
-        driver_para.charge(3).z = (column-1)*dist_z+dot_3(3) + shift_z;
-    %==============Thiol=================%
-        driver_para.charge(4).q = 0;
-        driver_para.charge(4).x = dot_4(1) + shift_x;
-        driver_para.charge(4).y = (row-1)*(dist_y)+ dot_4(2) + shift_y;
-        driver_para.charge(4).z = (column-1)*dist_z + dot_4(3) + shift_z;
+        %eval position of each dot 
+        n_dots = length(dot_position(:,1));
+        for dd=1:n_dots
+            %rotate - dot(i) =[x y z]
+            dot_rotated = Rx*Ry*Rz*[dot_position(dd,1); dot_position(dd,2); dot_position(dd,3)];
+            
+            %evaluate new position (rotation+shift)
+            driver_para.charge(dd).q = 0;
+            driver_para.charge(dd).x = dot_rotated(1) + shift_x;
+            driver_para.charge(dd).y = (row-1)*(dist_y)+dot_rotated(2) + shift_y;
+            driver_para.charge(dd).z = (column-1)*(dist_z)+dot_rotated(3) + shift_z;
+        end
         
+        % add driver information
         driver_para.position=[0 row column];
+        driver_para.identifier = circuit.structure{row,column};
+        driver_para.molType = str2num(circuit.components{row,column});
+        driver_para.association = draw_association;
         
-        driver_para.identifier = driver_name;
-        
+        % add driver to stacks
         driver_stack.num=driver_stack.num+1;
         driver_stack.stack(driver_stack.num)=driver_para;
 end

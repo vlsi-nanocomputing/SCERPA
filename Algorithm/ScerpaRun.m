@@ -51,7 +51,7 @@ filename_values_dr =  '../Layout/Database/Values_Driver.mat';
 
 % Output Files
 %filename_out = '\OUTPUT_FILES\Simulation_Output.txt'; %09/10/2016 LP previous version, directory mismatch
-filename_out = 'Simulation_Output.log'; %09/10/2016 LP previous version, directory mismatch
+filename_out = 'OUTPUT_FILES/Simulation_Output.log'; %09/10/2016 LP previous version, directory mismatch
 fileID = fopen(filename_out,'wt');
 fprintf(fileID,'%%%% Files Analysed:\n');
 fprintf(fileID,'%%%%    %s\n', filename_mol);
@@ -103,33 +103,28 @@ if isfield(settingsArg.circuit,'substrate')
 end
 
 
-
-
-
 %Import molecule library data
 disp('Importing Libraries...')
-[CK] = Interp_coeff_bilinear(settings.molecule); %transchar
 
+% create a list containing all the molecule type involved in the circuit
+molTypeList = unique([cell2mat([stack_mol.stack(:).molType])  cell2mat([stack_driver.stack(:).molType])]);
+
+for i = 1:length(molTypeList)
+    transchar = Interp_coeff_bilinear(molTypeList(i)); %transchar
+    
+    %reshape transcharacteristics to avoid true interpolation
+    CK.stack(i) = reshapeTC(transchar);
+end
+CK.length = length(molTypeList);
 
 %create distance matrix
 disp('Creating distance matrix...')
 DIST_MATRIX = createDistanceMatrix(stack_mol);
 
-switch  settings.solver
-    case char('r')
-        run('solverR.m')
-    case char('y')
-        run('solverY.m')
-    case char('E')
-        run('solverE.m')
-    case char('yv2')
-        run('solverYv2.m')
-    case char('scfHTSA2')
-        run('solverH.m')
-    otherwise
-        myicon = imread('good.png');
-        h=msgbox('Solver has not been found!', 'SCERPA Error 101', 'custom', myicon); 
-end
+
+% Run Scerpa solver E
+run('solverE.m') 
+
 
 %%
 

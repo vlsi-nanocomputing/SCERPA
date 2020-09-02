@@ -1,207 +1,198 @@
-function scerpaSettings = importSettings(userSettings)%molecule
-%   available molecules:
-%       bisfe4_ox_counterionOnCarbazole
-%       bisfe4_ox_counterionOnThiol
-%       butane_ox_noCounterion
-%       bisfe4_ox_noCounterion_TSA_2states
-%       bisfe4_ox_noCounterion_TSA_3states
-%       butane_ox_noCounterion
-%       decatriene_ox_noCounterion
-scerpaSettings.molecule='bisfe4_ox_counterionOnThiol';
-scerpaSettings.Ncharges=4;
-
-%time definitions
-scerpaSettings.timestep=1;
-
-%topo integration
-scerpaSettings.magcadImporter=0;
-scerpaSettings.doubleMolDriverMode=0;
-
-%Solver to be used for the calculation of charges (r/y/scfHTSA2/E)
-scerpaSettings.solver='E';
-scerpaSettings.energyEval=0;
-
-%plot
-scerpaSettings.plotActiveRegionWindow = 0;
-scerpaSettings.plot_plotAbsoluteCharge = 1
-scerpaSettings.plotIntermediateSteps = 0;
-scerpaSettings.fig_saver = 'no';
-scerpaSettings.pauseStep = 0;
-scerpaSettings.verbosity = 0; %0 no data, 1 step number, 2 converge info
-scerpaSettings.plot_3dfig = 1;
-scerpaSettings.plot_voltage = 1;
-scerpaSettings.plot_chargeFig = 1;
-scerpaSettings.plot_logic = 0;
-scerpaSettings.plot_clock = 0;
-scerpaSettings.plot_molnum = 1;
+function scerpaSettings = importSettings(userSettings)
+% The function importSetting verifies if the user specified the settings:
+% for those cases the function selects the proper userSettings field,
+% otherwise it sets the default value.
+% The function returns the complete set of settings (scerpaSettings).
 
 
-%convergence settings
-scerpaSettings.max_step = 1000;
-scerpaSettings.immediateUpdate = 1;
-scerpaSettings.damping = 0.0; %value must be in range [0 - 1) %hint: 0.2
 
-%convergence accelerations
-scerpaSettings.enableRefining = 1;
-scerpaSettings.enableActiveRegion = 1;
-scerpaSettings.activeRegionThreshold = 0.0015;
-scerpaSettings.enableInteractionRadiusMode=1;
-scerpaSettings.interactionRadius = 101;
-
-%DEBUG informations
-scerpaSettings.printConvergenceTable = 0;
-
-%LP-LPP modes
-scerpaSettings.LPmode = 200;
-scerpaSettings.LPPmode = 300;
-scerpaSettings.conv_threshold_HP  = 0.000005;
-scerpaSettings.conv_threshold_LP  = 0.0005;
-scerpaSettings.conv_threshold_LLP = 0.005;
-
-%MATLAB optimizations
-scerpaSettings.enableJit = 1;
-
-%driver saturation
-scerpaSettings.driverSaturation = 0;
-
-%%%%%%%%%%% 
-
-%time definitions
-if isfield(userSettings,'timestep')
+% time definitions
+if isfield(userSettings,'timestep') %not used!
     scerpaSettings.timestep=userSettings.timestep;
+else
+    scerpaSettings.timestep=1; % default value
 end
 
-%topo integration
+
+% topo integration
 if isfield(userSettings,'magcadImporter')
     scerpaSettings.magcadImporter=userSettings.magcadImporter;
+else
+    scerpaSettings.magcadImporter=0; % default value
 end
-
 if isfield(userSettings,'doubleMolDriverMode')
     scerpaSettings.doubleMolDriverMode=userSettings.doubleMolDriverMode;
+else
+    scerpaSettings.doubleMolDriverMode=0; % dafault value
 end
 
-if isfield(userSettings,'molecule')
-    scerpaSettings.molecule=userSettings.molecule;
-end
-if isfield(userSettings,'Ncharges')
-    scerpaSettings.Ncharges=userSettings.Ncharges;
-end
-if isfield(userSettings,'solver')
-    scerpaSettings.solver=userSettings.solver;
-end
+
+% Energy
 if isfield(userSettings,'energyEval')
     scerpaSettings.energyEval=userSettings.energyEval;
+else
+    scerpaSettings.energyEval=0; % dafault value
 end
 
-%output
+
+% output plot
 if isfield(userSettings,'plot_plotAbsoluteCharge')
     scerpaSettings.plot_plotAbsoluteCharge=userSettings.plot_plotAbsoluteCharge;
+else
+    scerpaSettings.plot_plotAbsoluteCharge = 1; % default value
 end
-
 if isfield(userSettings,'plotIntermediateSteps')
     scerpaSettings.plotIntermediateSteps=userSettings.plotIntermediateSteps;
+else
+    scerpaSettings.plotIntermediateSteps = 0; % default value
 end
 if isfield(userSettings,'plotActiveRegionWindow')
     scerpaSettings.plotActiveRegionWindow = userSettings.plotActiveRegionWindow;
+else
+    scerpaSettings.plotActiveRegionWindow = 0; % default value
 end
-if isfield(userSettings,'plotIntermediateSteps')
-    scerpaSettings.plotIntermediateSteps = userSettings.plotIntermediateSteps;
-end
-
 if isfield(userSettings,'plot_3dfig')
     scerpaSettings.plot_3dfig = userSettings.plot_3dfig;
+else 
+    scerpaSettings.plot_3dfig = 1; % default value
 end
-
 if isfield(userSettings,'plot_voltage')
     scerpaSettings.plot_voltage = userSettings.plot_voltage;
+else
+    scerpaSettings.plot_voltage = 1; % default value
 end
-
 if isfield(userSettings,'plot_chargeFig')
     scerpaSettings.plot_chargeFig = userSettings.plot_chargeFig;
+else
+    scerpaSettings.plot_chargeFig = 1; % default value
 end
-
 if isfield(userSettings,'plot_logic')
     scerpaSettings.plot_logic = userSettings.plot_logic;
+else
+    scerpaSettings.plot_logic = 0; % default value
 end
-
 if isfield(userSettings,'plot_clock')
     scerpaSettings.plot_clock = userSettings.plot_clock;
+else
+    scerpaSettings.plot_clock = 0; % default value
 end
-
 if isfield(userSettings,'plot_molnum')
     scerpaSettings.plot_molnum = userSettings.plot_molnum;
+else
+    scerpaSettings.plot_molnum = 1; % default value
 end
-
-
 if isfield(userSettings,'verbosity')
     scerpaSettings.verbosity = userSettings.verbosity;
+else
+    scerpaSettings.verbosity = 0; % default value (0 no data, 1 step number, 2 converge info)
 end
 if isfield(userSettings,'pauseStep')
     scerpaSettings.pauseStep = userSettings.pauseStep;
+else
+    scerpaSettings.pauseStep = 0; % default value
 end
-
 if isfield(userSettings,'fig_saver')
     scerpaSettings.fig_saver = userSettings.fig_saver;
+else
+    scerpaSettings.fig_saver = 'no'; % default value
 end
+
 
 %convergence settings
 if isfield(userSettings,'max_step')
     scerpaSettings.max_step = userSettings.max_step;
+else
+    scerpaSettings.max_step = 1000; % default value
 end
 if isfield(userSettings,'immediateUpdate')
     scerpaSettings.immediateUpdate = userSettings.immediateUpdate;
+else
+    scerpaSettings.immediateUpdate = 1; % default value
 end
 if isfield(userSettings,'damping')
     scerpaSettings.damping = userSettings.damping;
+else
+    scerpaSettings.damping = 0.0; % default value, value must be in range [0 - 1) %hint: 0.2
 end
 
 
 %convergence accelerations
 if isfield(userSettings,'enableRefining')
 	scerpaSettings.enableRefining = userSettings.enableRefining;
+else
+    scerpaSettings.enableRefining = 1; % default value
 end
 if isfield(userSettings,'enableActiveRegion')
 	scerpaSettings.enableActiveRegion = userSettings.enableActiveRegion;
+else
+    scerpaSettings.enableActiveRegion = 1; % default value
 end
 if isfield(userSettings,'activeRegionThreshold')
     scerpaSettings.activeRegionThreshold = userSettings.activeRegionThreshold;
+else
+    scerpaSettings.activeRegionThreshold = 0.0015; % default value
 end
 if isfield(userSettings,'enableInteractionRadiusMode')
     scerpaSettings.enableInteractionRadiusMode=userSettings.enableInteractionRadiusMode;
+else
+    scerpaSettings.enableInteractionRadiusMode=1; % default value
 end
 if isfield(userSettings,'interactionRadius')
     scerpaSettings.interactionRadius = userSettings.interactionRadius;
+else
+    scerpaSettings.interactionRadius = 101; % default value
 end
 
-%DEBUG informations
+
+% DEBUG informations
 if isfield(userSettings,'printConvergenceTable')
     scerpaSettings.printConvergenceTable = userSettings.printConvergenceTable;
+else
+    scerpaSettings.printConvergenceTable = 0; % default value
 end
 
-%LP-LPP modes
+
+% LP-LPP modes
 if isfield(userSettings,'LPmode')
     scerpaSettings.LPmode = userSettings.LPmode;
+else
+    scerpaSettings.LPmode = 200; % default value
 end
 if isfield(userSettings,'LPPmode')
     scerpaSettings.LPPmode = userSettings.LPPmode;
+else
+    scerpaSettings.LPPmode = 300; % default value
 end
 if isfield(userSettings,'conv_threshold_HP')
     scerpaSettings.conv_threshold_HP  = userSettings.conv_threshold_HP;
+else
+    scerpaSettings.conv_threshold_HP  = 0.000005; % default value
 end
 if isfield(userSettings,'conv_threshold_LP')
     scerpaSettings.conv_threshold_LP  = userSettings.conv_threshold_LP;
+else
+    scerpaSettings.conv_threshold_LP  = 0.0005; % default value
 end
 if isfield(userSettings,'conv_threshold_LLP')
     scerpaSettings.conv_threshold_LLP = userSettings.conv_threshold_LLP;
+else
+    scerpaSettings.conv_threshold_LLP = 0.005; % default value
 end
 
-%MATLAB configurations
+
+% MATLAB optimizations
 if isfield(userSettings,'enableJit')
     scerpaSettings.enableJit = userSettings.enableJit;
+else
+    scerpaSettings.enableJit = 1; % default value
 end
 
+
+% driver saturation
 if isfield(userSettings,'driverSaturation')
     scerpaSettings.driverSaturation=userSettings.driverSaturation;
+else
+    scerpaSettings.driverSaturation = 0; % default value
 end
 
 
@@ -211,6 +202,6 @@ scerpaSettings.y.show_intermediate_steps = scerpaSettings.plotIntermediateSteps;
 scerpaSettings.y.LPmode = scerpaSettings.LPmode;
 scerpaSettings.y.LPPmode = scerpaSettings.LPPmode;
 scerpaSettings.y.immediateUpdate = scerpaSettings.immediateUpdate;
-scerpaSettings.y.damping =scerpaSettings.damping;
+scerpaSettings.y.damping = scerpaSettings.damping;
 
 end

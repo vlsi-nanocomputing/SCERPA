@@ -25,5 +25,5 @@ Download the code and see the SCERPA.m and example files to understand how it wo
 
 ### Who do I talk to? ###
 
-* Repo owner or admin: Yuri Ardesi (yuri.ardesi@polito.it), Giuliana Beretta (giuliana.beretta@polito.it)
+* Repo owner or admin: Yuri Ardesi (yuri.ardesi@polito.it)
 * Other community or team contact: Mariagrazia Graziano (mariagrazia.graziano@polito.it), Gianluca Piccinini (gianluca.piccinini@polito.it)
