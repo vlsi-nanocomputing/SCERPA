@@ -49,6 +49,7 @@ settings.verbosity = 2;
 
 %PLOT settings
 plotSettings.plot_3dfig = 0;
+plotSettings.plot_1DCharge = 1;
 plotSettings.plot_logic = 0;
 plotSettings.plot_potential = 1;
 plotSettings.plotSpan = 3;

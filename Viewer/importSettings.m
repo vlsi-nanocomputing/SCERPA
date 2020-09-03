@@ -41,6 +41,12 @@ else
     scerpaSettings.plot_3dfig_molnum = 1; % default value
 end
 
+% 1DCharge Plot settings
+if isfield(userSettings,'plot_1DCharge')
+    scerpaSettings.plot_1DCharge = userSettings.plot_1DCharge;
+else 
+    scerpaSettings.plot_1DCharge = 0; % default value
+end
 
 % if isfield(userSettings,'plot_voltage')
 %     scerpaSettings.plot_voltage = userSettings.plot_voltage;

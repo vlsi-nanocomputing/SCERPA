@@ -65,6 +65,14 @@ for ff=stepToPrint
         saveas(logicFig,sprintf('EXPORT/logicFig%s.jpg',filename))
     end
     
+    if plotSettings.plot_1DCharge== 1
+        wireChargeFig = Plot1DCharge(stack_mol, stack_driver, stack_output, plotSettings);
+        if plotSettings.fig_saver == 1
+            savefig(wireChargeFig,sprintf('EXPORT/1DChargeFig%s.fig',filename))
+        end
+        saveas(wireChargeFig,sprintf('EXPORT/1DChargeFig%s.jpg',filename))
+    end
+    
     close all
     
 end

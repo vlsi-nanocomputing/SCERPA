@@ -372,7 +372,7 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
     %update driver charge and positions (mol 1)
     if mol1_disable == 0
         mol_index = 1;
-        stack.stack(mol_index).position = sprintf('[%d %d %d]',z_cell,y_cell,2*x_cell);
+        stack.stack(mol_index).position = sprintf('[%d %d %d]',z_cell,y_cell,2*x_cell+1);
         
         for cc=1:number_of_charges
             stack.stack(mol_index).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1) + mol1_zshift; 
@@ -390,7 +390,7 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
     %update driver charge and positions (mol 1)
     if mol2_disable == 0
         mol2_index = 2 - mol1_disable;
-        stack.stack(mol2_index).position = sprintf('[%d %d %d]',z_cell,y_cell,2*x_cell + 1);
+        stack.stack(mol2_index).position = sprintf('[%d %d %d]',z_cell,y_cell,2*x_cell);
         
         for cc=1:number_of_charges
             stack.stack(mol2_index).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1) + mol2_zshift; 
