@@ -44,8 +44,7 @@ settings.damping = 0.6;
 settings.verbosity = 2;
 
 %RunTime Plot
-% settings.plotRuntimeCharge
-% settings.plotRuntime3D
+settings.plotIntermediateSteps = 0;
 
 %PLOT settings
 plotSettings.plot_3dfig = 0;

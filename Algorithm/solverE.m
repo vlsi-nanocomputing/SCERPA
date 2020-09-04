@@ -346,21 +346,22 @@ for time = 1:n_times
             error('[SCERPA] Relative convergence is not implemented yet!')
         end
 
-        if settings.y.show_intermediate_steps == 1
-        %    intermediate  plots
-            figure(250000000), clf, hold on
-                plot(preV_afterVoltageVariation)
-                plot(newVout_wodamping) 
-                plot(V_driver)
-                plot([1 stack_mol.num],[0 0],'--k')
-                legend ('preV','V','driver')
-                grid on, grid minor
-                axis([1 stack_mol.num -Inf +Inf])
-                xlabel('Molecule number')
-                ylabel('Input Voltage [V]')
+        if settings.plotIntermediateSteps == 1
+               
+            
+            %clear intermediate plot figures at first step
+            if scfStep == 1
+                figure(250000000), clf
+            end
 
-                drawnow
-                
+            %Plot intermediate state
+            intermediatePlot(stack_mol, ...
+                stack_driver, ...
+                preV_afterVoltageVariation, ...
+                newVout_wodamping, ...
+                V_driver...
+            )
+        
             % block the execution if required by the user
             if settings.pauseStep == 1
                 pause

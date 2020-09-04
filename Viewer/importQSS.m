@@ -3,7 +3,7 @@ function [stack_mol,stack_driver] = importQSS(stack_mol,stack_driver,qssFile)
 qssID = fopen(qssFile,'r');
 
 %skip preamble
-tline = fgetl(qssID)
+tline = fgetl(qssID);
 while strncmp(tline,'# Begin: data text',18)==0
     tline = fgetl(qssID);
 end
