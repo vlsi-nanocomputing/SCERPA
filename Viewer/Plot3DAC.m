@@ -14,7 +14,8 @@ end
 textOffset = 2;
 
 %Figure definition
-out_fig = figure('visible','off'), hold on, grid on
+out_fig = figure('visible','off');
+hold on, grid on
 set(gca, 'Projection','perspective'), view(-45,25)
 axis equal, axis vis3d, view(-40,50)
 xlabel('Z direction'); ylabel('Y direction'); zlabel('X direction');

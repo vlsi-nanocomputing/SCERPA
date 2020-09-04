@@ -27,15 +27,23 @@ if plotSettings.plotList==0
     stepToPrint = 1:plotSettings.plotSpan:nfiles;
 else
     stepToPrint = plotSettings.plotList;
+    
 end
 
 % Plot steps
+number_of_plots = length(stepToPrint);
+plot_index = 0;
+
 for ff=stepToPrint
     
     %import file
     filename = sprintf(qssfiles(ff,:));
     QSSFile = sprintf('../Algorithm/OUTPUT_FILES/%s',filename);
     [stack_mol,stack_driver] = importQSS(stack_mol,stack_driver,QSSFile);
+    
+    %user output
+    plot_index = plot_index+1;
+    fprintf("Plotting %s [%d/%d]... ",filename,plot_index,number_of_plots)
     
 %     %settings
 %     plotSettings.plot_molnum=0;
@@ -73,7 +81,7 @@ for ff=stepToPrint
         saveas(wireChargeFig,sprintf('EXPORT/1DChargeFig%s.jpg',filename))
     end
     
-    close all
+    fprintf("DONE. \n")
     
 end
 

@@ -22,7 +22,8 @@ end
 map = [1 1 1; 1 1 1; 1 0 0; 0.5 0 0; 0 0 0; 0 0 0.5; 0 0 1];
 
 %create figure
-out_fig = figure('visible','off'), hold on
+out_fig = figure('visible','off');
+hold on
 imagesc(P_map)
 colormap(map)
 colorbar('XTickLabel',{'P = -1','P = 1'},'XTick',[1 3])

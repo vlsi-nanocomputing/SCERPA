@@ -68,7 +68,7 @@ end
 
    
 % create figure
-out_fig = figure('visible','off')
+out_fig = figure('visible','off');
 surf(z/10,y/10,voltage,'EdgeColor','none')
 set(gcf,'PaperPositionMode','auto')
 set(out_fig, 'Position', [100 100 500 400])
