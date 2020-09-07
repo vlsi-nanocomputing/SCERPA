@@ -5,9 +5,9 @@ plotSettings.proceed=1; %be sure plotSettings exists, even if user didn't set an
 plotSettings = importSettings(plotSettings);
 
 %% FROM SCERPA
-load('../Algorithm/simulation_output.mat','stack_mol')
-load('../Algorithm/simulation_output.mat','stack_output')
-load('../Algorithm/simulation_output.mat','stack_driver')
+load('../Algorithm/OUTPUT_FILES/simulation_output.mat','stack_mol')
+load('../Algorithm/OUTPUT_FILES/simulation_output.mat','stack_output')
+load('../Algorithm/OUTPUT_FILES/simulation_output.mat','stack_driver')
 
 %delete old simulation files
 FigureDirectory = dir('EXPORT');

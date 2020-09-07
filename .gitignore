@@ -11,6 +11,7 @@ Algorithm/simulation_output.mat
 Algorithm/OUTPUT_FILES/*.qss
 Algorithm/OUTPUT_FILES/*.txt
 Algorithm/OUTPUT_FILES/*.log
+Algorithm/OUTPUT_FILES/*.mat
 
 # ignore viewer export files
 Viewer/EXPORT/*.jpg
