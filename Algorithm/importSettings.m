@@ -4,194 +4,59 @@ function scerpaSettings = importSettings(userSettings)
 % otherwise it sets the default value.
 % The function returns the complete set of settings (scerpaSettings).
 
-
-
-% time definitions
-if isfield(userSettings,'timestep') %not used!
-    scerpaSettings.timestep=userSettings.timestep;
-else
-    scerpaSettings.timestep=1; % default value
-end
-
+% time definition
+scerpaSettings.timestep = setDefault(userSettings,'timestep',1);
 
 % topo integration
-if isfield(userSettings,'magcadImporter')
-    scerpaSettings.magcadImporter=userSettings.magcadImporter;
-else
-    scerpaSettings.magcadImporter=0; % default value
-end
-if isfield(userSettings,'doubleMolDriverMode')
-    scerpaSettings.doubleMolDriverMode=userSettings.doubleMolDriverMode;
-else
-    scerpaSettings.doubleMolDriverMode=0; % dafault value
-end
-
+scerpaSettings.magcadImporter = setDefault(userSettings,'magcadImporter',0);
+scerpaSettings.doubleMolDriverMode = setDefault(userSettings,'doubleMolDriverMode',0);
 
 % Energy
-if isfield(userSettings,'energyEval')
-    scerpaSettings.energyEval=userSettings.energyEval;
-else
-    scerpaSettings.energyEval=0; % dafault value
-end
-
+scerpaSettings.energyEval = setDefault(userSettings,'energyEval',0);
 
 % output plot
-if isfield(userSettings,'plot_plotAbsoluteCharge')
-    scerpaSettings.plot_plotAbsoluteCharge=userSettings.plot_plotAbsoluteCharge;
-else
-    scerpaSettings.plot_plotAbsoluteCharge = 1; % default value
-end
-if isfield(userSettings,'plotIntermediateSteps')
-    scerpaSettings.plotIntermediateSteps=userSettings.plotIntermediateSteps;
-else
-    scerpaSettings.plotIntermediateSteps = 0; % default value
-end
-if isfield(userSettings,'plotActiveRegionWindow')
-    scerpaSettings.plotActiveRegionWindow = userSettings.plotActiveRegionWindow;
-else
-    scerpaSettings.plotActiveRegionWindow = 0; % default value
-end
-if isfield(userSettings,'plot_3dfig')
-    scerpaSettings.plot_3dfig = userSettings.plot_3dfig;
-else 
-    scerpaSettings.plot_3dfig = 0; % default value
-end
-if isfield(userSettings,'plot_voltage')
-    scerpaSettings.plot_voltage = userSettings.plot_voltage;
-else
-    scerpaSettings.plot_voltage = 0; % default value
-end
-if isfield(userSettings,'plot_chargeFig')
-    scerpaSettings.plot_chargeFig = userSettings.plot_chargeFig;
-else
-    scerpaSettings.plot_chargeFig = 0; % default value
-end
-if isfield(userSettings,'plot_clock')
-    scerpaSettings.plot_clock = userSettings.plot_clock;
-else
-    scerpaSettings.plot_clock = 0; % default value
-end
-if isfield(userSettings,'plot_molnum')
-    scerpaSettings.plot_molnum = userSettings.plot_molnum;
-else
-    scerpaSettings.plot_molnum = 1; % default value
-end
-if isfield(userSettings,'verbosity')
-    scerpaSettings.verbosity = userSettings.verbosity;
-else
-    scerpaSettings.verbosity = 0; % default value (0 no data, 1 step number, 2 converge info)
-end
-if isfield(userSettings,'pauseStep')
-    scerpaSettings.pauseStep = userSettings.pauseStep;
-else
-    scerpaSettings.pauseStep = 0; % default value
-end
-if isfield(userSettings,'fig_saver')
-    scerpaSettings.fig_saver = userSettings.fig_saver;
-else
-    scerpaSettings.fig_saver = 'no'; % default value
-end
+scerpaSettings.plot_plotAbsoluteCharge = setDefault(userSettings,'plot_plotAbsoluteCharge',1);
+scerpaSettings.plotIntermediateSteps = setDefault(userSettings,'plotIntermediateSteps',0);
+scerpaSettings.plotActiveRegionWindow = setDefault(userSettings,'plotActiveRegionWindow',0);
+scerpaSettings.plot_3dfig = setDefault(userSettings,'plot_3dfig',0);
+scerpaSettings.plot_voltage = setDefault(userSettings,'plot_voltage',0);
+scerpaSettings.plot_chargeFig = setDefault(userSettings,'plot_chargeFig',0);
+scerpaSettings.plot_clock = setDefault(userSettings,'plot_clock',0);
+scerpaSettings.plot_molnum = setDefault(userSettings,'plot_molnum',1);
+scerpaSettings.verbosity = setDefault(userSettings,'verbosity',0); % (0 no data, 1 step number, 2 converge info)
+scerpaSettings.pauseStep = setDefault(userSettings,'pauseStep',0);
+scerpaSettings.fig_saver = setDefault(userSettings,'fig_saver',0);
 
 
 %convergence settings
-if isfield(userSettings,'max_step')
-    scerpaSettings.max_step = userSettings.max_step;
-else
-    scerpaSettings.max_step = 1000; % default value
-end
-if isfield(userSettings,'immediateUpdate')
-    scerpaSettings.immediateUpdate = userSettings.immediateUpdate;
-else
-    scerpaSettings.immediateUpdate = 1; % default value
-end
-if isfield(userSettings,'damping')
-    scerpaSettings.damping = userSettings.damping;
-else
-    scerpaSettings.damping = 0.0; % default value, value must be in range [0 - 1) %hint: 0.2
-end
-
+scerpaSettings.max_step = setDefault(userSettings,'max_step',1000);
+scerpaSettings.immediateUpdate = setDefault(userSettings,'immediateUpdate',0);
+scerpaSettings.damping = setDefault(userSettings,'damping',0.4); % value must be in range [0 - 1)
 
 %convergence accelerations
-if isfield(userSettings,'enableRefining')
-	scerpaSettings.enableRefining = userSettings.enableRefining;
-else
-    scerpaSettings.enableRefining = 1; % default value
-end
-if isfield(userSettings,'enableActiveRegion')
-	scerpaSettings.enableActiveRegion = userSettings.enableActiveRegion;
-else
-    scerpaSettings.enableActiveRegion = 1; % default value
-end
-if isfield(userSettings,'activeRegionThreshold')
-    scerpaSettings.activeRegionThreshold = userSettings.activeRegionThreshold;
-else
-    scerpaSettings.activeRegionThreshold = 0.0015; % default value
-end
-if isfield(userSettings,'enableInteractionRadiusMode')
-    scerpaSettings.enableInteractionRadiusMode=userSettings.enableInteractionRadiusMode;
-else
-    scerpaSettings.enableInteractionRadiusMode=1; % default value
-end
-if isfield(userSettings,'interactionRadius')
-    scerpaSettings.interactionRadius = userSettings.interactionRadius;
-else
-    scerpaSettings.interactionRadius = 101; % default value
-end
-
+scerpaSettings.enableRefining = setDefault(userSettings,'enableRefining',1); % value must be in range [0 - 1)
+scerpaSettings.enableActiveRegion = setDefault(userSettings,'enableActiveRegion',1); 
+scerpaSettings.activeRegionThreshold = setDefault(userSettings,'activeRegionThreshold',0.0015); 
+scerpaSettings.enableInteractionRadiusMode = setDefault(userSettings,'enableInteractionRadiusMode',1); 
+scerpaSettings.interactionRadius = setDefault(userSettings,'interactionRadius',101); 
 
 % DEBUG informations
-if isfield(userSettings,'printConvergenceTable')
-    scerpaSettings.printConvergenceTable = userSettings.printConvergenceTable;
-else
-    scerpaSettings.printConvergenceTable = 0; % default value
-end
-
+scerpaSettings.printConvergenceTable = setDefault(userSettings,'printConvergenceTable',0); 
 
 % LP-LPP modes
-if isfield(userSettings,'LPmode')
-    scerpaSettings.LPmode = userSettings.LPmode;
-else
-    scerpaSettings.LPmode = 200; % default value
-end
-if isfield(userSettings,'LPPmode')
-    scerpaSettings.LPPmode = userSettings.LPPmode;
-else
-    scerpaSettings.LPPmode = 300; % default value
-end
-if isfield(userSettings,'conv_threshold_HP')
-    scerpaSettings.conv_threshold_HP  = userSettings.conv_threshold_HP;
-else
-    scerpaSettings.conv_threshold_HP  = 0.000005; % default value
-end
-if isfield(userSettings,'conv_threshold_LP')
-    scerpaSettings.conv_threshold_LP  = userSettings.conv_threshold_LP;
-else
-    scerpaSettings.conv_threshold_LP  = 0.0005; % default value
-end
-if isfield(userSettings,'conv_threshold_LLP')
-    scerpaSettings.conv_threshold_LLP = userSettings.conv_threshold_LLP;
-else
-    scerpaSettings.conv_threshold_LLP = 0.005; % default value
-end
-
+scerpaSettings.LPmode = setDefault(userSettings,'LPmode',200); 
+scerpaSettings.LPPmode = setDefault(userSettings,'LPPmode',300); 
+scerpaSettings.conv_threshold_HP = setDefault(userSettings,'conv_threshold_HP',0.000005); 
+scerpaSettings.conv_threshold_LP = setDefault(userSettings,'conv_threshold_LP',0.0005); 
+scerpaSettings.conv_threshold_LLP = setDefault(userSettings,'conv_threshold_LLP',0.005); 
 
 % MATLAB optimizations
-if isfield(userSettings,'enableJit')
-    scerpaSettings.enableJit = userSettings.enableJit;
-else
-    scerpaSettings.enableJit = 1; % default value
-end
-
+scerpaSettings.enableJit = setDefault(userSettings,'enableJit',1); 
 
 % driver saturation
-if isfield(userSettings,'driverSaturation')
-    scerpaSettings.driverSaturation=userSettings.driverSaturation;
-else
-    scerpaSettings.driverSaturation = 0; % default value
-end
+scerpaSettings.driverSaturation = setDefault(userSettings,'driverSaturation',0); 
 
-
-%compatibility
+% compatibility
 scerpaSettings.y.enable_escape = 1;
 scerpaSettings.y.show_intermediate_steps = scerpaSettings.plotIntermediateSteps;
 scerpaSettings.y.LPmode = scerpaSettings.LPmode;
@@ -199,4 +64,15 @@ scerpaSettings.y.LPPmode = scerpaSettings.LPPmode;
 scerpaSettings.y.immediateUpdate = scerpaSettings.immediateUpdate;
 scerpaSettings.y.damping = scerpaSettings.damping;
 
+end
+
+% Function to substitute user value to default one (if user set a value)
+function finalValue = setDefault(user,field,defaultValue)
+    if isfield(user,field) 
+        % set by user
+        finalValue = user.(field);
+    else
+        % not set by the user!
+        finalValue = defaultValue;
+    end
 end

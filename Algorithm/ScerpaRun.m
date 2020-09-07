@@ -10,12 +10,6 @@ if ~exist('settingsArg','var')
     settingsArg=0;
 end
 
-%prepare matlab
-close all;
-% clearvars -except n_tests testIndex elapsedTime;
-clc; 
-% feature jit off
-
 %delete old simulation pictures
 FigureDirectory = dir('FIGURE');
 FigureDirectory([FigureDirectory.isdir]) = [];
@@ -36,13 +30,6 @@ catch
     disp('No previous simulation found')
 end
 
-% Import cicuit Layout
-% % Files to read Windows (xlsx data)
-% filename_mol = '..\Layout\Database\Data_Molecule_1.xlsx';
-% filename_driv = '..\Layout\Database\Data_Driver.xlsx';
-% filename_phase = '..\Layout\Database\Fake_Phases.xlsx';
-% filename_values_dr =  '..\Layout\Database\Values_Driver.xlsx';
-
 % Files to read cross-platform (mat data)
 filename_mol = '../Layout/Database/Data_Molecule_1.mat';
 filename_driv = '../Layout/Database/Data_Driver.mat';
@@ -50,8 +37,7 @@ filename_phase = '../Layout/Database/Fake_Phases.mat';
 filename_values_dr =  '../Layout/Database/Values_Driver.mat';
 
 % Output Files
-%filename_out = '\OUTPUT_FILES\Simulation_Output.txt'; %09/10/2016 LP previous version, directory mismatch
-filename_out = 'OUTPUT_FILES/Simulation_Output.log'; %09/10/2016 LP previous version, directory mismatch
+filename_out = 'OUTPUT_FILES/Simulation_Output.log';
 fileID = fopen(filename_out,'wt');
 fprintf(fileID,'%%%% Files Analysed:\n');
 fprintf(fileID,'%%%%    %s\n', filename_mol);
@@ -121,7 +107,6 @@ CK.length = length(molTypeList);
 disp('Creating distance matrix...')
 DIST_MATRIX = createDistanceMatrix(stack_mol);
 
-
 % Run Scerpa solver E
 run('solverE.m') 
 
@@ -170,6 +155,6 @@ disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 disp(' ');
 
 %save workspace for analysis
-save('simulation_output');
+save('OUTPUT_FILES/simulation_output');
 end
 
