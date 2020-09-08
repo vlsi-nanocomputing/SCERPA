@@ -30,15 +30,14 @@ circuit.Values_Dr = {
 circuit.clockMode='map';
 
 %defined here (can be obtained by a csv file)
-z = 400*rand(1000,1)-20;
-y = 100*rand(1000,1)-20;
-Eclock1 = 4*exp((-z.^2-y.^2)/3000) - 2;
-Eclock2 = 4*exp((-(z-100).^2-y.^2)/3000) - 2;
-Eclock3 = 4*exp((-(z-200).^2-y.^2)/3000) - 2;
-circuit.ckmap(1).table = [z y Eclock1];
-% circuit.ckmap(1).table = csvread('ph1.csv'); %from csv file
-circuit.ckmap(2).table = [z y Eclock2];
-circuit.ckmap(3).table = [z y Eclock3];
+    z = 400*rand(1000,1)-20;
+    y = 100*rand(1000,1)-20;
+    Eclock1 = 4*exp((-z.^2-y.^2)/3000) - 2;
+    Eclock2 = 4*exp((-(z-100).^2-y.^2)/3000) - 2;
+    Eclock3 = 4*exp((-(z-200).^2-y.^2)/3000) - 2;
+
+circuit.ckmap.coords = [z y];
+circuit.ckmap.field = [Eclock1 Eclock2 Eclock3];
 
 %SCERPA settings
 settings.doubleMolDriverMode = 1;

@@ -140,29 +140,33 @@ function stack_clock = createClockTable(stack_mol,circuit)
         case 'map'
             
             %create clock table
-            stack_clock{stack_mol.num,length(circuit.ckmap)+1} = 0;
+            stack_clock{stack_mol.num,length(circuit.ckmap.field(1,:))+1} = 0;
             for ii_mol=1:stack_mol.num    
                 %add identifier
                 stack_clock(ii_mol,1) = {stack_mol.stack(ii_mol).identifier};
             end
             
-            for tt=1:length(circuit.ckmap)
+            %get coordinates
+            zvalues = circuit.ckmap.coords(:,1);
+            yvalues = circuit.ckmap.coords(:,2);
+            
+            %find z-limits
+            zmin = min(zvalues);
+            zmax = max(zvalues);
 
-                %PLOT THE CLOCK
-                zvalues = circuit.ckmap(tt).table(:,1);
-                yvalues = circuit.ckmap(tt).table(:,2);
-                Evalues = circuit.ckmap(tt).table(:,3);
+            %find y-limits
+            ymin = min(yvalues);
+            ymax = max(yvalues);
+            
+            %create meshgrid
+            [zq,yq] = meshgrid(linspace(zmin,zmax),linspace(ymin,ymax));
+                
+            for tt=1:length(circuit.ckmap.field(1,:))
+                
+                %get field values for time tt
+                Evalues = circuit.ckmap.field(:,tt);
 
-                %find x-limits
-                zmin = min(zvalues);
-                zmax = max(zvalues);
-
-                %find y-limits
-                ymin = min(yvalues);
-                ymax = max(yvalues);
-
-                %create meshgrid
-                [zq,yq] = meshgrid(linspace(zmin,zmax),linspace(ymin,ymax));
+                %interpolate field on mesh 
                 Eq = griddata(zvalues,yvalues,Evalues,zq,yq,'cubic');
 
                 for ii_mol=1:stack_mol.num
