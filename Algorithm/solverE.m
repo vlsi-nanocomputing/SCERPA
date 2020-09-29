@@ -73,12 +73,8 @@ for time = 1:n_times
     for ff=1:stack_driver.num
         for tt=1:size(driver_values,1)
             if strcmp(stack_driver.stack(ff).identifier{1},driver_values{tt,1})
-                for mm = 1:CK.length
-                    if cell2mat(stack_driver.stack(ff).molType) == CK.stack(mm).molID
-                        break
-                    end
-                end
-                [Q1, Q2, Q3, Q4] = applyTranschar(driver_values{tt,time+1},+2,CK.stack(mm));
+                mm = cell2mat(stack_driver.stack(ff).molType);
+                [Q1, Q2, Q3, Q4] = applyTranschar(driver_values{tt,time+1},+2,CK.stack(mm+1));
                 
                 %saturation of driver charges (if required)
                 if settings.driverSaturation == 1
@@ -131,12 +127,9 @@ for time = 1:n_times
                 stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time+1};
                 
                 %update charges if new clock %added on 5/09/2019
-                for mm = 1:CK.length
-                    if cell2mat(stack_mol.stack(ii_mol).molType) == CK.stack(mm).molID
-                        break
-                    end
-                end
-                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(ii_mol),stack_mol.stack(ii_mol).clock,CK.stack(mm));
+                mm = cell2mat(stack_mol.stack(ii_mol).molType);
+                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(ii_mol),stack_mol.stack(ii_mol).clock,CK.stack(mm+1));
+                
                 stack_mol.stack(ii_mol).charge(1).q =  Q1;   
                 stack_mol.stack(ii_mol).charge(2).q =  Q2;   
                 stack_mol.stack(ii_mol).charge(3).q =  Q3;   
@@ -291,12 +284,8 @@ for time = 1:n_times
                 newVout_wodamping(jj_mol) = Vout(jj_mol); %save to evaluate convergence
                 Vout(jj_mol) = preV_afterVoltageVariation(jj_mol) + (1-settings.y.damping)*(Vout(jj_mol) - preV_afterVoltageVariation(jj_mol));
                 
-                for mm = 1:CK.length
-                    if cell2mat(stack_mol.stack(jj_mol).molType) == CK.stack(mm).molID
-                        break
-                    end
-                end
-                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK.stack(mm));
+                mm = cell2mat(stack_mol.stack(jj_mol).molType);
+                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK.stack(mm+1));
                 stack_mol.stack(jj_mol).charge(1).q =  Q1;    
                 stack_mol.stack(jj_mol).charge(2).q =  Q2;   
                 stack_mol.stack(jj_mol).charge(3).q =  Q3;   
@@ -310,13 +299,9 @@ for time = 1:n_times
             newVout_wodamping = Vout;
             Vout = preV_afterVoltageVariation + (1-settings.y.damping)*(Vout - preV_afterVoltageVariation);
             for jj_mol=1:stack_mol.num
-                for mm = 1:CK.length
-                    if cell2mat(stack_mol.stack(jj_mol).molType) == CK.stack(mm).molID
-                        break
-                    end
-                end
+                mm = cell2mat(stack_mol.stack(jj_mol).molType);
                 %update charges
-                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK.stack(mm));
+                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK.stack(mm+1));
                 stack_mol.stack(jj_mol).charge(1).q =  Q1;   
                 stack_mol.stack(jj_mol).charge(2).q =  Q2;   
                 stack_mol.stack(jj_mol).charge(3).q =  Q3;   

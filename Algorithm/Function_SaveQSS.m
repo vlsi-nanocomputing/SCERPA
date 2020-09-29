@@ -29,7 +29,7 @@ header = [  '# Begin: Header\n',...
         valuedim = 4;
         
         %file management
-        fileName = sprintf('OUTPUT_FILES/%.4d.qss',time);
+        fileName = sprintf('../OUTPUT_FILES/%.4d.qss',time);
         fileID = fopen(fileName,'wt');
         
         %insert header into qss file

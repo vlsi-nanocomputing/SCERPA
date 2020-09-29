@@ -1,0 +1,34 @@
+# Begin: Header
+## this is a comment
+## The files should be named like: 000001.qss, 000002.qss....
+# Title: SCERPA simulation
+#
+# Desc: Optional description line.
+# Desc: Total simulation time:  1  s
+# valuedim: 4    ## Value dimension: number of values per element
+#
+## Fundamental field value units, treated as labels (i.e., unparsed).
+## In general, there should be one label for each value dimension.
+# valueunits: a.u. a.u. a.u. a.u.
+# valuelabels: "Q1 Aggregated Charge"  "Q2 Aggregated Charge" "Q3 Aggregated Charge" "Q4 Aggregated Charge"
+#
+# End: Header
+#
+## Each data records consists of N+1 values: the ID of the node,
+## followed by the N value components.  In this example,
+## N+1 = 4, the two value components are in units of a.u.,
+## corresponding to the four aggregated charges.
+#
+# Begin: data text
+in1a   0.0000   1.0000   0.0000  0.0000
+in1b   1.0000   0.0000   0.0000  0.0000
+in2a   1.0000   0.0000   0.0000  0.0000
+in2b   0.0000   1.0000   0.0000  0.0000
+in3a   0.0000   1.0000   0.0000  0.0000
+in3b   1.0000   0.0000   0.0000  0.0000
+mol1a   0.4660   0.4715   -1.2197  0.2820
+mol1b   0.7373   0.1970   -1.2174  0.2826
+mol2a   0.0264   0.0266   0.1410  -0.1940
+mol2b   0.0271   0.0259   0.1410  -0.1940
+# End: data text
+
