@@ -338,26 +338,26 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
         switch currentPropertyName
             case 'phase'
                 phase = str2double(currentPropertyValue);
-            case 'angle_1'
+            case 'angle_a'
                 mol1_angle = str2double(currentPropertyValue);
-            case 'xshift_1'
-                mol1_xshift = str2double(currentPropertyValue)/100;
-            case 'yshift_1'
-                mol1_yshift = str2double(currentPropertyValue)/100;
-            case 'zshift_1'    
-                mol1_zshift = - str2double(currentPropertyValue)/100;
-            case 'disabled_1'   
-                mol1_disable = 1;
-            case 'angle_2'
-                mol2_angle = str2double(currentPropertyValue);
-            case 'xshift_2'
-                mol2_xshift = str2double(currentPropertyValue)/100;
-            case 'yshift_2'
-                mol2_yshift = str2double(currentPropertyValue)/100;
-            case 'zshift_2'    
-                mol2_zshift = - str2double(currentPropertyValue)/100;
-            case 'disabled_2'   
+            case 'xshift_a'
+                mol1_xshift = str2double(currentPropertyValue)/100; % divided by 100 to pass from pm to angstrom
+            case 'yshift_a'
+                mol1_yshift = str2double(currentPropertyValue)/100; % divided by 100 to pass from pm to angstrom
+            case 'zshift_a'    
+                mol1_zshift = - str2double(currentPropertyValue)/100; % divided by 100 to pass from pm to angstrom
+            case 'disabled_a'   
                 mol2_disable = 1;
+            case 'angle_b'
+                mol2_angle = str2double(currentPropertyValue);
+            case 'xshift_b'
+                mol2_xshift = str2double(currentPropertyValue)/100; % divided by 100 to pass from pm to angstrom
+            case 'yshift_b'
+                mol2_yshift = str2double(currentPropertyValue)/100; % divided by 100 to pass from pm to angstrom
+            case 'zshift_b'    
+                mol2_zshift = - str2double(currentPropertyValue)/100; % divided by 100 to pass from pm to angstrom
+            case 'disabled_b'   
+                mol1_disable = 1;
         end
     end
     
@@ -378,11 +378,15 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
             stack.stack(mol_index).charge(cc).x = molecule_data(molecule_type).dot_position(cc,1) + mol1_zshift; 
             
             %relative position of the charge in the cell
+            
             y_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,2)); %position inside the cell
             z_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,3) + intermolecular_distance*0.5)  ;  
                        
-            stack.stack(mol_index).charge(cc).y = y_dot_in_cell*cosd(theta_cell) + z_dot_in_cell*sind(theta_cell) + y_cell_center + mol1_yshift;
-            stack.stack(mol_index).charge(cc).z = z_dot_in_cell*cosd(theta_cell) - y_dot_in_cell*sind(theta_cell) + z_cell_center + mol1_xshift; 
+            y_mol_rotation = y_dot_in_cell*cosd(mol1_angle) + z_dot_in_cell*sind(mol1_angle);
+            z_mol_rotation = z_dot_in_cell*cosd(mol1_angle) - y_dot_in_cell*sind(mol1_angle);
+            stack.stack(mol_index).charge(cc).y = y_mol_rotation*cosd(theta_cell) + z_mol_rotation*sind(theta_cell) + y_cell_center + mol1_yshift;
+            stack.stack(mol_index).charge(cc).z = z_mol_rotation*cosd(theta_cell) - y_mol_rotation*sind(theta_cell) + z_cell_center + mol1_xshift; 
+            
             stack.stack(mol_index).charge(cc).q = molecule_data(molecule_type).initial_charge(cc);
         end       
     end
@@ -399,8 +403,11 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
             y_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,2)); %position inside the cell
             z_dot_in_cell = (molecule_data(molecule_type).dot_position(cc,3) - intermolecular_distance*0.5)  ;  
                        
-            stack.stack(mol2_index).charge(cc).y = y_dot_in_cell*cosd(theta_cell) + z_dot_in_cell*sind(theta_cell) +  y_cell_center + mol2_yshift;
-            stack.stack(mol2_index).charge(cc).z = z_dot_in_cell*cosd(theta_cell) - y_dot_in_cell*sind(theta_cell) + z_cell_center + mol2_xshift; 
+            y_mol_rotation = y_dot_in_cell*cosd(mol2_angle) + z_dot_in_cell*sind(mol2_angle);
+            z_mol_rotation = z_dot_in_cell*cosd(mol2_angle) - y_dot_in_cell*sind(mol2_angle);
+            stack.stack(mol2_index).charge(cc).y = y_mol_rotation*cosd(theta_cell) + z_mol_rotation*sind(theta_cell) + y_cell_center + mol2_yshift;
+            stack.stack(mol2_index).charge(cc).z = z_mol_rotation*cosd(theta_cell) - y_mol_rotation*sind(theta_cell) + z_cell_center + mol2_xshift; 
+            
             stack.stack(mol2_index).charge(cc).q = molecule_data(molecule_type).initial_charge(cc);
         end       
     end
