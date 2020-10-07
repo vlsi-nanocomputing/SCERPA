@@ -35,7 +35,28 @@ if settings.enableInteractionRadiusMode || settings.enableActiveRegion
     end
 end
     
+%output IR management
+for out_mol =1:stack_output.num
 
+    %create structure for the interaction (RX)
+    stack_output.stack(out_mol).interactionRXlist = 0;
+    number_of_RX_molecules = 0;
+
+    %check all the other molecules
+    for jj_mol =1:stack_mol.num
+
+        %evaluate distance
+        distance =  sqrt((stack_mol.stack(jj_mol).charge(end).x - stack_output.stack(out_mol).charge(end).x)^2 + ...
+                    (stack_mol.stack(jj_mol).charge(end).y - stack_output.stack(out_mol).charge(end).y)^2 + ...
+                    (stack_mol.stack(jj_mol).charge(end).z - stack_output.stack(out_mol).charge(end).z)^2);
+
+        %evaluate interaction condition
+        if distance <= settings.interactionRadius
+            number_of_RX_molecules = number_of_RX_molecules + 1;
+            stack_output.stack(out_mol).interactionRXlist(number_of_RX_molecules) = jj_mol;
+        end
+    end
+end
 
 convergence_absolute = 'true';
 pre_driver_effect = 0;
@@ -390,6 +411,14 @@ for time = 1:n_times
         end
     end
    
+    %evaluate output
+    for oo_mol = stack_output.num
+        stack_output.stack(oo_mol).Vprobe = 0;
+        for ii_mol=stack_output.stack(oo_mol).interactionRXlist
+            stack_output.stack(oo_mol).Vprobe = stack_output.stack(oo_mol).Vprobe + ChargeBased_CalPotential(stack_mol.stack(ii_mol),stack_output.stack(oo_mol));
+        end    
+    end
+            
 %     run('ConvergenceTable.m')
     timeComputation(time) = toc;
     disp(timeComputation(time))
@@ -398,9 +427,10 @@ for time = 1:n_times
     RunTimePlotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
     Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
     Function_SaveQSS(time, stack_mol, stack_driver);    
+    Function_SaveTable(0,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values);
     
-    clock_tmp(1,:) = [stack_mol.stack.clock];
-    output_txt(time,:) = [clock_tmp Vout];
+%     clock_tmp(1,:) = [stack_mol.stack.clock];
+%     output_txt(time,:) = [clock_tmp Vout];
     
 end %end of time loop
 

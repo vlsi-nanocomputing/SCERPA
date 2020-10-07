@@ -107,6 +107,9 @@ CK.length = length(molTypeList);
 disp('Creating distance matrix...')
 DIST_MATRIX = createDistanceMatrix(stack_mol);
 
+%Create Additional_Information.txt
+fileTable = Function_SaveTable(1,settings,stack_mol,stack_driver,stack_output)  ;
+
 % Run Scerpa solver E
 run('solverE.m') 
 
@@ -127,22 +130,15 @@ run('solverE.m')
 %%%%%%%% END DEBUG
 
 fclose(fileID);
+fclose(fileTable);
 
 % for MATLAB versions following 2019a
 %writematrix(output_txt,'Additional_Information.txt','Delimiter','tab')
 
 % for all MATLAB versions
-formatSpec = '';
-for ii = 1:2*stack_mol.num
-   formatSpec = strcat(formatSpec, '\t%f');
-end
-formatSpec = strcat(formatSpec, '\n');
-filename_out = '../OUTPUT_FILES/Additional_Information.txt'; 
-fileID = fopen(filename_out,'wt');
-for jj = 1:n_times
-    fprintf(fileID,formatSpec,output_txt(jj,:));
-end
-fclose(fileID);
+
+
+
 
 %%
 % myicon = imread('good.png');
