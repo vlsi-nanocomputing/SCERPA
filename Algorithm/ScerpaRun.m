@@ -21,9 +21,9 @@ catch
 end
 
 %delete old simulation files
-filesDirectory = dir('OUTPUT_FILES');
+filesDirectory = dir('../OUTPUT_FILES');
 filesDirectory([filesDirectory.isdir]) = [];
-oldSims = fullfile('OUTPUT_FILES', {filesDirectory.name});
+oldSims = fullfile('../OUTPUT_FILES', {filesDirectory.name});
 try
     delete( oldSims{:} )
 catch

@@ -39,7 +39,7 @@ circuit.stack_phase(3,:) = [pReset pReset, pCycle pCycle];
 
 
 %SCERPA settings
-settings.doubleMolDriverMode = 1;
+settings.doubleMolDriverMode = 1;   
 settings.damping = 0.6;
 settings.verbosity = 2;
 
@@ -59,7 +59,7 @@ plotSettings.plotList = 0;
 this_path = pwd;
 scerpa_path = '..\';
 cd(scerpa_path)
-% generation_status = SCERPA('topoLaunch', circuit, settings);
+generation_status = SCERPA('topoLaunch', circuit, settings);
 % generation_status = SCERPA('generateLaunch', circuit, settings);
                     SCERPA('plotSteps', plotSettings);
 cd(this_path)

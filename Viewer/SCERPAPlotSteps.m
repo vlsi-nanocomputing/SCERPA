@@ -5,14 +5,14 @@ plotSettings.proceed=1; %be sure plotSettings exists, even if user didn't set an
 plotSettings = importSettings(plotSettings);
 
 %% FROM SCERPA
-load('../Algorithm/OUTPUT_FILES/simulation_output.mat','stack_mol')
-load('../Algorithm/OUTPUT_FILES/simulation_output.mat','stack_output')
-load('../Algorithm/OUTPUT_FILES/simulation_output.mat','stack_driver')
+load('../OUTPUT_FILES/simulation_output.mat','stack_mol')
+load('../OUTPUT_FILES/simulation_output.mat','stack_output')
+load('../OUTPUT_FILES/simulation_output.mat','stack_driver')
 
 %delete old simulation files
-FigureDirectory = dir('EXPORT');
+FigureDirectory = dir('../OUTPUT_FILES/viewer');
 FigureDirectory([FigureDirectory.isdir]) = [];
-oldPics = fullfile('EXPORT', {FigureDirectory.name});
+oldPics = fullfile('../OUTPUT_FILES/viewer', {FigureDirectory.name});
 try
     delete( oldPics{:} )
 catch
@@ -20,7 +20,7 @@ catch
 end
 
 %% IMPORT ALL QSS
-qssfiles = ls('../Algorithm/OUTPUT_FILES/*.qss');
+qssfiles = ls('../OUTPUT_FILES/*.qss');
 nfiles = length(qssfiles(:,1));
 
 if plotSettings.plotList==0
@@ -38,7 +38,7 @@ for ff=stepToPrint
     
     %import file
     filename = sprintf(qssfiles(ff,:));
-    QSSFile = sprintf('../Algorithm/OUTPUT_FILES/%s',filename);
+    QSSFile = sprintf('../OUTPUT_FILES/%s',filename);
     [stack_mol,stack_driver] = importQSS(stack_mol,stack_driver,QSSFile);
     
     %user output
@@ -52,33 +52,33 @@ for ff=stepToPrint
     if plotSettings.plot_3dfig == 1
         threeDfig = Plot3DAC(stack_mol, stack_driver, stack_output, plotSettings);
         if plotSettings.fig_saver == 1
-            savefig(threeDfig,sprintf('EXPORT/threeFig%s.fig',filename))
+            savefig(threeDfig,sprintf('../OUTPUT_FILES/viewer/threeFig%s.fig',filename))
         end
-        saveas(threeDfig,sprintf('EXPORT/threeFig%s.jpg',filename))
+        saveas(threeDfig,sprintf('../OUTPUT_FILES/viewer/threeFig%s.jpg',filename))
     end
     
     if plotSettings.plot_potential == 1
         potFig = PlotPotential(stack_mol, stack_driver, stack_output, plotSettings);
         if plotSettings.fig_saver == 1
-            savefig(potFig,sprintf('EXPORT/potFig%s.fig',filename))
+            savefig(potFig,sprintf('../OUTPUT_FILES/viewer/potFig%s.fig',filename))
         end
-        saveas(potFig,sprintf('EXPORT/potFig%s.jpg',filename))
+        saveas(potFig,sprintf('../OUTPUT_FILES/viewer/potFig%s.jpg',filename))
     end
   
     if plotSettings.plot_logic == 1
         logicFig = PlotLogic(stack_mol, stack_driver, stack_output, plotSettings);
         if plotSettings.fig_saver == 1
-            savefig(logicFig,sprintf('EXPORT/logicFig%s.fig',filename))
+            savefig(logicFig,sprintf('../OUTPUT_FILES/viewer/logicFig%s.fig',filename))
         end
-        saveas(logicFig,sprintf('EXPORT/logicFig%s.jpg',filename))
+        saveas(logicFig,sprintf('../OUTPUT_FILES/viewer/logicFig%s.jpg',filename))
     end
     
     if plotSettings.plot_1DCharge== 1
         wireChargeFig = Plot1DCharge(stack_mol, stack_driver, stack_output, plotSettings);
         if plotSettings.fig_saver == 1
-            savefig(wireChargeFig,sprintf('EXPORT/1DChargeFig%s.fig',filename))
+            savefig(wireChargeFig,sprintf('../OUTPUT_FILES/viewer/1DChargeFig%s.fig',filename))
         end
-        saveas(wireChargeFig,sprintf('EXPORT/1DChargeFig%s.jpg',filename))
+        saveas(wireChargeFig,sprintf('../OUTPUT_FILES/viewer/1DChargeFig%s.jpg',filename))
     end
     
     fprintf("DONE. \n")
