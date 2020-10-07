@@ -47,9 +47,9 @@ settings.verbosity = 2;
 settings.plotIntermediateSteps = 0;
 
 %PLOT settings
-plotSettings.plot_3dfig = 0;
+plotSettings.plot_3dfig = 1;
 plotSettings.plot_1DCharge = 1;
-plotSettings.plot_logic = 0;
+plotSettings.plot_logic = 1;
 plotSettings.plot_potential = 1;
 plotSettings.plotSpan = 3;
 plotSettings.fig_saver = 0;
@@ -59,7 +59,7 @@ plotSettings.plotList = 0;
 this_path = pwd;
 scerpa_path = '..\';
 cd(scerpa_path)
-generation_status = SCERPA('topoLaunch', circuit, settings);
+% generation_status = SCERPA('topoLaunch', circuit, settings);
 % generation_status = SCERPA('generateLaunch', circuit, settings);
                     SCERPA('plotSteps', plotSettings);
 cd(this_path)

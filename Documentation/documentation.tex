@@ -238,18 +238,19 @@ In the input script MUST be present the \textit{circuit} definition, and there i
 	\end{itemize}
 \item[Energy]:
 	\begin{itemize}
-	\item \underline{energyEval}: set to 1 whether one wants to evaluate the internal energy, the exchange energy, the clock energy, and the total energy. Set to 0 otherwise [\textit{default} 0] \textcolor{red}{non funziona}
+		
+	\item \underline{energyEval} set to 1 whether one wants to evaluate the internal energy, the exchange energy, the clock energy, and the total energy. Set to 0 otherwise [\textit{default} 0] \textcolor{red}{Currently not available}
 	\end{itemize}
 \item[Output/Plot]:
 	\begin{itemize}
 	\item \underline{plot\_plotAbsoluteCharge}: if set to 1 it plots the absolute value of the dots charge in the 3D layout plot, otherwise it considers the actual value of the dots charge [\textit{default} 1] 
-	\item \underline{plotIntermediateSteps}: \textcolor{red}{non esiste} [\textit{default} 0] 
+	\item \underline{plotIntermediateSteps}: if set to 1, it opens a window during the calculation which shows the trend of charges and input voltages at each step of the iterative procedure. Setting to 1 this setting strongly slows down the execution [\textit{default} 0] 
 	\item \underline{plotActiveRegionWindow}: \textcolor{red}{grafico da sistemare} [\textit{default} 0] 
 	\item \underline{plot\_3dfig}: if set to 1 it plots the 3D layout of the circuit for each time step [\textit{default} 1] 
 	\item \underline{plot\_voltage}: if set to 1 it plots the input voltage on each molecule for each time step [\textit{default} 1] 
 	\item \underline{plot\_chargeFig}: if set to 1 it plots the charge value of the logic dots for each molecule, and for each time step [\textit{default} 1] 
 	\item \underline{plot\_logic}: \textcolor{red}{dà errore} [\textit{default} 0] 
-	\item \underline{plot\_clock}: \textcolor{red}{da sistemare} [\textit{default} 0]
+	\item \underline{plot\_clock}: if set to 1 it plots the clock field on each molecule for each time step [\textit{default} 0]
 	\item \underline{plot\_molnum}: if set to 1, it writes the molecule label in the 3D layout plot [\textit{default} 1] 
 	\item \underline{verbosity}: this setting defines how much informations are written in the console during the simulation, if set to 0 means that no data are written, if set to 1 the convergence step is written for each time step, if set to 2 convergence info are written for each time step [\textit{default} 0] 
 	\item \underline{pauseStep}: \textcolor{red}{non funziona} [\textit{default} 0] 
@@ -271,7 +272,7 @@ In the input script MUST be present the \textit{circuit} definition, and there i
 	\end{itemize}
 \item[DEBUG informations]:
 	\begin{itemize}
-	\item \underline{printConvergenceTable}: \textcolor{red}{non c'è??} [\textit{default} 0] 
+	\item \underline{printConvergenceTable}: if set to 1, SCERPA prints the "Convergence Table". This table reports all the input voltages of each molecule and the subcomponents related to each intermolecular interaction. It allows detecting possible bugs na derrors on SCERPA.\textcolor{red}{Currently not available.} [\textit{default} 0] 
 	\end{itemize}
 \item[Precision]:
 	\begin{itemize}
@@ -283,7 +284,7 @@ In the input script MUST be present the \textit{circuit} definition, and there i
 	\end{itemize}
 \item[MATLAB optimization]:
 	\begin{itemize}
-	\item \underline{enableJit}: \textcolor{red}{non c'è??} [\textit{default 1}] 
+	\item \underline{enableJit}: if set to 0, the MATLAB just-in-time compiler is disabled. This possibly slows down the calculation, yet allows performing more effective computational complexity analyses [\textit{default 1}] 
 	\end{itemize}
 \item[Driver saturation]:
 	\begin{itemize}
@@ -291,6 +292,13 @@ In the input script MUST be present the \textit{circuit} definition, and there i
 	\end{itemize}
 \end{description}
 
+\section{SCERPA Viewer}
+There are two possible uses of the SCERPA viewer:
+
+\begin{enumerate}
+\item Embedded: the viewer plots the steps of the last SCERPA simulation. Typically, this is used just after a simulation. 
+\item On demand: the viewer plots a single step of a simulation. The viewer requires the layout file (QLL) and the SCERPA results (QSS). This mode is supposed to work with the MagCAD layout only and is not directly compatible with the MATLAB layout generator unless using a porting function (currently used in the emedded mode).
+\end{enumerate}
 
 \section{Examples}
 \subsection{MagCAD layout}
