@@ -37,7 +37,7 @@ filename_phase = '../Layout/Database/Fake_Phases.mat';
 filename_values_dr =  '../Layout/Database/Values_Driver.mat';
 
 % Output Files
-filename_out = 'OUTPUT_FILES/Simulation_Output.log';
+filename_out = '../OUTPUT_FILES/Simulation_Output.log';
 fileID = fopen(filename_out,'wt');
 fprintf(fileID,'%%%% Files Analysed:\n');
 fprintf(fileID,'%%%%    %s\n', filename_mol);
@@ -99,7 +99,7 @@ for i = 1:length(molTypeList)
     transchar = Interp_coeff_bilinear(molTypeList(i)); %transchar
     
     %reshape transcharacteristics to avoid true interpolation
-    CK.stack(i) = reshapeTC(transchar);
+    CK.stack(molTypeList(i)+1) = reshapeTC(transchar); % put transchar in fixed position corresponding to molType number (+1 to start from 1 instead of 0)
 end
 CK.length = length(molTypeList);
 
@@ -137,7 +137,7 @@ for ii = 1:2*stack_mol.num
    formatSpec = strcat(formatSpec, '\t%f');
 end
 formatSpec = strcat(formatSpec, '\n');
-filename_out = './OUTPUT_FILES/Additional_Information.txt'; 
+filename_out = '../OUTPUT_FILES/Additional_Information.txt'; 
 fileID = fopen(filename_out,'wt');
 for jj = 1:n_times
     fprintf(fileID,formatSpec,output_txt(jj,:));
@@ -155,6 +155,6 @@ disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 disp(' ');
 
 %save workspace for analysis
-save('OUTPUT_FILES/simulation_output');
+save('../OUTPUT_FILES/simulation_output');
 end
 
