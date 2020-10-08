@@ -30,6 +30,16 @@ else
     
 end
 
+% Plot additional information data
+
+if plotSettings.plot_waveform == 1
+    waveformFig = PlotWaveform('../OUTPUT_FILES/Additional_Information.txt', plotSettings);
+    if plotSettings.fig_saver == 1
+        savefig(waveformFig,'../OUTPUT_FILES/viewer/waveformFig.fig')
+    end
+    saveas(waveformFig,'../OUTPUT_FILES/viewer/waveformFig.jpg')
+end
+
 % Plot steps
 number_of_plots = length(stepToPrint);
 plot_index = 0;

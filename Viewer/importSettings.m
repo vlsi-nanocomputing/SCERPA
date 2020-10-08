@@ -100,6 +100,14 @@ end
 % end
 
 
+%Waveform plot
+% WaveForm Plot settings
+if isfield(userSettings,'plot_waveform')
+    scerpaSettings.plot_waveform = userSettings.plot_waveform;
+else
+    scerpaSettings.plot_waveform = 0; % default value
+end
+
 
 
 end

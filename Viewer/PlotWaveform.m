@@ -2,7 +2,7 @@ function out_fig = PlotWaveform(file, settings)
 
 %import file
 disp('Loading simulation table')
-data = readtable('../OUTPUT_FILES/Additional_Information.txt')
+data = readtable(file);
 
 %%%% further configuration parameters
 % plotListDriver = [10 2 18 ];
@@ -26,57 +26,51 @@ Ndrivers = length(in_rows(1,:));
 Noutputs = length(out_rows(1,:));
 N_subplot = Ndrivers + Noutputs;
 
-
-
-figure(1),clc
+%figure creation
+out_fig = figure('visible','off');
 
 %plot drivers
 row = 1;
 disp('Plotting inputs')
+
 for dd = 1:Ndrivers
      
     subplot(N_subplot,1,row), hold on
-    plot_data = getfield(data,char(availableRows(in_rows(dd))));
+    %plot_data = getfield(data,char(availableRows(in_rows(dd))));
+    plot_data = max(-1,min(1,- getfield(data,char(availableRows(in_rows(dd))))));
     plot(data.Time,plot_data,'-k','LineWidth',1, 'MarkerSize',10)
-    ylabel(sprintf('%s [V]',char(availableRows(in_rows(dd)))))
-    xticklabels('')
-    xticks([])
-   % ylim([-0.1 1.1])
-%     grid on, grid minor
-	 ax = gca;
-    ax.BoxStyle = 'full';
+    ylabel(sprintf('%s',char(availableRows(in_rows(dd)))),'Interpreter', 'none');
+    yticklabels({'L','H'}), yticks([-1 1]), ylim([-1.1 1.1]);
+    xticklabels(''), xticks([])
+    ax = gca; ax.BoxStyle = 'full'; box on; grid on;
     
+    %next row
     row = row+1;
-    
     
 end
 
-disp('Plotting outputs')
 %plot outputs
+disp('Plotting outputs')
+
 for oo = 1:Noutputs
     
     subplot(N_subplot,1,row), hold on
-    plot_data = getfield(data,char(availableRows(out_rows(oo))));
+    %plot_data = getfield(data,char(availableRows(out_rows(oo))));
+    plot_data = 1/0.1*max(-0.1,min(0.1,getfield(data,char(availableRows(out_rows(oo))))));
     plot(data.Time,plot_data,'-k','LineWidth',1, 'MarkerSize',10)
-    ylabel(sprintf('%s [V]',char(availableRows(out_rows(oo)))))
-    if oo~=Noutputs
-        xticklabels('')
-        xticks([])
-    else
+    ylabel(sprintf('%s',char(availableRows(out_rows(oo)))),'Interpreter', 'none');
+    yticklabels({'L','H'}), yticks([-1 1]), ylim([-1.1 1.1]);
+    xticklabels(''), xticks([])
+    ax = gca; ax.BoxStyle = 'full'; box on; grid on;
+
+    %plot timesteps on the last plot
+    if oo==Noutputs
         xlabel('Timestep')
+    else
+        xticklabels(''), xticks([])        
     end
     
-    
-    ax = gca;
-    ax.BoxStyle = 'full';
-%     ylim([-0.1 1.1])
-%     grid on, grid minor
-    
-%     %plot lines
-%     for ll = out_rules
-%         plot([ll ll],[-1 2],'--k')
-%     end
-
+    %next row
     row = row+1;
     
 end

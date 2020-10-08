@@ -47,12 +47,13 @@ settings.verbosity = 2;
 settings.plotIntermediateSteps = 0;
 
 %PLOT settings
+plotSettings.plot_waveform = 1;
 plotSettings.plot_3dfig = 1;
 plotSettings.plot_1DCharge = 1;
 plotSettings.plot_logic = 1;
 plotSettings.plot_potential = 1;
 plotSettings.plotSpan = 3;
-plotSettings.fig_saver = 0;
+plotSettings.fig_saver = 1;
 plotSettings.plotList = 0;
 
 %%%%
