@@ -25,7 +25,7 @@ scerpaSettings.plot_clock = setDefault(userSettings,'plot_clock',0);
 scerpaSettings.plot_molnum = setDefault(userSettings,'plot_molnum',1);
 scerpaSettings.verbosity = setDefault(userSettings,'verbosity',0); % (0 no data, 1 step number, 2 converge info)
 scerpaSettings.pauseStep = setDefault(userSettings,'pauseStep',0);
-scerpaSettings.fig_saver = setDefault(userSettings,'fig_saver',0);
+scerpaSettings.fig_saver = setDefault(userSettings,'fig_saver',0); % not working
 
 
 %convergence settings

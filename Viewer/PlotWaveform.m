@@ -65,7 +65,6 @@ else
         plot(data.Time,plot_data,'-k','LineWidth',1, 'MarkerSize',10)
         ylabel(sprintf('%s',char(availableRows(out_rows(oo)))),'Interpreter', 'none');
         yticklabels({'L','H'}), yticks([-1 1]), ylim([-1.1 1.1]);
-        xticklabels(''), xticks([])
         ax = gca; ax.BoxStyle = 'full'; box on; grid on;
 
         %plot timesteps on the last plot

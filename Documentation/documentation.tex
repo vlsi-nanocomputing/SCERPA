@@ -231,30 +231,30 @@ In the input script MUST be present the \textit{circuit} definition, and there i
 %	\begin{itemize}
 %	\item \underline{timestep}: [\textit{default} 1]
 %	\end{itemize}
-\item[Topo integration]:
+\item[CAD integration]:
 	\begin{itemize}
 	\item \underline{magcadImporter}: set to 1 whether layout is designed with magCAD, 0 otherwise [\textit{default} 0]
 	\item \underline{doubleMolDriverMode}: set to 1 whether the input drivers should be represented with two molecules, 0 otherwise [\textit{default} 0]
 	\end{itemize}
-\item[Energy]:
-	\begin{itemize}
+%\item[Energy]:
+%	\begin{itemize}
 		
-	\item \underline{energyEval} set to 1 whether one wants to evaluate the internal energy, the exchange energy, the clock energy, and the total energy. Set to 0 otherwise [\textit{default} 0] \textcolor{red}{Currently not available}
-	\end{itemize}
-\item[Output/Plot]:
+%	\item \underline{energyEval} set to 1 whether one wants to evaluate the internal energy, the exchange energy, the clock energy, and the total energy. Set to 0 otherwise [\textit{default} 0] \textcolor{red}{Temporarily not available}
+%	\end{itemize}
+\item[Algorithm Output and Runtime Plot]:
 	\begin{itemize}
 	\item \underline{plot\_plotAbsoluteCharge}: if set to 1 it plots the absolute value of the dots charge in the 3D layout plot, otherwise it considers the actual value of the dots charge [\textit{default} 1] 
 	\item \underline{plotIntermediateSteps}: if set to 1, it opens a window during the calculation which shows the trend of charges and input voltages at each step of the iterative procedure. Setting to 1 this setting strongly slows down the execution [\textit{default} 0] 
-	\item \underline{plotActiveRegionWindow}: \textcolor{red}{grafico da sistemare} [\textit{default} 0] 
+	\item \underline{plotActiveRegionWindow}: if set to 1, during the execution of the code, a figure shows the voltage of all the molecules an highligth the molecules inserted in the Active Region list.  [\textit{default} 0] 
 	\item \underline{plot\_3dfig}: if set to 1 it plots the 3D layout of the circuit for each time step [\textit{default} 1] 
 	\item \underline{plot\_voltage}: if set to 1 it plots the input voltage on each molecule for each time step [\textit{default} 1] 
 	\item \underline{plot\_chargeFig}: if set to 1 it plots the charge value of the logic dots for each molecule, and for each time step [\textit{default} 1] 
-	\item \underline{plot\_logic}: \textcolor{red}{dà errore} [\textit{default} 0] 
+	\item \underline{plot\_logic}: if set to 1, it shows the logical information (0 or 1) propagating in the molecular circuit. The information is evaluated by considering the molecular cell composed by two molecules and using the standard QCA definition  [\textit{default} 0]
 	\item \underline{plot\_clock}: if set to 1 it plots the clock field on each molecule for each time step [\textit{default} 0]
 	\item \underline{plot\_molnum}: if set to 1, it writes the molecule label in the 3D layout plot [\textit{default} 1] 
 	\item \underline{verbosity}: this setting defines how much informations are written in the console during the simulation, if set to 0 means that no data are written, if set to 1 the convergence step is written for each time step, if set to 2 convergence info are written for each time step [\textit{default} 0] 
-	\item \underline{pauseStep}: \textcolor{red}{non funziona} [\textit{default} 0] 
-	\item \underline{fig\_saver}: \textcolor{red}{dà errore} [\textit{default} 'no'] 
+	\item \underline{pauseStep}: this command, if set to 1, pauses the execution of scerpa at each step of the plotIntermediateSteps='1'. [\textit{default} 0] 
+%	\item \underline{fig\_saver}: \textcolor{red}{dà errore} [\textit{default} 'no'] 
 	\end{itemize}
 \item[Convergence settings]:
 	\begin{itemize}
@@ -265,15 +265,15 @@ In the input script MUST be present the \textit{circuit} definition, and there i
 \item[Convergence accelerations]:
 	\begin{itemize}
 	\item \underline{enableRefining}: if set to 1, once the algorithm reaches convergence it disables the active region and continues the evaluation, it stops otherwise [\textit{default} 1] 
-	\item \underline{enableActiveRegion}: if set to 1, the algorithm evaluates the interaction among a reduced set of molecule, otherwise it considers the whole set of molecules even if they are very far in the layout [\textit{default} 1] 
+	\item \underline{enableActiveRegion}: if set to 1, the algorithm evaluates the interaction among a reduced set of molecule, avoiding the evaluation of molecules whose charge is not supposed to vary in the current step [\textit{default} 1] 
 	\item \underline{activeRegionThreshold}: this value defines which molecules belong to the active region, if the voltage variation is higher  the this value, the molecule is added to the active region list [\textit{default} 0.0015] 
-	\item \underline{enableInteractionRadiusMode}: \textcolor{red}{che differenza c'è con activeRegion?} [\textit{default} 1] 
-	\item \underline{interactionRadius}: \textcolor{red}{come sopra} [\textit{default} 101] 
+	\item \underline{enableInteractionRadiusMode}: if set to 1, the algorithm evaluate, for each molecule, only the effects of molecules which are close to the one under evaluation (within a specific distance specified by the setting interactionRadius) [\textit{default} 1] 
+	\item \underline{interactionRadius}: this value defines the maximum distance (in $\AA$) the algorithm might consider in the evaluation of electric field. Chosen a specific molecule, only the effects generated by the molecule with lower distance than this value will be considered in the evaluation [\textit{default} 101] 
 	\end{itemize}
-\item[DEBUG informations]:
-	\begin{itemize}
-	\item \underline{printConvergenceTable}: if set to 1, SCERPA prints the "Convergence Table". This table reports all the input voltages of each molecule and the subcomponents related to each intermolecular interaction. It allows detecting possible bugs na derrors on SCERPA.\textcolor{red}{Currently not available.} [\textit{default} 0] 
-	\end{itemize}
+%\item[DEBUG informations]:
+%	\begin{itemize}
+%	\item \underline{printConvergenceTable}: if set to 1, SCERPA prints the "Convergence Table". This table reports all the input voltages of each molecule and the subcomponents related to each intermolecular interaction. It allows detecting possible bugs na derrors on SCERPA.\textcolor{red}{Currently not available.} [\textit{default} 0] 
+%	\end{itemize}
 \item[Precision]:
 	\begin{itemize}
 	\item \underline{LPmode}: maximum number of steps to try to reach convergence in Low Precision Mode [\textit{default} 200] 
@@ -290,6 +290,13 @@ In the input script MUST be present the \textit{circuit} definition, and there i
 	\begin{itemize}
 	\item \underline{driverSaturation}: set to 1 whether the charge values of the driver should saturate, 0 otherwise [\textit{default} 0]
 	\end{itemize}
+\item[Generation of the Additional Information TXT file]:
+\begin{itemize}
+	\item \underline{dumpClock}: if set to 1, the TXT file reports the clock of each molecule in each timestep [\textit{default} 0]
+	\item \underline{dumpVout}: if set to 1, the TXT file reports the voltage of each molecule in each timestep [\textit{default} 0]
+	\item \underline{dumpDriver}: if set to 1, the TXT file reports the voltage of each driver in each timestep [\textit{default} 0]
+	\item \underline{dumpOutput}: if set to 1, the TXT file reports the voltage of each output in each timestep. (Warning: outputs are currently available in the MagCad importer only) [\textit{default} 0]
+\end{itemize}
 \end{description}
 
 \section{SCERPA Viewer}
@@ -297,8 +304,46 @@ There are two possible uses of the SCERPA viewer:
 
 \begin{enumerate}
 \item Embedded: the viewer plots the steps of the last SCERPA simulation. Typically, this is used just after a simulation. 
-\item On demand: the viewer plots a single step of a simulation. The viewer requires the layout file (QLL) and the SCERPA results (QSS). This mode is supposed to work with the MagCAD layout only and is not directly compatible with the MATLAB layout generator unless using a porting function (currently used in the emedded mode).
+\item On demand: the viewer plots a single step of a simulation. The viewer requires the layout file (QLL) and the SCERPA results (QSS). This mode is supposed to work with the MagCAD layout only and is not directly compatible with the MATLAB layout generator unless using a porting function (currently used in the embedded mode).
 \end{enumerate}
+
+\begin{description}
+\item[General Plot Settings]:
+\begin{itemize}
+	\item \underline{fig\_saver}: if set to 1, the viewer saves *.fig files of each picture [\textit{default} 0]
+	\item \underline{plotSpan}: the viewer can print a limited number of steps, if plotSpan=N, the viewer plots a figure every N steps [\textit{default} 1]
+		\item \underline{plotList}: is a vector that can be used to specify which timestep to print (plotList=[2 6 7] will print only steps 2, 6 and 7). If set to 0, the viewer plots all the available steps, considering the settings plotSpan. [\textit{default} 0]
+\end{itemize}
+\item[3D Plot settings]:
+\begin{itemize}
+	\item \underline{plot\_3dfig}: if set to 1, it enables the 3D plot [\textit{default} 1]
+	\item \underline{plot\_3dfig\_plotAbsoluteCharge}: if set to 1, the viewer plots the absolute charge distribution [\textit{default} 1]
+	\item \underline{plot\_3dfig\_molnum}: if set to 1, the viewer plots the name of each molecule on the figure [\textit{default} 1]
+\end{itemize}
+\item[1D Plot settings]:
+\begin{itemize}
+	\item \underline{plot\_1DCharge}: if set to 1, it enables the 1D plot [\textit{default} 0]
+\end{itemize}
+
+\item[1D Plot settings]:
+\begin{itemize}
+	\item \underline{plot\_logic}: if set to 1, it enables the logic plot showing the information encoding on the cell according to the standard QCA definition[\textit{default} 0]
+\end{itemize}
+
+\item[Potential Plot settings]:
+\begin{itemize}
+	\item \underline{plot\_potential}: if set to 1, it enables the potential plot showing voltage generated by the molecular charge distribution [\textit{default} 0]
+	\item \underline{plot\_potential\_padding}: this value allows enlarging the region where the potential is calculated [\textit{default} 20]
+	\item \underline{plot\_potential\_saturationVoltage}: this value enables saturating the potential to improve graphical clarity [\textit{default} 6]
+	\item \underline{plot\_potential\_tipHeight}: this value, in $\AA$, defines the height of the virtual tip measuring the potential [\textit{default} -5.5]
+\end{itemize}
+\item[Waveform Plot settings]:
+\begin{itemize}
+	\item \underline{plot\_waveform}: if set to 1, it enables the plot of input/output waveform (Warning: this plot requires input/output information in the Additional Information file. Be sure the simulation was run with dumpDriver=1 and dumpOutput=1) [\textit{default} 0]	
+\end{itemize}
+
+
+\end{description}
 
 \section{Examples}
 \subsection{MagCAD layout}
