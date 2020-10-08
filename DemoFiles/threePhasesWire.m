@@ -42,6 +42,8 @@ circuit.stack_phase(3,:) = [pReset pReset, pCycle pCycle];
 settings.doubleMolDriverMode = 1;   
 settings.damping = 0.6;
 settings.verbosity = 2;
+settings.dumpDriver = 1;
+settings.dumpOutput = 1;
 
 %RunTime Plot
 settings.plotIntermediateSteps = 0;

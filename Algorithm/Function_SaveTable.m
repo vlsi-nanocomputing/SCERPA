@@ -1,11 +1,5 @@
 function fileTable = Function_SaveTable(constructMode,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values)  
 
-%temporary variable assignment
-settings.dumpClock = 0;
-settings.dumpDriver = 1;
-settings.dumpVout = 0;
-settings.dumpOutput = 1;
-
 if constructMode ==1
     %create file
     fileTable = fopen('../OUTPUT_FILES/Additional_Information.txt','wt');

@@ -56,6 +56,12 @@ scerpaSettings.enableJit = setDefault(userSettings,'enableJit',1);
 % driver saturation
 scerpaSettings.driverSaturation = setDefault(userSettings,'driverSaturation',0); 
 
+%dump information
+scerpaSettings.dumpClock = setDefault(userSettings,'dumpClock',0);
+scerpaSettings.dumpVout = setDefault(userSettings,'dumpVout',0);
+scerpaSettings.dumpDriver = setDefault(userSettings,'dumpDriver',0);
+scerpaSettings.dumpOutput = setDefault(userSettings,'dumpOutput',0);
+
 % compatibility
 scerpaSettings.y.enable_escape = 1;
 scerpaSettings.y.show_intermediate_steps = scerpaSettings.plotIntermediateSteps;
