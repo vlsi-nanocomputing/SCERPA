@@ -412,13 +412,15 @@ for time = 1:n_times
     end
    
     %evaluate output
-    for oo_mol = stack_output.num
-        stack_output.stack(oo_mol).Vprobe = 0;
-        for ii_mol=stack_output.stack(oo_mol).interactionRXlist
-            stack_output.stack(oo_mol).Vprobe = stack_output.stack(oo_mol).Vprobe + ChargeBased_CalPotential(stack_mol.stack(ii_mol),stack_output.stack(oo_mol));
-        end    
+    if stack_output.num ~= 0
+        for oo_mol = stack_output.num
+            stack_output.stack(oo_mol).Vprobe = 0;
+            for ii_mol=stack_output.stack(oo_mol).interactionRXlist
+                stack_output.stack(oo_mol).Vprobe = stack_output.stack(oo_mol).Vprobe + ChargeBased_CalPotential(stack_mol.stack(ii_mol),stack_output.stack(oo_mol));
+            end    
+        end
     end
-            
+    
 %     run('ConvergenceTable.m')
     timeComputation(time) = toc;
     disp(timeComputation(time))

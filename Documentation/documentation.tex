@@ -246,10 +246,10 @@ In the input script MUST be present the \textit{circuit} definition, and there i
 	\item \underline{plot\_plotAbsoluteCharge}: if set to 1 it plots the absolute value of the dots charge in the 3D layout plot, otherwise it considers the actual value of the dots charge [\textit{default} 1] 
 	\item \underline{plotIntermediateSteps}: if set to 1, it opens a window during the calculation which shows the trend of charges and input voltages at each step of the iterative procedure. Setting to 1 this setting strongly slows down the execution [\textit{default} 0] 
 	\item \underline{plotActiveRegionWindow}: if set to 1, during the execution of the code, a figure shows the voltage of all the molecules an highligth the molecules inserted in the Active Region list.  [\textit{default} 0] 
-	\item \underline{plot\_3dfig}: if set to 1 it plots the 3D layout of the circuit for each time step [\textit{default} 1] 
-	\item \underline{plot\_voltage}: if set to 1 it plots the input voltage on each molecule for each time step [\textit{default} 1] 
-	\item \underline{plot\_chargeFig}: if set to 1 it plots the charge value of the logic dots for each molecule, and for each time step [\textit{default} 1] 
-	\item \underline{plot\_logic}: if set to 1, it shows the logical information (0 or 1) propagating in the molecular circuit. The information is evaluated by considering the molecular cell composed by two molecules and using the standard QCA definition  [\textit{default} 0]
+	\item \underline{plot\_3dfig}: if set to 1 it plots the 3D layout of the circuit for each time step [\textit{default} 0] 
+	\item \underline{plot\_voltage}: if set to 1 it plots the input voltage on each molecule for each time step [\textit{default} 0] 
+	\item \underline{plot\_chargeFig}: if set to 1 it plots the charge value of the logic dots for each molecule, and for each time step [\textit{default} 0] 
+%	\item \underline{plot\_logic}: if set to 1, it shows the logical information (0 or 1) propagating in the molecular circuit. The information is evaluated by considering the molecular cell composed by two molecules and using the standard QCA definition  [\textit{default} 0]
 	\item \underline{plot\_clock}: if set to 1 it plots the clock field on each molecule for each time step [\textit{default} 0]
 	\item \underline{plot\_molnum}: if set to 1, it writes the molecule label in the 3D layout plot [\textit{default} 1] 
 	\item \underline{verbosity}: this setting defines how much informations are written in the console during the simulation, if set to 0 means that no data are written, if set to 1 the convergence step is written for each time step, if set to 2 convergence info are written for each time step [\textit{default} 0] 
@@ -259,8 +259,8 @@ In the input script MUST be present the \textit{circuit} definition, and there i
 \item[Convergence settings]:
 	\begin{itemize}
 	\item \underline{max\_step}: set the maximum number of SCF iterations, after having reached this value, precision is lowered to LP and then to LLP if needed (see Precision settings below) [\textit{default} 1000] 
-	\item \underline{immediateUpdate}: if set to 1, the algorithm updates the charge value onto the dots at each sub-step, one molecule at a time. This let the algorithm to converge faster, but it is far from the physical behaviour, since molecules actually \enquote{update} all together. To speed up the convergence without loosing the physical meaning, one should appropriately choose the damping factor. Hint: set this setting to 0, unless strictly needed [\textit{default} 1] 
-	\item \underline{damping}: damping affects the rate and mode of convergence without influencing the final result, if correctly chosen. Value must be in range [0 - 1), hint: 0.2 [\textit{default} 0.0] 
+	\item \underline{immediateUpdate}: if set to 1, the algorithm updates the charge value onto the dots at each sub-step, one molecule at a time. This let the algorithm to converge faster, but it is far from the physical behaviour, since molecules actually \enquote{update} all together. To speed up the convergence without loosing the physical meaning, one should appropriately choose the damping factor. Hint: set this setting to 0, unless strictly needed [\textit{default} 0] 
+	\item \underline{damping}: damping affects the rate and mode of convergence without influencing the final result, if correctly chosen. Value must be in range [0 - 1) [\textit{default} 0.4] 
 	\end{itemize}
 \item[Convergence accelerations]:
 	\begin{itemize}

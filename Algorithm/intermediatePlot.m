@@ -9,7 +9,7 @@ dataTable{number_of_mols,7} = [];
 %analyse molecules
 for ii=1:stack_mol.num
     %get position
-    positionOfMol = sscanf(stack_mol.stack(ii).position,'[%d %d %d]');
+    positionOfMol = sscanf(string(stack_mol.stack(ii).position),'[%d %d %d]');
     dataTable{ii,1} = positionOfMol(3);
     
     %get name
@@ -32,7 +32,7 @@ for ii=1:stack_driver.num
     dd = ii + stack_mol.num;
     
     %get position
-    positionOfMol = sscanf(stack_driver.stack(ii).position,'[%d %d %d]');
+    positionOfMol = sscanf(string(stack_driver.stack(ii).position),'[%d %d %d]');
     dataTable{dd,1} = positionOfMol(3);
     
     %get name
@@ -64,7 +64,7 @@ subplot(2,1,1), cla, hold on
     legend ('Molecule input voltages (k-1)','Molecule input voltages (k)','Driver Voltage Contribution')
     grid on
     ylabel('Input Voltage [V]')
-    xticks(cell2mat(dataTable(:,1)));xticklabels(dataTable(:,2));xtickangle(90);
+    xticks(cell2mat(dataTable(:,1)));xticklabels(string(dataTable(:,2)));xtickangle(90);
 	set(gca,'TickLabelInterpreter','none')
 
 %charge
@@ -72,7 +72,7 @@ subplot(2,1,2), cla
     hold on, grid on;
     plot(cell2mat(dataTable(:,1)),cell2mat(dataTable(:,6)),'-b.',cell2mat(dataTable(:,1)),cell2mat(dataTable(:,7)),'-r.','Linewidth',1,'MarkerSize',10);
     ylim([-0.2 1.2])
-	xticks(cell2mat(dataTable(:,1)));xticklabels(dataTable(:,2));xtickangle(90);
+	xticks(cell2mat(dataTable(:,1)));xticklabels(string(dataTable(:,2)));xtickangle(90);
 	set(gca,'TickLabelInterpreter','none')
 	legend('Dot1','Dot2');
 	ylabel('Aggregated charge'); 
