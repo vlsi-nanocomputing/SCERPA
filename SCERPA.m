@@ -53,7 +53,7 @@ function [status] = SCERPA(command,option1,option2)
                 return
             end
         case char('plotSteps')
-            close all
+            %close all
             disp('Plotting Results!')
             cd Viewer
             SCERPAPlotSteps(option1)

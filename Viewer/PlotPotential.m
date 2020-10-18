@@ -72,7 +72,7 @@ out_fig = figure('visible','off');
 surf(z/10,y/10,voltage,'EdgeColor','none')
 set(gcf,'PaperPositionMode','auto')
 set(out_fig, 'Position', [100 100 500 400])
-ylabel('y [nm]'),view([90 90])
+ylabel('y [nm]'),view([0 90])
 xlabel('z [nm]')
 box on
 axis([z_min z_max y_min y_max ]/10)
