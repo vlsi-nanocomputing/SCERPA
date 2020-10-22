@@ -19,7 +19,7 @@ function [status] = SCERPA(command,option1,option2)
                 status = 0;
             end
             %open log file
-            open('../OUTPUT_FILES/Simulation_Output.log')
+%             open('../OUTPUT_FILES/Simulation_Output.log')
             cd ..
         case char('topoLaunch') %work in progress
             if exist('option1','var')
