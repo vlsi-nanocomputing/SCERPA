@@ -64,6 +64,7 @@ subplot(2,1,1), cla, hold on
     legend ('Molecule input voltages (k-1)','Molecule input voltages (k)','Driver Voltage Contribution')
     grid on
     ylabel('Input Voltage [V]')
+    xlim([min(cell2mat(dataTable(:,1))) max(cell2mat(dataTable(:,1)))])
     xticks(cell2mat(dataTable(:,1)));xticklabels(string(dataTable(:,2)));xtickangle(90);
 	set(gca,'TickLabelInterpreter','none')
 
@@ -72,6 +73,7 @@ subplot(2,1,2), cla
     hold on, grid on;
     plot(cell2mat(dataTable(:,1)),cell2mat(dataTable(:,6)),'-b.',cell2mat(dataTable(:,1)),cell2mat(dataTable(:,7)),'-r.','Linewidth',1,'MarkerSize',10);
     ylim([-0.2 1.2])
+    xlim([min(cell2mat(dataTable(:,1))) max(cell2mat(dataTable(:,1)))])
 	xticks(cell2mat(dataTable(:,1)));xticklabels(string(dataTable(:,2)));xtickangle(90);
 	set(gca,'TickLabelInterpreter','none')
 	legend('Dot1','Dot2');
