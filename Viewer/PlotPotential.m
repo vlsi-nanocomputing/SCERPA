@@ -77,6 +77,7 @@ xlabel('z [nm]')
 box on
 axis([z_min z_max y_min y_max ]/10)
 axis equal
+set(gca,'Ydir','reverse')
 title('Voltage [V]')
 colorbar
 

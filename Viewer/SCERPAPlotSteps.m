@@ -20,7 +20,7 @@ catch
 end
 
 %% IMPORT ALL QSS
-qssfiles = ls('../OUTPUT_FILES/*.qss');
+qssfiles = dir('../OUTPUT_FILES/*.qss');
 nfiles = length(qssfiles(:,1));
 
 if plotSettings.plotList==0
@@ -47,8 +47,10 @@ plot_index = 0;
 for ff=stepToPrint
     
     %import file
-    filename = sprintf(qssfiles(ff,:));
-    QSSFile = sprintf('../OUTPUT_FILES/%s',filename);
+    filename = qssfiles(ff).name;
+    %QSSFile = sprintf('../OUTPUT_FILES/%s',filename);
+    QSSFile = fullfile('..','OUTPUT_FILES',filename);
+   
     [stack_mol,stack_driver] = importQSS(stack_mol,stack_driver,QSSFile);
     
     %user output

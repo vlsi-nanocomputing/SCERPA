@@ -1,4 +1,4 @@
-function fileTable = Function_SaveTable(constructMode,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values)  
+function fileTable = Function_SaveTable(constructMode,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values,compTime)  
 
 if constructMode ==1
     %create file
@@ -32,7 +32,11 @@ if constructMode ==1
             fprintf(fileTable," out_%s",char(stack_output.stack(ii).identifier));
         end
     end
-    
+   
+    %dump ComputationTime
+    if settings.dumpComputationTime == 1
+	fprintf(fileTable,' StepCompTime');
+    end 
 
 else
     
@@ -52,7 +56,10 @@ else
     
     %dump input
     if settings.dumpDriver == 1
-        fprintf(fileTable," %d", cell2mat(driver_values(:,time+1))');
+        for ii=1:stack_driver.num
+            fprintf(fileTable," %d", (stack_driver.stack(ii).charge(1).q - stack_driver.stack(ii).charge(2).q));
+        end
+%         fprintf(fileTable," %d", cell2mat(driver_values(:,time+1))');
     end
 
     %dump output
@@ -62,5 +69,9 @@ else
         end
     end
 
+    %dump ComputationTime
+    if settings.dumpComputationTime == 1
+        fprintf(fileTable," %d", compTime);
+    end
 end
 end

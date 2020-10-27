@@ -411,9 +411,14 @@ for time = 1:n_times
         end
     end
    
+   
+%     run('ConvergenceTable.m')
+    timeComputation(time) = toc;
+    disp(timeComputation(time))
+
     %evaluate output
     if stack_output.num ~= 0
-        for oo_mol = stack_output.num
+        for oo_mol = 1:stack_output.num
             stack_output.stack(oo_mol).Vprobe = 0;
             for ii_mol=stack_output.stack(oo_mol).interactionRXlist
                 stack_output.stack(oo_mol).Vprobe = stack_output.stack(oo_mol).Vprobe + ChargeBased_CalPotential(stack_mol.stack(ii_mol),stack_output.stack(oo_mol));
@@ -421,15 +426,11 @@ for time = 1:n_times
         end
     end
     
-%     run('ConvergenceTable.m')
-    timeComputation(time) = toc;
-    disp(timeComputation(time))
-    
     %plot and save data
     RunTimePlotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
     Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
     Function_SaveQSS(time, stack_mol, stack_driver);    
-    Function_SaveTable(0,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values);
+    Function_SaveTable(0,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values,timeComputation(time));
     
 %     clock_tmp(1,:) = [stack_mol.stack.clock];
 %     output_txt(time,:) = [clock_tmp Vout];
