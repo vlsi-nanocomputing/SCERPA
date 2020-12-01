@@ -64,11 +64,15 @@ disp('Importing Layout...')
 if settings.magcadImporter ==0
     run('Function_Reader.m');
     stack_output.num = 0; %no output
+    simulation_file_name = 'matlabDrawing';
 else
     [stack_mol,stack_driver,driver_values, stack_output] = importQLL(...
         settingsArg.circuit.qllFile,...
         settingsArg.circuit.Values_Dr,...
         settings);
+    
+    qll_path = regexp(settingsArg.circuit.qllFile,'\','split');
+    simulation_file_name = qll_path{end};
     
     %clock management (Atm compatible only with QLL version, as it needs
     %the phase defined in stack_mol)

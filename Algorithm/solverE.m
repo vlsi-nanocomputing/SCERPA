@@ -184,7 +184,7 @@ for time = 1:n_times
     %print step header
     if settings.verbosity==2
             disp('Starting SCF Evaluation')
-            fprintf('STEP - ERROR - MAX_ERROR - DAMPING - IR - AR\n')
+            fprintf('STEP - ERROR - MAX_ERROR - DAMPING - IR Flag- Active mols %% [AR Flag]\n')
             fprintf('--------------------------------------------\n')
     end
     
@@ -386,12 +386,13 @@ for time = 1:n_times
         
         if settings.verbosity==2
             %print log of scf step to console if verbosity mode 2
-            fprintf('%d   - %f - %f - %f - %d - %d\n',...
+            fprintf('%d   - %f - %f - %f - %d - %.2f[%d]\n',...
                 scfStep,...
                 max(voltageVariation(evaluationRange)),...
                 max_error,...
                 settings.y.damping,...
                 interactionRadiusMode,...
+                sum(activeListMolecule)/stack_mol.num,...
                 activeRegionMode);
         end
         
@@ -429,7 +430,7 @@ for time = 1:n_times
     %plot and save data
     RunTimePlotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
     Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
-    Function_SaveQSS(time, stack_mol, stack_driver);    
+    Function_SaveQSS(time, stack_mol, stack_driver,simulation_file_name);    
     Function_SaveTable(0,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values,timeComputation(time));
     
 %     clock_tmp(1,:) = [stack_mol.stack.clock];
