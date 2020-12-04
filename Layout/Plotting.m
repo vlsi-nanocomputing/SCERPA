@@ -17,6 +17,7 @@ ylabel('Y direction');
 zlabel('X direction');
 set(gca,'zdir','reverse') 
 set(gca,'ydir','reverse') 
+title('Circuit layout')
 
 %plot molecules
 for ii=1:stack_mol.num
