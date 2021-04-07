@@ -259,6 +259,7 @@ for time = 1:n_times
             end
             
         elseif activeRegionMode==0
+            activeListMolecule = 0;
             evaluationRange = 1:stack_mol.num;
             activeRegionMode = 2; %avoid re-evaluation in refining mode
         end
@@ -431,7 +432,7 @@ for time = 1:n_times
     RunTimePlotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
     Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
     Function_SaveQSS(time, stack_mol, stack_driver,simulation_file_name);    
-    Function_SaveTable(0,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values,timeComputation(time));
+    Function_SaveTable(0,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values,timeComputation(time),stack_energy);
     
 %     clock_tmp(1,:) = [stack_mol.stack.clock];
 %     output_txt(time,:) = [clock_tmp Vout];

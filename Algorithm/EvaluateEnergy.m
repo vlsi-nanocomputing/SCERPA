@@ -40,8 +40,8 @@ for ii_system = stack_driver.num+1:stack_mol.num+stack_driver.num
     M_DOT4 = stack_mol.stack(ii).charge(4);
     
     %update charges
-    [P1, P2, P3, P4] = SearchValues( Vout(ii), stack_mol.stack(ii).clock, CK );
-    [ M_DOT1.q, M_DOT2.q,  M_DOT3.q, M_DOT4.q ] = Intersection( Vout(ii), stack_mol.stack(ii).clock, P1, P2, P3, P4 );
+    mm = cell2mat(stack_mol.stack(ii).molType);
+    [M_DOT1.q, M_DOT2.q, M_DOT3.q, M_DOT4.q] = applyTranschar(Vout(ii),stack_mol.stack(ii).clock,CK.stack(mm+1));
     
     %molecule struct creation
     mol(ii_system).x = [M_DOT1.x M_DOT2.x M_DOT3.x M_DOT4.x];
@@ -55,9 +55,14 @@ for ii_system = stack_driver.num+1:stack_mol.num+stack_driver.num
 end
 
 %molecule data
-Pz=99999999; Py=1.1101e-37; Px=99999999;
-mu0= [0 -4.0756e-30 0];
-clock = 2;
+W_0 = 0;
+% Pz=99999999; Py=1.1101e-37; Px=99999999; 7.6720e-33 %bisferrocene
+Pz=99999999; Py=3.6716e-38; Px=99999999; %diallylbutano
+mu0= [0 7.671972000000000e-33 0]; %diallylbutano
+% clock = 2;
+
+%evalute total conformation energy
+W_0_TOT =  length(mol)*W_0;
 
 %evaluate internal energy
 W_int = 0;
@@ -70,18 +75,18 @@ W_int_sum = sum(W_int);
 W_ex = 0;
 for ii_mol = 1:length(mol)
     for jj_mol = (ii_mol+1):length(mol)
-     W_ex = W_ex + EvaluateExchangeEnergy( mol(ii_mol), mol(jj_mol));
+        W_ex = W_ex + EvaluateExchangeEnergy( mol(ii_mol), mol(jj_mol));
     end
 end
 
 %evaluate clock energy
 W_clk = 0;
-for ii_mol = 1:length(mol)
-     W_clk = W_clk + EvaluateMolEnergyV3( mol(ii_mol), -clock, 0, 0) - + EvaluateMolEnergyV3( mol(ii_mol), 0, 0, 0);
-end
+% for ii_mol = 1:length(mol)
+%      W_clk = W_clk + EvaluateMolEnergyV3( mol(ii_mol), -clock, 0, 0) - + EvaluateMolEnergyV3( mol(ii_mol), 0, 0, 0);
+% end
 
 %evaluate total energy
-W_tot = W_ex + W_int_sum;%+ W_clock(voltage_step);
+W_tot = W_ex + W_int_sum + W_0_TOT;%+ W_clock(voltage_step);
 
 qq=1.6e-19;
 

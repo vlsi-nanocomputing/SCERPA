@@ -1,4 +1,4 @@
-function fileTable = Function_SaveTable(constructMode,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values,compTime)  
+function fileTable = Function_SaveTable(constructMode,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values,compTime,stack_energy)  
 
 if constructMode ==1
     %create file
@@ -15,7 +15,11 @@ if constructMode ==1
     %dump vout
     if settings.dumpVout == 1
         for ii=1:stack_mol.num
-            fprintf(fileTable," Vout_%s",stack_mol.stack(ii).identifier_qll);
+            try
+                fprintf(fileTable," Vout_%s",stack_mol.stack(ii).identifier_qll);
+            catch
+                fprintf(fileTable," Vout_%s",char(stack_mol.stack(ii).identifier_qll));
+            end
         end
     end
     
@@ -35,8 +39,13 @@ if constructMode ==1
    
     %dump ComputationTime
     if settings.dumpComputationTime == 1
-	fprintf(fileTable,' StepCompTime');
+        fprintf(fileTable,' StepCompTime');
     end 
+    
+    %dump Energy
+    if settings.dumpEnergy == 1
+        fprintf(fileTable," W_int W_ex W_clk W_TOT");
+    end
 
 else
     
@@ -72,6 +81,11 @@ else
     %dump ComputationTime
     if settings.dumpComputationTime == 1
         fprintf(fileTable," %d", compTime);
+    end
+    
+    %dump energy
+    if settings.dumpEnergy == 1
+        fprintf(fileTable," %f %f %f %f",stack_energy(time).W_int(end),stack_energy(time).W_ex(end),stack_energy(time).W_clk(end),stack_energy(time).W_tot(end));
     end
 end
 end

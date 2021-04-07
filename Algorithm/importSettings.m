@@ -62,6 +62,7 @@ scerpaSettings.dumpVout = setDefault(userSettings,'dumpVout',0);
 scerpaSettings.dumpDriver = setDefault(userSettings,'dumpDriver',0);
 scerpaSettings.dumpOutput = setDefault(userSettings,'dumpOutput',0);
 scerpaSettings.dumpComputationTime = setDefault(userSettings,'dumpComputationTime',0);
+scerpaSettings.dumpEnergy = setDefault(userSettings,'dumpEnergy',0);
 
 % compatibility
 scerpaSettings.y.enable_escape = 1;
