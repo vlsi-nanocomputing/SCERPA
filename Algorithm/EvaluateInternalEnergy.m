@@ -16,8 +16,19 @@ function [ W ] = EvaluateInternalEnergy( mol, Px, Py, Pz, mu0)
 % switching.
 
 %calcola il dipolo
-dipole = EvaluateDipole(mol,[mean(mol.x) mean(mol.y) mean(mol.z)])*3.336e-30; %convert from Debye to SI
-disp('Dipole is converted in SI units')
-W = 0.5*((dipole(1) - mu0(1))^2/Px +(dipole(2) - mu0(2))^2/Py + (dipole(3) - mu0(3))^2/Pz );
+mu=[0 0 0];
+q = 1.60217662e-19;
+
+ref = [mean(mol.x) mean(mol.y) mean(mol.z)];
+
+%loop each atom
+for ii=1:mol.n_atoms
+
+    %evaluate dipole factor
+    mu = mu + q*mol.espCharge(ii)* 1e-10*[mol.x(ii)-ref(1) mol.y(ii)-ref(2) mol.z(ii)-ref(3)];
+
+end
+    
+W = 0.5*((mu(1) - mu0(1))^2/Px +(mu(2) - mu0(2))^2/Py + (mu(3) - mu0(3))^2/Pz );
 
 end
