@@ -44,7 +44,7 @@ dataTable = sortrows(dataTable,1);
 out_fig = figure('visible','off');
 hold on, grid on;
 plot(cell2mat(dataTable(:,1)),cell2mat(dataTable(:,3)),'b--*',cell2mat(dataTable(:,1)),cell2mat(dataTable(:,4)),'r--*','Linewidth',4,'MarkerSize',10);
-axis([0 stack_mol.num+1 -0.2 1.2])
+axis([0 number_of_mols -0.2 1.2])
 xticks(cell2mat(dataTable(:,1)));xticklabels(string(dataTable(:,2)));xtickangle(90);
 set(gca,'TickLabelInterpreter','none')
  

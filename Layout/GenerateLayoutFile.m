@@ -61,6 +61,14 @@ else
             molType = '13';
         case {'linear_mol_w95_a3000','linear_w95'} % backward compatibility
             molType = '14';
+        case 'newMol_1'
+            molType = '15';
+        case 'newMol_2'
+            molType = '16';
+        case 'newMol_3'
+            molType = '17';
+        case 'newMol_4'
+            molType = '18';
         otherwise
             disp('[SCERPA ERROR] Unknown molecule (circuit.molecule)')
             return_code = 1;

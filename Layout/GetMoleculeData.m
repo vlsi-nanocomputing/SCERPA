@@ -12,7 +12,7 @@ function [initial_charge, dot_position, draw_association] = GetMoleculeData(molT
     %                       are connected
     
     switch(molType)
-        case {'0','1','3','4','5','6'} % 'bisfe_4' -> Bisferrocene with 4 charges
+        case {'0','1','3','4','5','6','15','16','17','18'} % 'bisfe_4' -> Bisferrocene with 4 charges
             %initial_charge   = [0.475, 0.471, -0.223, 0.277];  % charge ck=+2V
             initial_charge   = [0.370, 0.352, -0.023, 0.307];  % charge ck=+0V              
             %initial_charge   = [0.027, 0.026,  0.141, 0.806];  % charge ck=-2V
