@@ -78,12 +78,7 @@ end
 
 if ~isfield(QCA_circuit,'components') 
     % if no components field, create default components
-    QCA_circuit.components = {'0'};
-    for ii=1:row
-        for jj=1:column
-           QCA_circuit.components{ii,jj} = molType;
-        end
-    end    
+    QCA_circuit.components(1:row,1:column) = {molType};    
 else % if components field is present, check dimensions
     [row_component, column_component] = size(QCA_circuit.components);
     if row_component ~= row || column_component ~= column 
@@ -110,13 +105,8 @@ fprintf('Vertical intermolecular distance: %.2f nm\n',QCA_circuit.dist_y/10)
 
 %rotation on x
 if ~isfield(QCA_circuit,'rotation_x')
-    QCA_circuit.rotation_x = {'0'};
-    %create rotations (0)
-    for ii=1:row
-        for jj=1:column
-           QCA_circuit.rotation_x{ii,jj} = '0';
-        end
-    end
+    %assigning rotation_x = 0 for each molecule
+    QCA_circuit.rotation_x =  zeros(row,column);
 else %check rotation matrix dimension
     [row_rotation, column_rotation] = size(QCA_circuit.rotation_x);
     if row_rotation ~= row || column_rotation ~= column 
@@ -128,13 +118,8 @@ end
 
 %rotation on y
 if ~isfield(QCA_circuit,'rotation_y')
-    QCA_circuit.rotation_y =  {'0'};
-    %create rotations (0)
-    for ii=1:row
-        for jj=1:column
-           QCA_circuit.rotation_y{ii,jj} = '0';
-        end
-    end
+    %assigning rotation_y = 0 for each molecule
+    QCA_circuit.rotation_y =  zeros(row,column);
 else %check rotation matrix dimension
     [row_rotation, column_rotation] = size(QCA_circuit.rotation_y);
     if row_rotation ~= row || column_rotation ~= column 
@@ -146,13 +131,8 @@ end
 
 %rotation on z
 if ~isfield(QCA_circuit,'rotation_z')
-    QCA_circuit.rotation_z =  {'0'};
-    %create rotations (0)
-    for ii=1:row
-        for jj=1:column
-           QCA_circuit.rotation_z{ii,jj} = '0';
-        end
-    end
+    %assigning rotation_z = 0 for each molecule
+    QCA_circuit.rotation_z =  zeros(row,column);
 else %check rotation matrix dimension
     [row_rotation, column_rotation] = size(QCA_circuit.rotation_z);
     if row_rotation ~= row || column_rotation ~= column 
@@ -164,13 +144,8 @@ end
 
 %shift on x
 if ~isfield(QCA_circuit,'shift_x')
-    QCA_circuit.shift_x =  {'0'};
-    %create shift x (0)
-    for ii=1:row
-        for jj=1:column
-            QCA_circuit.shift_x{ii,jj} = '0';
-        end
-    end
+    %assigning shift_x = 0 for each molecule
+    QCA_circuit.shift_x =  zeros(row,column);
 else %check shift matrix dimension
     [row_shift, column_shift] = size(QCA_circuit.shift_x);
     if row_shift ~= row || column_shift ~= column 
@@ -182,13 +157,8 @@ end
 
 %shift on y
 if ~isfield(QCA_circuit,'shift_y')
-    QCA_circuit.shift_y =  {'0'};
-    %create shift y (0)
-    for ii=1:row
-        for jj=1:column
-            QCA_circuit.shift_y{ii,jj} = '0';
-        end
-    end
+    %assigning shift_y = 0 for each molecule
+    QCA_circuit.shift_y =  zeros(row,column);
 else %check shift matrix dimension
     [row_shift, column_shift] = size(QCA_circuit.shift_y);
     if row_shift ~= row || column_shift ~= column 
@@ -200,13 +170,8 @@ end
 
 %shift on z
 if ~isfield(QCA_circuit,'shift_z')
-    QCA_circuit.shift_z =  {'0'};
-    %create shift z (0)
-    for ii=1:row
-        for jj=1:column
-            QCA_circuit.shift_z{ii,jj} = '0';
-        end
-    end
+    %assigning shift_z = 0 for each molecule
+    QCA_circuit.shift_z =  zeros(row,column);
 else %check shift matrix dimension
     [row_shift, column_shift] = size(QCA_circuit.shift_z);
     if row_shift ~= row || column_shift ~= column 
@@ -218,13 +183,8 @@ end
 
 %external voltage
 if ~isfield(QCA_circuit,'Vext')
-    QCA_circuit.Vext =  {'0'};
-    %create Vext (0)
-    for ii=1:row
-        for jj=1:column
-            QCA_circuit.Vext{ii,jj} = '0';
-        end
-    end
+    %assigning Vext = 0 for each molecule
+    QCA_circuit.Vext =  zeros(row,column);
 else %check Vext matrix dimension
     [row_Vext, column_Vext] = size(QCA_circuit.Vext);
     if row_Vext ~= row || column_Vext ~= column 
@@ -345,7 +305,9 @@ Values_Dr = QCA_circuit.Values_Dr;
 [stack_driver, stack_mol] = GenerateStacks(QCA_circuit);
 
 %plot layout
-Plotting(stack_mol, stack_driver)
+if QCA_circuit.plotLayout == 1
+    Plotting(stack_mol, stack_driver)
+end
 
 
 

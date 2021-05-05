@@ -8,12 +8,12 @@ function [mol_stack]=GenerateMolStack(circuit, row, column, mol_stack, dot_posit
         % molecule aer added to the <<mol_stack>>.
         
         %casting of rotation and shift values
-        rotation_x = str2num(circuit.rotation_x{row,column});  
-        rotation_y = str2num(circuit.rotation_y{row,column});  
-        rotation_z = str2num(circuit.rotation_z{row,column});  
-        shift_x = str2num(circuit.shift_x{row,column});
-        shift_y = str2num(circuit.shift_y{row,column});
-        shift_z = str2num(circuit.shift_z{row,column});
+        rotation_x = circuit.rotation_x(row,column);  
+        rotation_y = circuit.rotation_y(row,column);  
+        rotation_z = circuit.rotation_z(row,column);  
+        shift_x = circuit.shift_x(row,column);
+        shift_y = circuit.shift_y(row,column);
+        shift_z = circuit.shift_z(row,column);
         
         dist_y = circuit.dist_y;
         dist_z = circuit.dist_z;
@@ -55,7 +55,7 @@ function [mol_stack]=GenerateMolStack(circuit, row, column, mol_stack, dot_posit
         mol_para.shift_x = shift_x;
         mol_para.shift_y = shift_y;
         mol_para.shift_z = shift_z;
-        mol_para.Vext = str2num(circuit.Vext{row,column});
+        mol_para.Vext = circuit.Vext(row,column);
         mol_para.association = draw_association;
         
         %add  molecule to stack

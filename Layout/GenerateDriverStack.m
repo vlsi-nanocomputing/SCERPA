@@ -8,12 +8,12 @@ function [driver_stack]=GenerateDriverStack(circuit, row, column, driver_stack, 
         % the <<driver_stack>>.
         
         %casting of rotation and shift values
-        rotation_x = str2num(circuit.rotation_x{row,column});  
-        rotation_y = str2num(circuit.rotation_y{row,column});  
-        rotation_z = str2num(circuit.rotation_z{row,column});  
-        shift_x = str2num(circuit.shift_x{row,column});
-        shift_y = str2num(circuit.shift_y{row,column});
-        shift_z = str2num(circuit.shift_z{row,column});
+        rotation_x = circuit.rotation_x(row,column);  
+        rotation_y = circuit.rotation_y(row,column);  
+        rotation_z = circuit.rotation_z(row,column);  
+        shift_x = circuit.shift_x(row,column);
+        shift_y = circuit.shift_y(row,column);
+        shift_z = circuit.shift_z(row,column);
         
         dist_y = circuit.dist_y;
         dist_z = circuit.dist_z;
