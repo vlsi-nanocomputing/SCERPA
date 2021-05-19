@@ -15,7 +15,13 @@ scerpaSettings.timestep = setDefault(userSettings,'timestep',1);
 scerpaSettings.energyEval = setDefault(userSettings,'energyEval',0);
 
 % output plot
-scerpaSettings.out_path = setDefault(userSettings,'out_path','../OUTPUT_FILES');
+if isfield(userSettings,'out_path') 
+    % set by user
+    scerpaSettings.out_path = strcat(userSettings.out_path,'/SCERPA_OUTPUT_FILES');
+else
+    % not set by the user!
+    scerpaSettings.out_path = '../OUTPUT_FILES';
+end
 scerpaSettings.plot_plotAbsoluteCharge = setDefault(userSettings,'plot_plotAbsoluteCharge',1);
 scerpaSettings.plotIntermediateSteps = setDefault(userSettings,'plotIntermediateSteps',0);
 scerpaSettings.plotActiveRegionWindow = setDefault(userSettings,'plotActiveRegionWindow',0);
