@@ -1,11 +1,11 @@
-function [driver_stack]=GenerateDriverStack(circuit, row, column, driver_stack, dot_position, draw_association)
-        % The function GenerateDriverStack is used to create an istance of
-        % the stack containing driver information. It extracts the
+function [output_stack]=GenerateOutputStack(circuit, row, column, output_stack, dot_position, draw_association)
+        % The function GenerateOutputStack is used to create an istance of
+        % the stack containing output information. It extracts the
         % information from the <<circuit>>, based on the actual position in 
         % the structure specified by <<row>> and <<column>>. Also the
         % <<dot_position>> and the association between the dots are
-        % provided as inputs. Data concerning the new driver are added to
-        % the <<driver_stack>>.
+        % provided as inputs. Data concerning the new output are added to
+        % the <<output_stack>>.
         
         %casting of rotation and shift values
         rotation_x = circuit.rotation_x(row,column);  
@@ -39,19 +39,19 @@ function [driver_stack]=GenerateDriverStack(circuit, row, column, driver_stack, 
             dot_rotated = Rx*Ry*Rz*[dot_position(dd,1); dot_position(dd,2); dot_position(dd,3)];
             
             %evaluate new position (rotation+shift)
-            driver_para.charge(dd).q = 0;
-            driver_para.charge(dd).x = dot_rotated(1) + shift_x;
-            driver_para.charge(dd).y = (row-1)*(dist_y)+dot_rotated(2) + shift_y;
-            driver_para.charge(dd).z = (column-1)*(dist_z)+dot_rotated(3) + shift_z;
+            out_para.charge(dd).q = 0;
+            out_para.charge(dd).x = dot_rotated(1) + shift_x;
+            out_para.charge(dd).y = (row-1)*(dist_y)+dot_rotated(2) + shift_y;
+            out_para.charge(dd).z = (column-1)*(dist_z)+dot_rotated(3) + shift_z;
         end
         
         % add driver information
-        driver_para.position=[0 row column];
-        driver_para.identifier = circuit.structure{row,column};
-        driver_para.molType = str2double(circuit.components{row,column});
-        driver_para.association = draw_association;
+        out_para.position=[0 row column];
+        out_para.identifier = circuit.structure{row,column};
+        out_para.molType = str2double(circuit.components{row,column});
+        out_para.association = draw_association;
         
         % add driver to stacks
-        driver_stack.num=driver_stack.num+1;
-        driver_stack.stack(driver_stack.num)=driver_para;
+        output_stack.num=output_stack.num+1;
+        output_stack.stack(output_stack.num)=out_para;
 end

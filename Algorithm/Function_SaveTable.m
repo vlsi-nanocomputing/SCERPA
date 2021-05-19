@@ -26,14 +26,14 @@ if constructMode ==1
     %dump input
     if settings.dumpDriver == 1
         for ii=1:stack_driver.num
-            fprintf(fileTable," driver_%s",char(stack_driver.stack(ii).identifier_qll));
+            fprintf(fileTable," driver_%s",stack_driver.stack(ii).identifier_qll);
         end
     end
     
      %dump output
     if settings.dumpOutput == 1
         for ii=1:stack_output.num
-            fprintf(fileTable," out_%s",char(stack_output.stack(ii).identifier));
+            fprintf(fileTable," out_%s",stack_output.stack(ii).identifier);
         end
     end
    

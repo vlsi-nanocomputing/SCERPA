@@ -12,6 +12,8 @@ circuit.molecule = 'bisfe_4';
 %layout (MagCAD)
 file = 'threePhasesWire.qll';
 circuit.qllFile = sprintf('%s\\%s',pwd,file);
+circuit.doubleMolDriverMode = 1;   
+% circuit.magcadImporter = 0;
 
 %layout (Layout Generator)
 % circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3'};
@@ -39,7 +41,6 @@ circuit.stack_phase(3,:) = [pReset pReset, pCycle pCycle];
 
 
 %SCERPA settings
-settings.doubleMolDriverMode = 1;   
 settings.damping = 0.6;
 settings.verbosity = 2;
 settings.dumpDriver = 1;
@@ -64,5 +65,5 @@ scerpa_path = '..\';
 cd(scerpa_path)
 generation_status = SCERPA('topoLaunch', circuit, settings);
 % generation_status = SCERPA('generateLaunch', circuit, settings);
-                    SCERPA('plotSteps', plotSettings);
+                    %SCERPA('plotSteps', plotSettings);
 cd(this_path)

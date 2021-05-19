@@ -14,190 +14,41 @@ fprintf(' - Politecnico di Torino |  VLSI nanocomputing\n');
 fprintf(' - www.vlsilab.polito.it\n\n');              
 
 %% input management
-%get circuit layout
-if ~isfield(QCA_circuit,'structure')
-    disp('[SCERPA ERROR] No circuit (QCA_circuit.structure) defined in the input file!')
-    return_code=1;
-    return
-end
-
-%determine size of layout
-[row, column] = size(QCA_circuit.structure);
-
-fprintf('Layout grid is: %d x %d \n',row,column)
-
-%molecules type definition
-if ~isfield(QCA_circuit,'molecule')
-    molType = '1'; % bisfe4_ox_counterionOnThiol
+if QCA_circuit.magcadImporter == 1
+    [stack_driver, stack_mol, stack_output] = importQLL(QCA_circuit);
+    qll_path = regexp(QCA_circuit.qllFile,'\','split');
+    simulation_file_name = qll_path{end};
 else
-    switch(QCA_circuit.molecule)
-        case 'bisfe4_ox_counterionOnCarbazole'
-            molType = '0';
-        case {'bisfe4_ox_counterionOnThiol','bisfe_4'} % backward compatibility
-            molType = '1';
-        case {'bisfe4_ox_counterionOnThiol_orca','bisfe_4_orca'} % backward compatibility
-            molType = '2';
-        case 'bisfe4_ox_noCounterion'
-            molType = '3';
-        case 'bisfe4_ox_noCounterion_TSA_2states'
-            molType = '4';
-        case 'bisfe4_ox_noCounterion_TSA_3states'
-            molType = '5';
-        case 'bisfe4_sym'
-            molType = '6';
-        case {'butane_ox_noCounterion','butane'} % backward compatibility
-            molType = '7';
-        case 'butane_ox_noCounterion_orca'
-            molType = '8';
-        case 'butaneCam' % backward compatibility
-            molType = '9';
-        case {'decatriene_ox_noCounterion','decatriene'} % backward compatibility
-            molType = '10';
-        case {'linear_mol_w7_a2000','linear_w7'} % backward compatibility
-            molType = '11';
-        case 'linear_mol_w7_a3000'
-            molType = '12';
-        case {'linear_mol_w9_a3000','linear_w9'} % backward compatibility
-            molType = '13';
-        case {'linear_mol_w95_a3000','linear_w95'} % backward compatibility
-            molType = '14';
-        case 'newMol_1'
-            molType = '15';
-        case 'newMol_2'
-            molType = '16';
-        case 'newMol_3'
-            molType = '17';
-        case 'newMol_4'
-            molType = '18';
-        otherwise
-            disp('[SCERPA ERROR] Unknown molecule (circuit.molecule)')
-            return_code = 1;
-            return
-    end
-end
-
-if ~isfield(QCA_circuit,'components') 
-    % if no components field, create default components
-    QCA_circuit.components(1:row,1:column) = {molType};    
-else % if components field is present, check dimensions
-    [row_component, column_component] = size(QCA_circuit.components);
-    if row_component ~= row || column_component ~= column 
-        disp('[SCERPA ERROR] Components matrix is not well defined (size is not consistent)!')
-        return_code=1;
-        return;
-    end
-end
-
-
-%get intermolecular distances
-if ~isfield(QCA_circuit,'dist_z')
-    QCA_circuit.dist_z = 10;
-end
-
-if ~isfield(QCA_circuit,'dist_y') 
-    % 10.145 is the distance between dot1 and dot2 of the bisferrocene
-    QCA_circuit.dist_y = QCA_circuit.dist_z + 10.145; 
-end
-
-%fprintf('Molecule: %s\n',QCA_circuit.molecule)
-fprintf('Intermolecular distance: %.2f nm\n',QCA_circuit.dist_z/10)
-fprintf('Vertical intermolecular distance: %.2f nm\n',QCA_circuit.dist_y/10)
-
-%rotation on x
-if ~isfield(QCA_circuit,'rotation_x')
-    %assigning rotation_x = 0 for each molecule
-    QCA_circuit.rotation_x =  zeros(row,column);
-else %check rotation matrix dimension
-    [row_rotation, column_rotation] = size(QCA_circuit.rotation_x);
-    if row_rotation ~= row || column_rotation ~= column 
-        disp('[SCERPA ERROR] Rotation(x) matrix is not well defined (size is not consistent)!')
-        return_code=1;
-        return;
-    end
-end
-
-%rotation on y
-if ~isfield(QCA_circuit,'rotation_y')
-    %assigning rotation_y = 0 for each molecule
-    QCA_circuit.rotation_y =  zeros(row,column);
-else %check rotation matrix dimension
-    [row_rotation, column_rotation] = size(QCA_circuit.rotation_y);
-    if row_rotation ~= row || column_rotation ~= column 
-        disp('[SCERPA ERROR] Rotation(y) matrix is not well defined (size is not consistent)!')
-        return_code=1;
-        return;
-    end
-end
-
-%rotation on z
-if ~isfield(QCA_circuit,'rotation_z')
-    %assigning rotation_z = 0 for each molecule
-    QCA_circuit.rotation_z =  zeros(row,column);
-else %check rotation matrix dimension
-    [row_rotation, column_rotation] = size(QCA_circuit.rotation_z);
-    if row_rotation ~= row || column_rotation ~= column 
-        disp('[SCERPA ERROR] Rotation(z) matrix is not well defined (size is not consistent)!')
-        return_code=1;
-        return;
-    end
-end
-
-%shift on x
-if ~isfield(QCA_circuit,'shift_x')
-    %assigning shift_x = 0 for each molecule
-    QCA_circuit.shift_x =  zeros(row,column);
-else %check shift matrix dimension
-    [row_shift, column_shift] = size(QCA_circuit.shift_x);
-    if row_shift ~= row || column_shift ~= column 
-        disp('[SCERPA ERROR] Shift(x) matrix is not well defined (size is not consistent)!')
-        return_code=1;
-        return
-    end
-end
-
-%shift on y
-if ~isfield(QCA_circuit,'shift_y')
-    %assigning shift_y = 0 for each molecule
-    QCA_circuit.shift_y =  zeros(row,column);
-else %check shift matrix dimension
-    [row_shift, column_shift] = size(QCA_circuit.shift_y);
-    if row_shift ~= row || column_shift ~= column 
-        disp('[SCERPA ERROR] Shift(y) matrix is not well defined (size is not consistent)!')
-        return_code=1;
-        return
-    end
-end
-
-%shift on z
-if ~isfield(QCA_circuit,'shift_z')
-    %assigning shift_z = 0 for each molecule
-    QCA_circuit.shift_z =  zeros(row,column);
-else %check shift matrix dimension
-    [row_shift, column_shift] = size(QCA_circuit.shift_z);
-    if row_shift ~= row || column_shift ~= column 
-        disp('[SCERPA ERROR] Shift(z) matrix is not well defined (size is not consistent)!')
-        return_code=1;
-        return
-    end
-end
-
-%external voltage
-if ~isfield(QCA_circuit,'Vext')
-    %assigning Vext = 0 for each molecule
-    QCA_circuit.Vext =  zeros(row,column);
-else %check Vext matrix dimension
-    [row_Vext, column_Vext] = size(QCA_circuit.Vext);
-    if row_Vext ~= row || column_Vext ~= column 
-        disp('[SCERPA ERROR] Vext matrix is not well defined (size is not consistent)!')
-        return_code=1;
-        return
-    end
+    QCA_circuit = importMatlab(QCA_circuit);
+    % create the molecule and the driver stacks
+    [stack_driver, stack_mol, stack_output] = GenerateStacks(QCA_circuit);
+    simulation_file_name = 'matlabDrawing';
 end
 
 %compatibility 
-stack_phase = QCA_circuit.stack_phase;
 Values_Dr = QCA_circuit.Values_Dr;
 
+%clock management
+if ~isfield(QCA_circuit,'clockMode')
+    QCA_circuit.clockMode = 'phase';
+end
+
+stack_clock = createClockTable(stack_mol,QCA_circuit);
+     
+            
+%roughness management
+if isfield(QCA_circuit,'substrate')
+    if isfield(QCA_circuit.substrate,'PVenable')
+        if QCA_circuit.substrate.PVenable == 1
+            [stack_mol,stack_driver] = applyRoughness(stack_mol,stack_driver,QCA_circuit);
+        end    
+    end
+end
+
+%plot layout
+if isfield(QCA_circuit,'plotLayout') && QCA_circuit.plotLayout == 1
+    Plotting(stack_mol, stack_driver,stack_output)
+end
 %% creation of the layout
 
 
@@ -301,15 +152,6 @@ Values_Dr = QCA_circuit.Values_Dr;
 % end
 
 
-% create the molecule and the driver stacks
-[stack_driver, stack_mol] = GenerateStacks(QCA_circuit);
-
-%plot layout
-if QCA_circuit.plotLayout == 1
-    Plotting(stack_mol, stack_driver)
-end
-
-
 
 % if strcmp(electrode_variation,'on')
 %     
@@ -362,7 +204,7 @@ end
 
 %% Output file creation
 % Check if the directory "Database" is present
-if exist('Database') == 7    % ==7 because the function 'exist' used for directory has as output 7
+if exist('Database','dir')
     delete('Database/*');  % delete its content 
 else
     mkdir('Database');     % if not present. It is created.
@@ -376,46 +218,46 @@ end
 % %     close all;
 %     Plotting(stack_mol_PV, stack_driver, dot_position, dist_z, dist_y, QCA_circuit.structure, QCA_circuit.rotation, QCASurface, electrode_variation)
 
-tt = 1;
+% save simulation filename
+filename = sprintf('Database/Simulation_filename.txt');
+fileID = fopen(filename,'wt');
+fprintf(fileID,'%s', simulation_file_name);
+fclose(fileID);
+
 ff = 1;
 id_num = 1;
+mol_parameter = cell(12*stack_mol.num,1); %pre-allocation of comsol file
 for ii=1:stack_mol.num
 
         % MOLECULE DATA
-        k = (ii-1)*12 + 1;
+        k = (ii-1)*9 + 1;
         name = stack_mol.stack(ii).identifier;
-        
-        if mod(ii,2) == 0 %if ii is even
-            qll_ID = sprintf('mol%d%s',id_num,'b');
-            id_num = id_num+1;
-        else %if ii is odd
-            qll_ID = sprintf('mol%d%s',id_num,'a');
+        if QCA_circuit.magcadImporter == 0
+            if mod(ii,2) == 0 %if ii is even
+                qll_ID = sprintf('%04d%s',id_num,'b');
+                id_num = id_num+1;
+            else %if ii is odd
+                qll_ID = sprintf('%04d%s',id_num,'a');
+            end
+        else
+            qll_ID = stack_mol.stack(ii).identifier_qll;
         end
         
         moleculeType = stack_mol.stack(ii).molType;
         phase = stack_mol.stack(ii).phase;
         Vext = stack_mol.stack(ii).Vext;
-        rotation_x = stack_mol.stack(ii).rotation_x;
-        rotation_y = stack_mol.stack(ii).rotation_y;
-        rotation_z = stack_mol.stack(ii).rotation_z;
-        shift_x = stack_mol.stack(ii).shift_x;
-        shift_y = stack_mol.stack(ii).shift_y;
-        shift_z = stack_mol.stack(ii).shift_z;
         position = sprintf('[%i %i %i]',stack_mol.stack(ii).position(1),stack_mol.stack(ii).position(2),stack_mol.stack(ii).position(3));
         
-        setting = {   'name:'    , name, '', 'position:', position;
-                      'fake phase:'   , phase, '','molType:',moleculeType;
-                      'shift_x [A]:',   'shift_y [A]:','shift_z [A]:','','Vext [V]:';
-                      shift_x, shift_y, shift_z,'',Vext;
-                      'rotation_x [�]:', 'rotation_y [�]:','rotation_z [�]:','','identifier_QLL';
-                      rotation_x, rotation_y, rotation_z,'',qll_ID;
-                      '',         'x_pos [A]:',   'y_pos [A]:','z_pos [A]:','charge:';
+        setting = {   'name:',          name,               '',                         'position:',            position;
+                      'fake phase:',    phase,              '',                         'molType:',             moleculeType;
+                      'Vext [V]:',      Vext,               '',                         'identifier_QLL',       qll_ID;
+                      '',               'x_pos [A]:',       'y_pos [A]:',               'z_pos [A]:',           'charge:';
                       'dot1:',stack_mol.stack(ii).charge(1).x, stack_mol.stack(ii).charge(1).y, stack_mol.stack(ii).charge(1).z, stack_mol.stack(ii).charge(1).q;
                       'dot2:',stack_mol.stack(ii).charge(2).x, stack_mol.stack(ii).charge(2).y, stack_mol.stack(ii).charge(2).z, stack_mol.stack(ii).charge(2).q;
                       'dot3:',stack_mol.stack(ii).charge(3).x, stack_mol.stack(ii).charge(3).y, stack_mol.stack(ii).charge(3).z, stack_mol.stack(ii).charge(3).q;
                       'dot4:',stack_mol.stack(ii).charge(4).x, stack_mol.stack(ii).charge(4).y, stack_mol.stack(ii).charge(4).z, stack_mol.stack(ii).charge(4).q;
                       '%%%%%%%','%%%%%%%','%%%%%%%','%%%%%%%','%%%%%%%'};
-        matrix_mol(k:k+11,1:5) = setting;
+        matrix_mol(k:k+8,1:5) = setting;
         
         % COMSOL FILE
         mol_parameter{ff,1}    = sprintf('%s_dot1_x   %f[nm]',stack_mol.stack(ii).identifier, 0.1*stack_mol.stack(ii).charge(1).x); 
@@ -435,13 +277,13 @@ end
 
     
 %%% FILE FOR MOLECULE DATA
-filename = sprintf('Database/Data_Molecule_%i.mat', tt);
+filename = sprintf('Database/Data_Molecule.mat');
 fprintf('Creating molecule data file "%s"... ', filename)
 save(filename,'matrix_mol');
 fprintf('[DONE] \n')
     
 %%% FILE FOR COMSOL
-filename = [sprintf('Database/Comsol_data_%i.txt', tt)];
+filename = sprintf('Database/Comsol_data.txt');
 fprintf('Creating COMSOL file "%s"... ', filename)
 fileID = fopen(filename,'wt');
 fprintf(fileID,'%s\n', mol_parameter{:,1});
@@ -455,17 +297,20 @@ id_num = 1;
 for ii=1:stack_driver.num
     k = (ii-1)*8 + 1;
     name = stack_driver.stack(ii).identifier;
-    
-    if mod(ii,2) == 0 %if ii is even
-            qll_ID = sprintf('in%d%s',id_num,'b'); 
-            id_num = id_num+1;
-        else %if ii is odd
-            qll_ID = sprintf('in%d%s',id_num,'a');
-    end
-    
     moleculeType = stack_driver.stack(ii).molType;
     position = sprintf('[%i %i %i]',stack_driver.stack(ii).position(1),stack_driver.stack(ii).position(2),stack_driver.stack(ii).position(3));
-        
+    
+    if QCA_circuit.magcadImporter == 0
+        if mod(ii,2) == 0 %if ii is even
+                qll_ID = sprintf('%04d%s',id_num,'b');
+                id_num = id_num+1;
+            else %if ii is odd
+                qll_ID = sprintf('%04d%s',id_num,'a');
+        end
+    else
+        qll_ID = stack_driver.stack(ii).identifier_qll;
+    end
+    
     setting = {   'name:', name, '','position:',position;
                   'type:', moleculeType, '','identifier_QLL:',qll_ID;
                   '', 'x_pos [A]:', 'y_pos [A]:','z_pos [A]:','charge:';
@@ -486,6 +331,45 @@ fprintf('[DONE] \n')
 filename = 'Database/Values_Driver.mat';
 fprintf('Creating driver value file "%s"... ', filename)
 save(filename,'Values_Dr');
+fprintf('[DONE] \n')
+
+%===================================================================================================================================================================
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   DATA OUTPUTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+id_num = 1;
+for ii=1:stack_output.num
+    k = (ii-1)*8 + 1;
+    name = stack_output.stack(ii).identifier;
+    moleculeType = stack_output.stack(ii).molType;
+    position = sprintf('[%i %i %i]',stack_output.stack(ii).position(1),stack_output.stack(ii).position(2),stack_output.stack(ii).position(3));
+    
+    if QCA_circuit.magcadImporter == 0
+        if mod(ii,2) == 0 %if ii is even
+                qll_ID = sprintf('%04d%s',id_num,'b');
+                id_num = id_num+1;
+            else %if ii is odd
+                qll_ID = sprintf('%04d%s',id_num,'a');
+        end
+    else
+        qll_ID = stack_output.stack(ii).identifier_qll;
+    end
+   
+    setting = {   'name:', name, 'position:',position;
+                  'type:', moleculeType, 'identifier_QLL:',qll_ID;
+                  '', 'x_pos [A]:', 'y_pos [A]:','z_pos [A]:';
+                  'dot1:', stack_output.stack(ii).charge(1).x, stack_output.stack(ii).charge(1).y, stack_output.stack(ii).charge(1).z;
+                  'dot2:', stack_output.stack(ii).charge(2).x, stack_output.stack(ii).charge(2).y, stack_output.stack(ii).charge(2).z;
+                  'dot3:', stack_output.stack(ii).charge(3).x, stack_output.stack(ii).charge(3).y, stack_output.stack(ii).charge(3).z;
+                  'dot4:', stack_output.stack(ii).charge(4).x, stack_output.stack(ii).charge(4).y, stack_output.stack(ii).charge(4).z;
+                  '%%%%%%%','%%%%%%%','%%%%%%%','%%%%%%%'};
+    matrix_out(k:k+7,1:4) = setting; 
+end
+if stack_output.num == 0 % output may be not present
+    matrix_out = cell(0,0);
+end
+%Output files
+filename = 'Database/Data_Output.mat';
+fprintf('Creating output geometry file "%s"... ', filename)
+save(filename,'matrix_out');
 fprintf('[DONE] \n')
 
 
@@ -511,18 +395,18 @@ fprintf('[DONE] \n')
 %         
 % else    
 
-for jj=1:stack_mol.num
-    phase = str2num(stack_mol.stack(jj).phase);
-    matrix_phase(jj,:) = [stack_mol.stack(jj).identifier num2cell(stack_phase(phase,:))];
-end
+% matrix_phase = cell(stack_mol.num,length(stack_phase(phase,:)) + 1);
+% for jj=1:stack_mol.num
+%     phase = stack_mol.stack(jj).phase;
+%     matrix_phase(jj,:) = [stack_mol.stack(jj).identifier num2cell(stack_phase(phase,:))];
 % end
 
-
+% end
 
 %Clock file generation
 filename = 'Database/Fake_Phases.mat';
 fprintf('Creating clock value file "%s"... ', filename)
-save(filename,'matrix_phase');
+save(filename,'stack_clock');
 fprintf('[DONE] \n')
 
 fprintf('\nSCERPA is ready to start.\n\n')

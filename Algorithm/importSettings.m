@@ -8,13 +8,14 @@ function scerpaSettings = importSettings(userSettings)
 scerpaSettings.timestep = setDefault(userSettings,'timestep',1);
 
 % topo integration
-scerpaSettings.magcadImporter = setDefault(userSettings,'magcadImporter',0);
-scerpaSettings.doubleMolDriverMode = setDefault(userSettings,'doubleMolDriverMode',0);
+% scerpaSettings.magcadImporter = setDefault(userSettings,'magcadImporter',0);
+% scerpaSettings.doubleMolDriverMode = setDefault(userSettings,'doubleMolDriverMode',0);
 
 % Energy
 scerpaSettings.energyEval = setDefault(userSettings,'energyEval',0);
 
 % output plot
+scerpaSettings.out_path = setDefault(userSettings,'out_path','../OUTPUT_FILES');
 scerpaSettings.plot_plotAbsoluteCharge = setDefault(userSettings,'plot_plotAbsoluteCharge',1);
 scerpaSettings.plotIntermediateSteps = setDefault(userSettings,'plotIntermediateSteps',0);
 scerpaSettings.plotActiveRegionWindow = setDefault(userSettings,'plotActiveRegionWindow',0);
@@ -32,6 +33,7 @@ scerpaSettings.fig_saver = setDefault(userSettings,'fig_saver',0); % not working
 scerpaSettings.max_step = setDefault(userSettings,'max_step',1000);
 scerpaSettings.immediateUpdate = setDefault(userSettings,'immediateUpdate',0);
 scerpaSettings.damping = setDefault(userSettings,'damping',0.4); % value must be in range [0 - 1)
+scerpaSettings.autodamping = setDefault(userSettings,'autodamping',0);
 
 %convergence accelerations
 scerpaSettings.enableRefining = setDefault(userSettings,'enableRefining',1); % value must be in range [0 - 1)

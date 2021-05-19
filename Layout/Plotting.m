@@ -1,4 +1,4 @@
-function [] = Plotting(stack_mol, stack_driver)
+function [] = Plotting(stack_mol, stack_driver, stack_output)
 % The function Plotting plots the circuit layout based on information
 % stored in stack_mol and stack_driver
 
@@ -91,7 +91,29 @@ for ii=1:stack_driver.num
 
 end
    
+%plot outputs
+for ii=1:stack_output.num
     
+    %plot connections
+    draw_association = stack_output.stack(ii).association;
+    n_connections = length(draw_association(:,1));
+    for cncn =1:n_connections
+        plot3([stack_output.stack(ii).charge(draw_association(cncn,1)).z stack_output.stack(ii).charge(draw_association(cncn,2)).z],...
+            [stack_output.stack(ii).charge(draw_association(cncn,1)).y stack_output.stack(ii).charge(draw_association(cncn,2)).y],...
+            [stack_output.stack(ii).charge(draw_association(cncn,1)).x stack_output.stack(ii).charge(draw_association(cncn,2)).x],...
+            'm','LineWidth',3);
+    end
+    
+    % outputs have no charges
+        
+    %plot names
+    text(stack_output.stack(ii).charge(n_charge).z-textOffset,...
+        stack_output.stack(ii).charge(n_charge).y-textOffset,...
+        stack_output.stack(ii).charge(n_charge).x-textOffset,...
+        stack_output.stack(ii).identifier,'HorizontalAlignment','center','FontSize',10); 
+
+end
+
 % end
 
 %run('GenerateElectrodesStackTest.m');

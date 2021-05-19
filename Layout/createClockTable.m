@@ -4,6 +4,7 @@ function stack_clock = createClockTable(stack_mol,circuit)
         
 %%% Clock is set with classical 'phase' method
         case 'phase'
+            stack_clock = cell(stack_mol.num,length(circuit.stack_phase)+1);
             for ii_mol=1:stack_mol.num
 
                 %add to stack_clock
@@ -140,7 +141,7 @@ function stack_clock = createClockTable(stack_mol,circuit)
         case 'map'
             
             %create clock table
-            stack_clock{stack_mol.num,length(circuit.ckmap.field(1,:))+1} = 0;
+            stack_clock = cell(stack_mol.num,length(circuit.ckmap.field(1,:))+1);
             for ii_mol=1:stack_mol.num    
                 %add identifier
                 stack_clock(ii_mol,1) = {stack_mol.stack(ii_mol).identifier};

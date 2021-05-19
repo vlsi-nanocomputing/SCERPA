@@ -1,12 +1,12 @@
-function [stack_mol,stack_driver,driver_values,stack_output] = importQLL(qllFile,Values_Dr,settings)
+function [QCA_circuit] = importQLL_OLD(QCA_circuit)
 %IMPORTQLL Summary of this function goes here
 %   Detailed explanation goes here
 % stack_clock = -1;
 % driver_values = -1;
 %debug info:
 
-
-xmlStruct = xml2struct(qllFile);
+tic;
+xmlStruct = xml2struct(QCA_circuit.qllFile);
 
 %Layout properties
 n_properties = length(xmlStruct.qcalayout.technologies.settings.property);
@@ -21,6 +21,7 @@ for ii = 1:n_properties %loop on properties
     end
 
 end
+toc;  
 
 % Available molecules
 n_possibleMolecules = length(xmlStruct.qcalayout.components.item);
@@ -337,7 +338,7 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
         
         switch currentPropertyName
             case 'phase'
-                phase = str2double(currentPropertyValue);
+                phase = (currentPropertyValue);
             case 'angle_a'
                 mol1_angle = str2double(currentPropertyValue);
             case 'xshift_a'
@@ -411,5 +412,5 @@ function [stack,phase] = cell2mols(cell,molecule_data,intermolecular_distance,ve
             stack.stack(mol2_index).charge(cc).q = molecule_data(molecule_type).initial_charge(cc);
         end       
     end
-    
+ 
 end

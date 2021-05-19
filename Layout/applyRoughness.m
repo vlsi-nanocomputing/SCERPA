@@ -1,21 +1,21 @@
-function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,settingsArg)
+function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,circuit)
 
     plot_substrate_map = 0;
 %   plot_substrate_map = 0;
-    switch settingsArg.circuit.substrate.mode 
+    switch circuit.substrate.mode 
         case 'map'
             disp('Applying substrate map...')
           %plot map
           if plot_substrate_map==1
               figure(999) 
-                  surf(settingsArg.circuit.substrate_mesh_y, settingsArg.circuit.substrate_mesh_z, settingsArg.circuit.substrate_mesh_x, 'FaceAlpha',0.3,'EdgeColor','none')
+                  surf(circuit.substrate_mesh_y, circuit.substrate_mesh_z, circuit.substrate_mesh_x, 'FaceAlpha',0.3,'EdgeColor','none')
                   hold on
                   colormap copper
                   xlabel('mesh y'),ylabel('mesh z')
           end
 
         case 'random'
-            fprintf('Using random substrate map [%.2f nm]...\n',settingsArg.circuit.substrate.averageRoughness/10);
+            fprintf('Using random substrate map [%.2f nm]...\n',circuit.substrate.averageRoughness/10);
     end
 
 %%%%%%%%%%%%%   
@@ -29,15 +29,15 @@ function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,setti
         y_anchor = stack_mol.stack(ii).charge(end).y;
 
         %getshift
-        if strcmp(settingsArg.circuit.substrate.mode,'random')
+        if strcmp(circuit.substrate.mode,'random')
             %random roughness
-            roughness_shift = settingsArg.circuit.substrate.averageRoughness*(rand(1) - 0.5);
+            roughness_shift = circuit.substrate.averageRoughness*(rand(1) - 0.5);
         else
             %interp data
             roughness_shift = meshInterp(...
-                settingsArg.circuit.substrate_mesh_y,...
-                settingsArg.circuit.substrate_mesh_z,...
-                settingsArg.circuit.substrate_mesh_x,...
+                circuit.substrate_mesh_y,...
+                circuit.substrate_mesh_z,...
+                circuit.substrate_mesh_x,...
                 y_anchor,z_anchor);
 
             %if molecule position is out of range, set roughness to 0
@@ -69,15 +69,15 @@ function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,setti
         y_anchor = stack_driver.stack(ii).charge(end).y;
 
         %getshift
-        if strcmp(settingsArg.circuit.substrate.mode,'random')
+        if strcmp(circuit.substrate.mode,'random')
             %random roughness
-            roughness_shift = settingsArg.circuit.substrate.averageRoughness*(rand(1) - 0.5);
+            roughness_shift = circuit.substrate.averageRoughness*(rand(1) - 0.5);
         else
             %interp data
             roughness_shift = meshInterp(...
-                settingsArg.circuit.substrate_mesh_y,...
-                settingsArg.circuit.substrate_mesh_z,...
-                settingsArg.circuit.substrate_mesh_x,...
+                circuit.substrate_mesh_y,...
+                circuit.substrate_mesh_z,...
+                circuit.substrate_mesh_x,...
                 y_anchor,z_anchor);
             
             %if molecule position is out of range, set roughness to 0

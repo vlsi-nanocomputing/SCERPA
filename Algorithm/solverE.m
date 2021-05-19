@@ -23,8 +23,9 @@ if settings.enableInteractionRadiusMode || settings.enableActiveRegion
             if jj_mol ~= ii_mol
 
                 %evaluate distance
-                ii_jj_distance = DIST_MATRIX(ii_mol,jj_mol,end,end);
-
+                %ii_jj_distance = DIST_MATRIX(ii_mol,jj_mol,end,end);
+                ii_jj_distance = 0.5*(DIST_MATRIX(ii_mol,jj_mol,1,1)+DIST_MATRIX(ii_mol,jj_mol,2,2)); %average btw r_dot_11 and r_dot_22
+                
                 %evaluate interaction condition
                 if ii_jj_distance <= settings.interactionRadius
                     number_of_RX_molecules = number_of_RX_molecules + 1;
@@ -67,13 +68,10 @@ n_times = size(stack_clock,2)-1;
 timeComputation =zeros(1,n_times);
 
 %%Time loop
+disp('Starting Time evaluation')
 for time = 1:n_times
-    disp('Preparing Time evaluation')
     
-    %disp('Time = ')
-    %disp(time)
-
-    fprintf('Evaluation of time = %.2f\n',time); 
+    fprintf('Evaluating time step %.2f of %.2f\n',time,n_times); 
     
     tic
     
@@ -93,8 +91,8 @@ for time = 1:n_times
     %Initialize drivers
     for ff=1:stack_driver.num
         for tt=1:size(driver_values,1)
-            if strcmp(stack_driver.stack(ff).identifier{1},driver_values{tt,1})
-                mm = cell2mat(stack_driver.stack(ff).molType);
+            if strcmp(stack_driver.stack(ff).identifier,driver_values{tt,1})
+                mm = stack_driver.stack(ff).molType;
                 [Q1, Q2, Q3, Q4] = applyTranschar(driver_values{tt,time+1},+2,CK.stack(mm+1));
                 
                 %saturation of driver charges (if required)
@@ -148,7 +146,7 @@ for time = 1:n_times
                 stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time+1};
                 
                 %update charges if new clock %added on 5/09/2019
-                mm = cell2mat(stack_mol.stack(ii_mol).molType);
+                mm = stack_mol.stack(ii_mol).molType;
                 [Q1, Q2, Q3, Q4] = applyTranschar(Vout(ii_mol),stack_mol.stack(ii_mol).clock,CK.stack(mm+1));
                 
                 stack_mol.stack(ii_mol).charge(1).q =  Q1;   
@@ -163,16 +161,17 @@ for time = 1:n_times
         end
     else %first time
         V_driver = evaluateDriverEffect( stack_driver, stack_mol);
-        Vext = cell2mat([stack_mol.stack(:).Vext]);
+        Vext = [stack_mol.stack(:).Vext];
         Vout = zeros(1,stack_mol.num) + Vext;
         preV_beforeDriverChange = zeros(1,stack_mol.num);
         newVout_wodamping = zeros(1,stack_mol.num);
         voltageVariation = abs(V_driver + Vext); % It should be abs(V_driver - 0)
         
         %Initialize clocks
-        for ii_mol =1:stack_mol.num
-            stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time+1};
-        end
+%         for ii_mol =1:stack_mol.num
+%             stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time+1};
+%         end
+        [stack_mol.stack.clock] = stack_clock{:,time+1}; %vectorized
     end
     
     
@@ -304,7 +303,24 @@ for time = 1:n_times
             if settings.immediateUpdate == 1
                 %update charges
                 newVout_wodamping(jj_mol) = Vout(jj_mol); %save to evaluate convergence
-                Vout(jj_mol) = preV_afterVoltageVariation(jj_mol) + (1-settings.y.damping)*(Vout(jj_mol) - preV_afterVoltageVariation(jj_mol));
+                deltaV = abs(Vout(jj_mol) - preV_afterVoltageVariation(jj_mol));
+                if settings.autodamping == 1    
+                    if scfStep<=0.8*settings.max_step    
+                        if deltaV <= 0.05
+                            damping = 1-0.2;
+                        elseif deltaV <= 0.15
+                            damping = 1-0.4;
+                        else
+                            damping = 1-0.6;
+                        end
+                    else
+                        damping = 1-0.6;
+                    end
+                else
+                    damping = settings.damping;
+                end
+                Vout(jj_mol) = preV_afterVoltageVariation(jj_mol) + damping*(Vout(jj_mol) - preV_afterVoltageVariation(jj_mol));
+%                 Vout(jj_mol) = preV_afterVoltageVariation(jj_mol) + (1-settings.y.damping)*(Vout(jj_mol) - preV_afterVoltageVariation(jj_mol));
                 
                 mm = cell2mat(stack_mol.stack(jj_mol).molType);
                 [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK.stack(mm+1));
@@ -319,9 +335,26 @@ for time = 1:n_times
         %delayed update
         if settings.y.immediateUpdate == 0
             newVout_wodamping = Vout;
-            Vout = preV_afterVoltageVariation + (1-settings.y.damping)*(Vout - preV_afterVoltageVariation);
+            deltaV = abs(Vout - preV_afterVoltageVariation);
+            if settings.autodamping == 1 
+                if scfStep<=0.8*settings.max_step    
+                    if deltaV <= 0.05
+                        damping = 1-0.2;
+                    elseif deltaV <= 0.15
+                        damping = 1-0.4;
+                    else
+                        damping = 1-0.6;
+                    end
+                else
+                    damping = 1-0.6;
+                end
+            else
+                damping = settings.damping;
+            end
+            Vout = preV_afterVoltageVariation + damping*(Vout - preV_afterVoltageVariation);
+%             Vout = preV_afterVoltageVariation + (1-settings.y.damping)*(Vout - preV_afterVoltageVariation);
             for jj_mol=1:stack_mol.num
-                mm = cell2mat(stack_mol.stack(jj_mol).molType);
+                mm = stack_mol.stack(jj_mol).molType;
                 %update charges
                 [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK.stack(mm+1));
                 stack_mol.stack(jj_mol).charge(1).q =  Q1;   
@@ -432,7 +465,7 @@ for time = 1:n_times
     RunTimePlotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
     Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
     Function_SaveQSS(time, stack_mol, stack_driver,simulation_file_name);    
-    Function_SaveTable(0,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values,timeComputation(time),stack_energy);
+%    Function_SaveTable(0,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values,timeComputation(time),stack_energy);
     
 %     clock_tmp(1,:) = [stack_mol.stack.clock];
 %     output_txt(time,:) = [clock_tmp Vout];

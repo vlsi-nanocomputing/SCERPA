@@ -12,6 +12,7 @@ circuit.molecule = 'bisfe_4';
 %layout (MagCAD)
 file = 'threePhasesWire.qll';
 circuit.qllFile = sprintf('%s\\%s',pwd,file);
+circuit.doubleMolDriverMode = 1;
 
 %layout (Layout Generator)
 % circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3'};
@@ -40,7 +41,6 @@ circuit.ckmap.coords = [z y];
 circuit.ckmap.field = [Eclock1 Eclock2 Eclock3];
 
 %SCERPA settings
-settings.doubleMolDriverMode = 1;
 settings.damping = 0.6;
 settings.verbosity = 2;
 

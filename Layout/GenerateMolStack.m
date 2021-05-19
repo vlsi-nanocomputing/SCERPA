@@ -46,8 +46,8 @@ function [mol_stack]=GenerateMolStack(circuit, row, column, mol_stack, dot_posit
        
         %add molecule information
         mol_para.identifier = sprintf('Mol_%i', mol_stack.num+1);
-        mol_para.molType = str2num(circuit.components{row,column});
-        mol_para.phase = circuit.structure{row,column};
+        mol_para.molType = str2double(circuit.components{row,column});
+        mol_para.phase = str2double(circuit.structure{row,column});
         mol_para.position=[0 row column];
         mol_para.rotation_x = rotation_x;
         mol_para.rotation_y = rotation_y;

@@ -50,7 +50,7 @@ index = strncmp(dirNamesList,molIdentifier,2);
 directoryName = dirNamesList{index};
 
 filename_setting = sprintf('%s/characteristics_data.xlsx',directoryName);
-[num_data,txt_data,raw_data] = xlsread(filename_setting);
+[~,~,raw_data] = xlsread(filename_setting);
 
 for jj = 2:size(raw_data,1)
     filename = sprintf('%s/%s', directoryName, raw_data{jj,1});
@@ -66,7 +66,7 @@ for jj = 2:size(raw_data,1)
     end
     
     CK.characteristic(jj-1).data(:,:,1) = M(1:raw_data{jj,3},:);   
-    CK.characteristic(jj-1).value = raw_data{jj,2}
+    CK.characteristic(jj-1).value = raw_data{jj,2};
     CK.num = jj-1;
     CK.molID = molecule; 
 end
