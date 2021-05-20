@@ -60,7 +60,7 @@ end
 %import layout data (output are imported from QLL, not yet used in the
 %algorithm, though, available for viewer)
 disp('Importing Layout...')
-run('Function_Reader.m');
+[stack_mol,stack_driver,stack_output,stack_clock,driver_values] = Function_Reader(filename_mol,filename_driv,filename_out,filename_phase,filename_values_dr);
 
 
 %Import molecule library data

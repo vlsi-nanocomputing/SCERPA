@@ -15,6 +15,9 @@
 % [num_values,txt_values,raw_values] = xlsread(filename_values_dr);
 
 %crossplatform
+
+function [stack_mol,stack_driver,stack_output,stack_clock,driver_values] = Function_Reader(filename_mol,filename_driv,filename_out,filename_phase,filename_values_dr)
+
 % File to read
 load(filename_mol);
 load(filename_driv);
@@ -98,6 +101,6 @@ driver_values = raw_values;
 
 disp('Loading Complete')
 
-
+end
 
 
