@@ -317,7 +317,7 @@ for time = 1:n_times
                         damping = 1-0.6;
                     end
                 else
-                    damping = settings.damping;
+                    damping = 1 - settings.damping;
                 end
                 Vout(jj_mol) = preV_afterVoltageVariation(jj_mol) + damping*(Vout(jj_mol) - preV_afterVoltageVariation(jj_mol));
 %                 Vout(jj_mol) = preV_afterVoltageVariation(jj_mol) + (1-settings.y.damping)*(Vout(jj_mol) - preV_afterVoltageVariation(jj_mol));
@@ -349,7 +349,7 @@ for time = 1:n_times
                     damping = 1-0.6;
                 end
             else
-                damping = settings.damping;
+                damping = 1 - settings.damping;
             end
             Vout = preV_afterVoltageVariation + damping*(Vout - preV_afterVoltageVariation);
 %             Vout = preV_afterVoltageVariation + (1-settings.y.damping)*(Vout - preV_afterVoltageVariation);
