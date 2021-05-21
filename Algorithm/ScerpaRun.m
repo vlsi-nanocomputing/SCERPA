@@ -97,6 +97,7 @@ run('solverE.m')
 
 %run('yfullEnergy.m')
 
+% ConvergenceTable(stack_mol,pre_driver_effect,Vout,CK);
 % run('ConvergenceTable.m')
 
 

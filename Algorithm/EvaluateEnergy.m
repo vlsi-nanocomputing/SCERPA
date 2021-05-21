@@ -40,7 +40,7 @@ for ii_system = stack_driver.num+1:stack_mol.num+stack_driver.num
     M_DOT4 = stack_mol.stack(ii).charge(4);
     
     %update charges
-    mm = cell2mat(stack_mol.stack(ii).molType);
+    mm = stack_mol.stack(ii).molType;
     [M_DOT1.q, M_DOT2.q, M_DOT3.q, M_DOT4.q] = applyTranschar(Vout(ii),stack_mol.stack(ii).clock,CK.stack(mm+1));
     
     %molecule struct creation

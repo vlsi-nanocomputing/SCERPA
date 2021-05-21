@@ -1,21 +1,3 @@
-% clc;
-% close all;
-% clear all;
-
-%windows
-% File to read
-% filename_mol = 'Data_Molecule_1.xlsx';
-% filename_driv = 'Data_Driver.xlsx';
-% filename_phase = 'Fake_Phases.xlsx';
-% finename_values_dr =  'Values_Driver.xlsx';
-
-% [num_mol,txt_mol,raw_mol] = xlsread(filename_mol);
-% [num_dr,txt_dr,raw_dr] = xlsread(filename_driv);
-% [num_phase,txt_phase,raw_phase] = xlsread(filename_phase);
-% [num_values,txt_values,raw_values] = xlsread(filename_values_dr);
-
-%crossplatform
-
 function [stack_mol,stack_driver,stack_output,stack_clock,driver_values] = Function_Reader(filename_mol,filename_driv,filename_out,filename_phase,filename_values_dr)
 
 % File to read
