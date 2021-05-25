@@ -466,7 +466,7 @@ for time = 1:n_times
     %plot and save data
     RunTimePlotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
     Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
-    Function_SaveQSS(time, stack_mol, stack_driver,simulation_file_name);    
+    Function_SaveQSS(time, stack_mol, stack_driver,simulation_file_name,settings.out_path);    
     Function_SaveTable(0,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values,timeComputation(time),stack_energy);
     
 %     clock_tmp(1,:) = [stack_mol.stack.clock];

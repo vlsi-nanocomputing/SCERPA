@@ -132,22 +132,30 @@ function [ voltage ] = EvaluatePotential(mol,pos)
     k = 1/(4*pi*e0);
 
     %number of charges
-    N=mol.n_atoms;
+%     N=mol.n_atoms;
 
     %contribution to the potential due to i-th charge is: k*qi/|r-ri|
 
     %evaluate voltage
-    voltage = 0;
-    for ii=1:N
-        %evaluate distance
-        xdist = 1e-10*(pos.x - mol.x(ii));
-        ydist = 1e-10*(pos.y - mol.y(ii));
-        zdist = 1e-10*(pos.z - mol.z(ii));
-        dist = sqrt(xdist^2 + ydist^2 + zdist^2);
+%     voltage = 0;
+%     for ii=1:N
+%         %evaluate distance
+%         xdist = 1e-10*(pos.x - mol.x(ii));
+%         ydist = 1e-10*(pos.y - mol.y(ii));
+%         zdist = 1e-10*(pos.z - mol.z(ii));
+%         dist = sqrt(xdist^2 + ydist^2 + zdist^2);
+% 
+%         %sumpotential contribution
+%         voltage = voltage + k*(q*mol.charge(ii))/dist;
+%     end
+    %evaluate distance
+    xdist = (pos.x - mol.x);
+    ydist = (pos.y - mol.y);
+    zdist = (pos.z - mol.z);
+    dist = 1e-10*sqrt(xdist.^2 + ydist.^2 + zdist.^2);
 
-        %sumpotential contribution
-        voltage = voltage + k*(q*mol.charge(ii))/dist;
-    end
+    %sumpotential contribution
+    voltage = sum(k*(q*mol.charge)./dist);
 end
 
     
