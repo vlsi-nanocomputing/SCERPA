@@ -22,8 +22,8 @@ OUTPUT_FILES/simulation_output.mat
 # ignore viewer export files
 Viewer/EXPORT/*.jpg
 Viewer/EXPORT/*.fig
-OUTPUT_FILES/viewer/*.jpg
-OUTPUT_FILES/viewer/*.fig
+OUTPUT_FILES/figures/*.jpg
+OUTPUT_FILES/figures/*.fig
 
 # ignore layout files
 Layout/Database/*.mat

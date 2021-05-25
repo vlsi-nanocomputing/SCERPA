@@ -4,6 +4,14 @@ function scerpaSettings = importSettings(userSettings)
 % otherwise it sets the default value.
 % The function returns the complete set of settings (scerpaSettings).
 
+% output path
+if isfield(userSettings,'out_path') 
+    % set by user
+    scerpaSettings.out_path = strcat(userSettings.out_path,'/SCERPA_OUTPUT_FILES');
+else
+    % not set by the user!
+    scerpaSettings.out_path = '../OUTPUT_FILES';
+end
 
 % general plot
 scerpaSettings.fig_saver = setDefault(userSettings,'fig_saver',0);

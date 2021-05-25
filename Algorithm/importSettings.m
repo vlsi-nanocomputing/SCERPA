@@ -18,6 +18,7 @@ scerpaSettings.energyEval = setDefault(userSettings,'energyEval',0);
 if isfield(userSettings,'out_path') 
     % set by user
     scerpaSettings.out_path = strcat(userSettings.out_path,'/SCERPA_OUTPUT_FILES');
+    mkdir (scerpaSettings.out_path)
 else
     % not set by the user!
     scerpaSettings.out_path = '../OUTPUT_FILES';

@@ -38,7 +38,7 @@ filename_phase = '../Layout/Database/Fake_Phases.mat';
 filename_values_dr =  '../Layout/Database/Values_Driver.mat';
 
 % Output Files
-Sim_Output_file = '../OUTPUT_FILES/Simulation_Output.log';
+Sim_Output_file = strcat(settings.out_path,'/Simulation_Output.log');
 fileID = fopen(Sim_Output_file,'wt');
 fprintf(fileID,'%%%% Files Analysed:\n');
 fprintf(fileID,'%%%%    %s\n', filename_mol);
@@ -126,6 +126,6 @@ disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 disp(' ');
 
 %save workspace for analysis
-save('../OUTPUT_FILES/simulation_output');
+save(strcat(settings.out_path,'/simulation_output'));
 end
 
