@@ -18,6 +18,7 @@ OUTPUT_FILES/*.txt
 OUTPUT_FILES/*.log
 OUTPUT_FILES/Simulation_Output.log   
 OUTPUT_FILES/simulation_output.mat
+OUTPUT_FILES/viewer/*
 
 # ignore viewer export files
 Viewer/EXPORT/*.jpg
