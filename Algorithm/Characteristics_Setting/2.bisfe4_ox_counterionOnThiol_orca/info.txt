@@ -1,0 +1,10 @@
+CHARGES 4
+
+CLOCKDATA 7
+ck20.txt +2 V 24 values
+ck15.txt +1.5 V 24 values
+ck10.txt +1 V 24 values
+ck00.txt 0 V 24 values
+ckm10.txt -1 V 24 values
+ckm15.txt -1.5 V 24 values
+ckm20.txt -2 V 24 values

@@ -2,7 +2,7 @@ function [W_int,W_ex,W_clk,W_tot] = EvaluateEnergy(stack_driver, stack_mol, Vout
 %first driver
 
 %settings is conformation, internal, polarization, clock
-settings.evalEnergy=[0 1 1 0];
+settings.evalEnergy=[0 0 1 0];
     
 % %dots
 % D_DOT1 = stack_driver.stack(1).charge(1);

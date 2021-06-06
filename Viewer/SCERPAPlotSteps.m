@@ -63,7 +63,9 @@ for ff=stepToPrint
     
 %     %settings
 %     plotSettings.plot_molnum=0;
-
+    
+    %remove .qss extension for images names
+    filename = cell2mat(regexp(qssfiles(ff).name,'\d*','Match'));
     %print
     if plotSettings.plot_3dfig == 1
         threeDfig = Plot3DAC(stack_mol, stack_driver, stack_output, plotSettings);

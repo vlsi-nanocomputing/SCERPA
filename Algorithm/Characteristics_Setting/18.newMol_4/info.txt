@@ -1,0 +1,5 @@
+CHARGES 4
+
+CLOCKDATA 2
+ck1.txt -2 V 70 values
+ck3.txt +2 V 70 values

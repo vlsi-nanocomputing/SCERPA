@@ -17,7 +17,8 @@ circuit.magcadImporter = 1;
 % circuit.molecule = 'bisfe_4';
 
 %layout (MATLAB)
-% circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3'};
+% circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' ...
+%     '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3'};
 % circuit.magcadImporter = 0;
  
 %drivers and clock
