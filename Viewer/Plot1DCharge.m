@@ -9,7 +9,7 @@ dataTable{number_of_mols,4} = [];
 %analyse molecules
 for ii=1:stack_mol.num
     %get position
-    positionOfMol = sscanf(stack_mol.stack(ii).position,'[%d %d %d]');
+    positionOfMol = sscanf(string(stack_mol.stack(ii).position),'[%d %d %d]');
     dataTable{ii,1} = positionOfMol(3);
     
     %get name
@@ -27,7 +27,7 @@ for ii=1:stack_driver.num
     dd = ii + stack_mol.num;
     
     %get position
-    positionOfMol = sscanf(stack_driver.stack(ii).position,'[%d %d %d]');
+    positionOfMol = sscanf(string(stack_driver.stack(ii).position),'[%d %d %d]');
     dataTable{dd,1} = positionOfMol(3);
     
     %get name
@@ -44,8 +44,8 @@ dataTable = sortrows(dataTable,1);
 out_fig = figure('visible','off');
 hold on, grid on;
 plot(cell2mat(dataTable(:,1)),cell2mat(dataTable(:,3)),'b--*',cell2mat(dataTable(:,1)),cell2mat(dataTable(:,4)),'r--*','Linewidth',4,'MarkerSize',10);
-axis([0 stack_mol.num+1 -0.2 1.2])
-xticks(cell2mat(dataTable(:,1)));xticklabels(dataTable(:,2));xtickangle(90);
+axis([0 number_of_mols -0.2 1.2])
+xticks(cell2mat(dataTable(:,1)));xticklabels(string(dataTable(:,2)));xtickangle(90);
 set(gca,'TickLabelInterpreter','none')
  
 legend('Dot1','Dot2');title('Charge distribution');

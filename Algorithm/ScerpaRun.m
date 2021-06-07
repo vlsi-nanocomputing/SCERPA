@@ -10,38 +10,40 @@ if ~exist('settingsArg','var')
     settingsArg=0;
 end
 
-%delete old simulation pictures
-FigureDirectory = dir('FIGURE');
-FigureDirectory([FigureDirectory.isdir]) = [];
-oldPics = fullfile('FIGURE', {FigureDirectory.name});
-try
-    delete( oldPics{:} )
-catch
-    disp('No previous simulation found')
-end
+%Import SCERPA settings
+settings = importSettings(settingsArg);
 
 %delete old simulation files
-filesDirectory = dir('OUTPUT_FILES');
+filesDirectory = dir(settings.out_path);
 filesDirectory([filesDirectory.isdir]) = [];
-oldSims = fullfile('OUTPUT_FILES', {filesDirectory.name});
+oldSims = fullfile(settings.out_path, {filesDirectory.name});
 try
     delete( oldSims{:} )
 catch
     disp('No previous simulation found')
 end
 
+%get simulation file name
+filename_sim = '../Layout/Database/Simulation_filename.txt';
+fileID = fopen(filename_sim,'r');
+formatSpec = '%s';
+simulation_file_name = fscanf(fileID,formatSpec);
+fclose(fileID);
+
 % Files to read cross-platform (mat data)
-filename_mol = '../Layout/Database/Data_Molecule_1.mat';
+filename_mol = '../Layout/Database/Data_Molecule.mat';
 filename_driv = '../Layout/Database/Data_Driver.mat';
+filename_out = '../Layout/Database/Data_Output.mat';
 filename_phase = '../Layout/Database/Fake_Phases.mat';
 filename_values_dr =  '../Layout/Database/Values_Driver.mat';
 
 % Output Files
-filename_out = 'OUTPUT_FILES/Simulation_Output.log';
-fileID = fopen(filename_out,'wt');
+Sim_Output_file = strcat(settings.out_path,'/Simulation_Output.log');
+fileID = fopen(Sim_Output_file,'wt');
 fprintf(fileID,'%%%% Files Analysed:\n');
 fprintf(fileID,'%%%%    %s\n', filename_mol);
 fprintf(fileID,'%%%%    %s\n', filename_driv);
+fprintf(fileID,'%%%%    %s\n', filename_out);
 fprintf(fileID,'%%%%    %s\n', filename_phase);
 fprintf(fileID,'%%%%    %s\n', filename_values_dr);
 
@@ -49,8 +51,6 @@ fprintf(fileID,'%%%%    %s\n', filename_values_dr);
 fprintf(fileID,'\n\n%%%%    Configuration of data output: \n');
 fprintf(fileID,'%%%%    ID - Vin - Q1 ... QN: \n');
 
-%Import SCERPA settings
-settings = importSettings(settingsArg);
 
 %disable MATLAB optimization
 if settings.enableJit == 0
@@ -59,53 +59,30 @@ end
 
 %import layout data (output are imported from QLL, not yet used in the
 %algorithm, though, available for viewer)
-
 disp('Importing Layout...')
-if settings.magcadImporter ==0
-    run('Function_Reader.m');
-    stack_output.num = 0; %no output
-else
-    [stack_mol,stack_driver,driver_values, stack_output] = importQLL(...
-        settingsArg.circuit.qllFile,...
-        settingsArg.circuit.Values_Dr,...
-        settings);
-    
-    %clock management (Atm compatible only with QLL version, as it needs
-    %the phase defined in stack_mol)
-    if ~isfield(settingsArg.circuit,'clockMode')
-        settingsArg.circuit.clockMode = 'phase';
-    end
-    
-    stack_clock = createClockTable(stack_mol,settingsArg.circuit);
-end
-           
-%roughness management
-if isfield(settingsArg.circuit,'substrate')
-    if isfield(settingsArg.circuit.substrate,'PVenable')
-        if settingsArg.circuit.substrate.PVenable ==1
-            [stack_mol,stack_driver] = applyRoughness(stack_mol,stack_driver,settingsArg);
-        end    
-    end
-end
+[stack_mol,stack_driver,stack_output,stack_clock,driver_values] = Function_Reader(filename_mol,filename_driv,filename_out,filename_phase,filename_values_dr);
 
 
 %Import molecule library data
 disp('Importing Libraries...')
 
 % create a list containing all the molecule type involved in the circuit
-molTypeList = unique([cell2mat([stack_mol.stack(:).molType])  cell2mat([stack_driver.stack(:).molType])]);
+molTypeList = unique([[stack_mol.stack(:).molType]  [stack_driver.stack(:).molType]]);
 
 for i = 1:length(molTypeList)
     transchar = Interp_coeff_bilinear(molTypeList(i)); %transchar
     
     %reshape transcharacteristics to avoid true interpolation
-    CK.stack(i) = reshapeTC(transchar);
+    CK.stack(molTypeList(i)+1) = reshapeTC(transchar); % put transchar in fixed position corresponding to molType number (+1 to start from 1 instead of 0)
 end
 CK.length = length(molTypeList);
 
 %create distance matrix
 disp('Creating distance matrix...')
 DIST_MATRIX = createDistanceMatrix(stack_mol);
+
+%Create Additional_Information.txt
+fileTable = Function_SaveTable(1,settings,stack_mol,stack_driver,stack_output);
 
 % Run Scerpa solver E
 run('solverE.m') 
@@ -120,6 +97,7 @@ run('solverE.m')
 
 %run('yfullEnergy.m')
 
+% ConvergenceTable(stack_mol,pre_driver_effect,Vout,CK);
 % run('ConvergenceTable.m')
 
 
@@ -127,22 +105,15 @@ run('solverE.m')
 %%%%%%%% END DEBUG
 
 fclose(fileID);
+fclose(fileTable);
 
 % for MATLAB versions following 2019a
 %writematrix(output_txt,'Additional_Information.txt','Delimiter','tab')
 
 % for all MATLAB versions
-formatSpec = '';
-for ii = 1:2*stack_mol.num
-   formatSpec = strcat(formatSpec, '\t%f');
-end
-formatSpec = strcat(formatSpec, '\n');
-filename_out = './OUTPUT_FILES/Additional_Information.txt'; 
-fileID = fopen(filename_out,'wt');
-for jj = 1:n_times
-    fprintf(fileID,formatSpec,output_txt(jj,:));
-end
-fclose(fileID);
+
+
+
 
 %%
 % myicon = imread('good.png');
@@ -155,6 +126,6 @@ disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 disp(' ');
 
 %save workspace for analysis
-save('OUTPUT_FILES/simulation_output');
+save(strcat(settings.out_path,'/simulation_output'));
 end
 

@@ -19,14 +19,21 @@ function [status] = SCERPA(command,option1,option2)
                 status = 0;
             end
             %open log file
-            open('OUTPUT_FILES/Simulation_Output.log')
+%             open('../OUTPUT_FILES/Simulation_Output.log')
             cd ..
         case char('topoLaunch') %work in progress
             if exist('option1','var')
-                option2.circuit = option1;
-                option2.magcadImporter=1;
-                status = SCERPA('launch',option2);
+                option1.magcadImporter = 1;
+                status = SCERPA('generate', option1);
+                if status == 0
+                     if exist('option2','var')
+                        status = SCERPA('launch',option2);
+                     else
+                         status = SCERPA('launch');
+                     end
+                end
             else
+                disp('[SCERPA ERROR] No circuit.')
                 status = 1;
                 return
             end
@@ -41,7 +48,7 @@ function [status] = SCERPA(command,option1,option2)
                 status = SCERPA('generate', option1);
                 if status == 0
                      if exist('option2','var')
-                        option2.circuit = option1; %pass things which are not managed by the layour generator directly to scerpa (compatibility)
+                        %option2.circuit = option1; %pass things which are not managed by the layour generator directly to scerpa (compatibility)
                         status = SCERPA('launch',option2);
                      else
                          status = SCERPA('launch');
@@ -53,7 +60,7 @@ function [status] = SCERPA(command,option1,option2)
                 return
             end
         case char('plotSteps')
-            close all
+            %close all
             disp('Plotting Results!')
             cd Viewer
             SCERPAPlotSteps(option1)

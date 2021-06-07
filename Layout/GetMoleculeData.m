@@ -79,7 +79,43 @@ function [initial_charge, dot_position, draw_association] = GetMoleculeData(molT
                                0,       0,       0;
                                1,       0,       0];                     
             draw_association =[1 2];
+        
+        case '15' % Neutra -> paper neutre
+            initial_charge   = [0, 0, 0,  0];  % charge ck=+2V              
+            dot_position =  [ -5      -5           0;  %[dot1_x, dot1_y, dot1_z]
+                              -5      +5           0;  %[dot2_x, dot2_y, dot2_z]
+                              0         0           0;  %[dot3_x, dot3_y, dot3_z]
+                              +10       0           0]; %[dot4_x, dot4_y, dot4_z]
+            draw_association =[1 3; 2 3];
             
+        case '16' % Ossidata -> paper neutre
+            initial_charge   = [0.5, 0.5, 0, 0];  % charge ck=+2V              
+            dot_position =  [ -5      -5           0;  %[dot1_x, dot1_y, dot1_z]
+                              -5      +5           0;  %[dot2_x, dot2_y, dot2_z]
+                              0         0           0;  %[dot3_x, dot3_y, dot3_z]
+                              +10       0           0];  %[dot4_x, dot4_y, dot4_z]
+            draw_association =[1 3; 2 3];
+        
+        case '17' % Zwitter -> paper neutre
+            initial_charge   = [0.5, 0.5, -1, 0];  % charge ck=+2V              
+            dot_position =  [ -5      -5           0;  %[dot1_x, dot1_y, dot1_z]
+                              -5      +5           0;  %[dot2_x, dot2_y, dot2_z]
+                              0        0           0;  %[dot3_x, dot3_y, dot3_z]
+                              +10       0           0]; %[dot4_x, dot4_y, dot4_z]
+            draw_association =[1 3; 2 3];
+        case '18' % oxidized counterion -> paper neutre
+            initial_charge   = [0.5, 0.5, 0, -1];  % charge ck=+2V              
+            dot_position =  [ -3.622      -5.062,    -0.094;  %[dot1_x, dot1_y, dot1_z]
+                              -3.588      +5.083,    -0.094;  %[dot2_x, dot2_y, dot2_z]
+                              +3.133515   -0.011731, -0.755;  %[dot3_x, dot3_y, dot3_z]
+                              +11.776298  -0.053777, +0.409]; %[dot4_x, dot4_y, dot4_z]
+            
+%             dot_position =  [ -5      -5           0;  %[dot1_x, dot1_y, dot1_z]
+%                               -5      +5           0;  %[dot2_x, dot2_y, dot2_z]
+%                               0         0           0;  %[dot3_x, dot3_y, dot3_z]
+%                               +1       0           0];  %[dot4_x, dot4_y, dot4_z]
+            draw_association =[1 3; 2 3];
+             
     end
     
 end

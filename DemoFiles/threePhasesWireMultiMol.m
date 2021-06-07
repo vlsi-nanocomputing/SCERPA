@@ -6,25 +6,25 @@ clock_low = -2;
 clock_high = +2;
 clock_step = 3;
 
-%molecule
-circuit.molecule = 'bisfe_4';
-
 %layout (MagCAD)
-file = 'threePhasesWireMultiMol.qll';
-circuit.qllFile = sprintf('%s\\%s',pwd,file);
+% file = 'threePhasesWireMultiMol.qll';
+% circuit.qllFile = sprintf('%s\\%s',pwd,file);
+% circuit.doubleMolDriverMode = 1;   
+% circuit.magcadImporter = 1;
 
 %layout (Layout Generator)
-% circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3'};
-% circuit.components = {'0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '7' '7' '7' '7' '7' '7' '7' '7'};
-
+circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3'};
+circuit.components = {'0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '0' '7' '7' '7' '7' '7' '7' '7' '7'};
+circuit.magcadImporter = 0;
+ 
 %drivers and clock
 D0 = num2cell(-4.5*ones(1,clock_step*4));
 D1 = num2cell(+4.5*ones(1,clock_step*4));
 Dnone = num2cell(zeros(1,clock_step*4));
 
 circuit.Values_Dr = {
-    'Dr1'   D0{:} D1{:} Dnone{:} 'end'
-    'Dr1_c' D1{:} D0{:} Dnone{:} 'end'
+    'Dr1'   D0{:} D1{:} Dnone{:}
+    'Dr1_c' D1{:} D0{:} Dnone{:}
 };
 
 %clock
@@ -57,7 +57,6 @@ plotSettings.plot_potential_tipHeight = -10;
 this_path = pwd;
 scerpa_path = '..\';
 cd(scerpa_path)
-generation_status = SCERPA('topoLaunch', circuit, settings);
-% generation_status = SCERPA('generateLaunch', circuit, settings);
+generation_status = SCERPA('generateLaunch', circuit, settings);
                     SCERPA('plotSteps', plotSettings);
 cd(this_path)

@@ -1,0 +1,6 @@
+CHARGES 4
+
+CLOCKDATA 3
+only.txt -2 V 100 values
+only.txt +2 V 100 values
+only.txt +2 V 100 values

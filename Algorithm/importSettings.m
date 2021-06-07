@@ -8,13 +8,21 @@ function scerpaSettings = importSettings(userSettings)
 scerpaSettings.timestep = setDefault(userSettings,'timestep',1);
 
 % topo integration
-scerpaSettings.magcadImporter = setDefault(userSettings,'magcadImporter',0);
-scerpaSettings.doubleMolDriverMode = setDefault(userSettings,'doubleMolDriverMode',0);
+% scerpaSettings.magcadImporter = setDefault(userSettings,'magcadImporter',0);
+% scerpaSettings.doubleMolDriverMode = setDefault(userSettings,'doubleMolDriverMode',0);
 
 % Energy
 scerpaSettings.energyEval = setDefault(userSettings,'energyEval',0);
 
 % output plot
+if isfield(userSettings,'out_path') 
+    % set by user
+    scerpaSettings.out_path = strcat(userSettings.out_path,'/SCERPA_OUTPUT_FILES');
+    mkdir (scerpaSettings.out_path)
+else
+    % not set by the user!
+    scerpaSettings.out_path = '../OUTPUT_FILES';
+end
 scerpaSettings.plot_plotAbsoluteCharge = setDefault(userSettings,'plot_plotAbsoluteCharge',1);
 scerpaSettings.plotIntermediateSteps = setDefault(userSettings,'plotIntermediateSteps',0);
 scerpaSettings.plotActiveRegionWindow = setDefault(userSettings,'plotActiveRegionWindow',0);
@@ -25,13 +33,14 @@ scerpaSettings.plot_clock = setDefault(userSettings,'plot_clock',0);
 scerpaSettings.plot_molnum = setDefault(userSettings,'plot_molnum',1);
 scerpaSettings.verbosity = setDefault(userSettings,'verbosity',0); % (0 no data, 1 step number, 2 converge info)
 scerpaSettings.pauseStep = setDefault(userSettings,'pauseStep',0);
-scerpaSettings.fig_saver = setDefault(userSettings,'fig_saver',0);
+scerpaSettings.fig_saver = setDefault(userSettings,'fig_saver',0); % not working
 
 
 %convergence settings
 scerpaSettings.max_step = setDefault(userSettings,'max_step',1000);
 scerpaSettings.immediateUpdate = setDefault(userSettings,'immediateUpdate',0);
 scerpaSettings.damping = setDefault(userSettings,'damping',0.4); % value must be in range [0 - 1)
+scerpaSettings.autodamping = setDefault(userSettings,'autodamping',0);
 
 %convergence accelerations
 scerpaSettings.enableRefining = setDefault(userSettings,'enableRefining',1); % value must be in range [0 - 1)
@@ -55,6 +64,14 @@ scerpaSettings.enableJit = setDefault(userSettings,'enableJit',1);
 
 % driver saturation
 scerpaSettings.driverSaturation = setDefault(userSettings,'driverSaturation',0); 
+
+%dump information
+scerpaSettings.dumpClock = setDefault(userSettings,'dumpClock',0);
+scerpaSettings.dumpVout = setDefault(userSettings,'dumpVout',0);
+scerpaSettings.dumpDriver = setDefault(userSettings,'dumpDriver',0);
+scerpaSettings.dumpOutput = setDefault(userSettings,'dumpOutput',0);
+scerpaSettings.dumpComputationTime = setDefault(userSettings,'dumpComputationTime',0);
+scerpaSettings.dumpEnergy = setDefault(userSettings,'dumpEnergy',0);
 
 % compatibility
 scerpaSettings.y.enable_escape = 1;

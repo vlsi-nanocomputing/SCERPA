@@ -33,9 +33,11 @@ r_dot_42 = DIST(ii,jj,4,2);
 %V=V1-V2 = const*V1' + const V2' = const(V1'+V2')
 % V_dot_1 = constant*(c1.q/r_dot_11 + c2.q/r_dot_21 + c3.q/r_dot_31 + c4.q/r_dot_41);
 % V_dot_2 = constant*(c1.q/r_dot_12 + c2.q/r_dot_22 + c3.q/r_dot_32 + c4.q/r_dot_42);
-V_dot_1 = driver_charge1.q/r_dot_11 + driver_charge2.q/r_dot_21 + driver_charge3.q/r_dot_31 + driver_charge4.q/r_dot_41;
-V_dot_2 = driver_charge1.q/r_dot_12 + driver_charge2.q/r_dot_22 + driver_charge3.q/r_dot_32 + driver_charge4.q/r_dot_42;
 
+V_dot_1 = driver_charge1.q/r_dot_11 + driver_charge2.q/r_dot_21 + ...
+    driver_charge3.q/r_dot_31 + driver_charge4.q/r_dot_41;
+V_dot_2 = driver_charge1.q/r_dot_12 + driver_charge2.q/r_dot_22 + ...
+    driver_charge3.q/r_dot_32 + driver_charge4.q/r_dot_42;
 
 % V10_out = V_dot_1 - V_dot_2;
 V10_out = const*(V_dot_1 - V_dot_2);

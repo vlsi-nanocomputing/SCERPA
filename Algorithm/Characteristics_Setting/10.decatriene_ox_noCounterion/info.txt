@@ -1,0 +1,6 @@
+CHARGES 4
+
+CLOCKDATA 3
+deca1.txt -2 V 17 values
+deca2.txt 0 V 17 values
+deca3.txt +2 V 17 values
