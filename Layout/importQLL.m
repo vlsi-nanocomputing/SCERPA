@@ -135,42 +135,74 @@ for ii = 1:length(xmlStruct.molecules)
     if ~isfield(xmlStruct.molecules(ii),'xshift_a')
         mol1_xshift = 0;
     else
-        mol1_xshift = xmlStruct.molecules(ii).xshift_a;
+        if ~isempty(xmlStruct.molecules(ii).xshift_a)
+            mol1_xshift = xmlStruct.molecules(ii).xshift_a;
+        else
+            mol1_xshift = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'xshift_b')
         mol2_xshift = 0;
     else
-        mol2_xshift = xmlStruct.molecules(ii).xshift_b;
+        if ~isempty(xmlStruct.molecules(ii).xshift_b)
+            mol2_xshift = xmlStruct.molecules(ii).xshift_b;
+        else
+            mol2_xshift = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'yshift_a')
         mol1_yshift = 0;
     else
-        mol1_yshift = xmlStruct.molecules(ii).yshift_a;
+        if ~isempty(xmlStruct.molecules(ii),yshift_a)
+            mol1_yshift = xmlStruct.molecules(ii).yshift_a;
+        else 
+            mol1_yshift = 0;
+        end 
     end
     if ~isfield(xmlStruct.molecules(ii),'yshift_b')
         mol2_yshift = 0;
     else
-        mol2_yshift = xmlStruct.molecules(ii).yshift_b;
+        if ~isempty(xmlStruct.molecules(ii),yshift_b)
+            mol2_yshift = xmlStruct.molecules(ii).yshift_b;
+        else
+            mol2_yshift = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'zshift_a')
         mol1_zshift = 0;
     else
-        mol1_zshift = xmlStruct.molecules(ii).zshift_a;
+        if ~isempty(xmlStruct.molecules(ii),zshift_a)
+            mol1_zshift = xmlStruct.molecules(ii).zshift_a;
+        else
+            mol1_zshift = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'zshift_b')
         mol2_zshift = 0;
     else
-        mol2_zshift = xmlStruct.molecules(ii).zshift_b;
+        if ~isempty(xmlStruct.molecules(ii),zshift_b)
+            mol2_zshift = xmlStruct.molecules(ii).zshift_b;
+        else
+            mol2_zshift = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'angle_a')
         mol1_angle = 0;
     else
-        mol1_angle = xmlStruct.molecules(ii).angle_a;
+        if ~isempty(xmlStruct.molecules(ii),angle_a)
+            mol1_angle = xmlStruct.molecules(ii).angle_a;
+        else
+            mol1_angle = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'angle_b')
         mol2_angle = 0;
     else
-        mol2_angle = xmlStruct.molecules(ii).angle_b;
+        if ~isempty(xmlStruct.molecules(ii),angle_b)
+            mol2_angle = xmlStruct.molecules(ii).angle_b;
+        else
+            mol2_angle = 0;
+        end 
     end
     %effective position of the cell (necessary for rotation implementation)
     y_cell_center = dist_y * xmlStruct.molecules(ii).y; %position of cell center
