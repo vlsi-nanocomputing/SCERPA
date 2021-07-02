@@ -208,7 +208,14 @@ for ii = 1:length(xmlStruct.molecules)
     y_cell_center = dist_y * xmlStruct.molecules(ii).y; %position of cell center
     z_cell_center = 2*xmlStruct.dist_z *(0.5+xmlStruct.molecules(ii).x);
 
-    if ~isfield(xmlStruct.molecules(ii),'disabled_a') % if the molecule is present
+    %check if molA exists
+    if ~isfield(xmlStruct.molecules(ii),'disabled_a')
+        flag_mola_Exists = 1;
+    else
+        flag_mola_Exists = isempty(xmlStruct.molecules(ii).disabled_a);
+    end
+        
+    if flag_mola_Exists % if the molecule is present
         stack_mol.num = stack_mol.num + 1;
         stack_mol.stack(stack_mol.num).position = [xmlStruct.molecules(ii).z,xmlStruct.molecules(ii).y,2*xmlStruct.molecules(ii).x+1];
         
@@ -246,7 +253,14 @@ for ii = 1:length(xmlStruct.molecules)
         stack_mol.stack(stack_mol.num).identifier_qll = sprintf('%.4da',str2double(xmlStruct.molecules(ii).id));
     end
     
-    if ~isfield(xmlStruct.molecules(ii),'disabled_b') % if the molecule is present
+    %check if molB exists
+    if ~isfield(xmlStruct.molecules(ii),'disabled_b')
+        flag_molb_Exists = 1;
+    else
+        flag_molb_Exists = isempty(xmlStruct.molecules(ii).disabled_b);
+    end
+        
+    if flag_molb_Exists % if the molecule is present
         stack_mol.num = stack_mol.num + 1;
         stack_mol.stack(stack_mol.num).position = [xmlStruct.molecules(ii).z,xmlStruct.molecules(ii).y,2*xmlStruct.molecules(ii).x];
         
