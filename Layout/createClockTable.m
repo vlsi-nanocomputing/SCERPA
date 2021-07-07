@@ -4,7 +4,7 @@ function stack_clock = createClockTable(stack_mol,circuit)
         
 %%% Clock is set with classical 'phase' method
         case 'phase'
-            stack_clock = cell(stack_mol.num,length(circuit.stack_phase)+1);
+            stack_clock = cell(stack_mol.num,size(circuit.stack_phase,2)+1);
             for ii_mol=1:stack_mol.num
 
                 %add to stack_clock
