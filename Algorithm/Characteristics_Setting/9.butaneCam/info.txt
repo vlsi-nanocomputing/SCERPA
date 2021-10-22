@@ -1,6 +1,6 @@
 CHARGES 4
 
 CLOCKDATA 3
-only.txt -2 V 24 values
-only.txt +2 V 24 values
-only.txt +2 V 24 values
+only.txt -2 V 23 values
+only.txt +2 V 23 values
+only.txt +2 V 23 values

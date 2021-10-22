@@ -61,7 +61,7 @@ else
 
         subplot(N_subplot,1,row), hold on
         %plot_data = getfield(data,char(availableRows(out_rows(oo))));
-        plot_data = 1/0.1*max(-0.1,min(0.1,getfield(data,char(availableRows(out_rows(oo))))));
+        plot_data = 1-1/0.1*max(-0.1,min(0.1,getfield(data,char(availableRows(out_rows(oo))))));
         plot(data.Time,plot_data,'-k','LineWidth',1, 'MarkerSize',10)
         ylabel(sprintf('%s',char(availableRows(out_rows(oo)))),'Interpreter', 'none');
         yticklabels({'L','H'}), yticks([-1 1]), ylim([-1.1 1.1]);
