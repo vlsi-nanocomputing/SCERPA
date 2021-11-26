@@ -16,7 +16,7 @@ directoryName = dirNamesList{index};
 filename_setting = sprintf('Characteristics_Setting/%s/info.txt',directoryName);
 molInfo = molInfoRead(filename_setting);
 
-for jj = 1:molInfo.nClockData
+for jj = 1:double(molInfo.nClockData)
     filename = sprintf('Characteristics_Setting/%s/%s', directoryName, molInfo.file{jj});
     fileID = fopen(filename,'r');
     sizeA = [5 molInfo.values(jj)];
