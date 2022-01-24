@@ -67,6 +67,12 @@ n_times = size(stack_clock,2)-1;
 %create time vector
 timeComputation =zeros(1,n_times);
 
+
+%clock energy dissipation 
+disp('[BETA] Evaluating Power dissipation...')
+settings.timestep = 1/100e12;
+EvaluateClockingPower(stack_mol,stack_clock,settings); 
+
 %%Time loop
 disp('Starting Time evaluation')
 for time = 1:n_times
@@ -448,10 +454,12 @@ for time = 1:n_times
         end
     end
    
-   
-%     run('ConvergenceTable.m')
+
     timeComputation(time) = toc;
     disp(timeComputation(time))
+    if settings.printConvergenceTable==1
+       ConvergenceTable(stack_mol,pre_driver_effect,Vout,CK,max_error)
+    end
 
     %evaluate output
     if stack_output.num ~= 0

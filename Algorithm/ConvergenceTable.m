@@ -1,4 +1,4 @@
-function [] = ConvergenceTable(stack_mol,pre_driver_effect,Vout,CK)
+function [] = ConvergenceTable(stack_mol,pre_driver_effect,Vout,CK,max_error)
 
 convergenceMatrix = zeros(stack_mol.num, stack_mol.num + 4);
 
@@ -35,7 +35,7 @@ for ii = 1:stack_mol.num
 end
 
 %disp(convergenceMatrix)
-
+fprintf('Maximum allowed SCERPA error is: %10f\n',max_error);
 fprintf('Average voltage error is: %10f\n',mean(convergenceMatrix(:,end)));
 fprintf('Maximum voltage error is: %10f\n',max(convergenceMatrix(:,end)));
 

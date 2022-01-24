@@ -4,6 +4,12 @@ xmlStruct = xmlRead(QCA_circuit.qllFile);
 
 if ~isfield(QCA_circuit,'dist_y') 
     dist_y = 2*xmlStruct.dist_z;
+else
+    dist_y = QCA_circuit.dist_y;
+end
+
+if ~isfield(QCA_circuit,'magcadMolOverwrite') 
+    QCA_circuit.magcadMolOverwrite = 0;
 end
 
 %% create driver stack
@@ -18,8 +24,15 @@ for ii = 1:length(xmlStruct.driver.name)
         stack_driver.stack(2*ii-1).position = [xmlStruct.driver.z(ii),xmlStruct.driver.y(ii),2*xmlStruct.driver.x(ii)];
         
         %set molType for the Drivers: driver is automatically assigned to first available molecule
-        stack_driver.stack(2*ii).molType = xmlStruct.molecules(1).molType;
-        stack_driver.stack(2*ii-1).molType = xmlStruct.molecules(1).molType;
+        if QCA_circuit.magcadMolOverwrite==1
+            stack_driver.stack(2*ii).molType = str2double(getMolType(QCA_circuit));
+            stack_driver.stack(2*ii-1).molType = str2double(getMolType(QCA_circuit));
+        else
+            stack_driver.stack(2*ii).molType = xmlStruct.molecules(1).molType;
+            stack_driver.stack(2*ii-1).molType = xmlStruct.molecules(1).molType;
+        end
+        
+
         
         [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_driver.stack(2*ii).molType));
         number_of_charges = length(dot_position(:,1));
@@ -63,7 +76,11 @@ for ii = 1:length(xmlStruct.driver.name)
         stack_driver.stack(ii).position = [xmlStruct.driver.z(ii),xmlStruct.driver.y(ii),2*xmlStruct.driver.x(ii)+1];
         
         %set molType for the Drivers: driver is automatically assigned to first available molecule
-        stack_driver.stack(ii).molType = xmlStruct.molecules(1).molType;
+        if QCA_circuit.magcadMolOverwrite==1
+            stack_driver.stack(ii).molType = str2double(getMolType(QCA_circuit));
+        else
+            stack_driver.stack(ii).molType = xmlStruct.molecules(1).molType;
+        end
         [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_driver.stack(ii).molType));
         number_of_charges = length(dot_position(:,1));
 
@@ -99,7 +116,12 @@ for ii = 1:stack_output.num
     stack_output.stack(ii).position = [xmlStruct.output.z(ii),xmlStruct.output.y(ii),2*xmlStruct.output.x(ii)+1];
         
     %set molType for the output: output is automatically assigned to first available molecule
-    stack_output.stack(ii).molType = xmlStruct.molecules(1).molType;
+    if QCA_circuit.magcadMolOverwrite==1
+        stack_output.stack(ii).molType = str2double(getMolType(QCA_circuit));
+    else
+     	stack_output.stack(ii).molType = xmlStruct.molecules(1).molType;
+    end
+        
     [~, dot_position, draw_association] = GetMoleculeData(num2str(stack_output.stack(ii).molType));
     number_of_charges = length(dot_position(:,1));
 
@@ -223,7 +245,11 @@ for ii = 1:length(xmlStruct.molecules)
         stack_mol.stack(stack_mol.num).phase = xmlStruct.molecules(ii).phase + 1; % phases in magcad starts from 0 instead of 1
         
         %set molType for the molecules
-        stack_mol.stack(stack_mol.num).molType = xmlStruct.molecules(ii).molType;
+        if QCA_circuit.magcadMolOverwrite==1
+            stack_mol.stack(stack_mol.num).molType = str2double(getMolType(QCA_circuit));
+        else
+            stack_mol.stack(stack_mol.num).molType = xmlStruct.molecules(ii).molType;
+        end
 
         [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_mol.stack(ii).molType));
         number_of_charges = length(dot_position(:,1)); 
@@ -268,7 +294,12 @@ for ii = 1:length(xmlStruct.molecules)
         stack_mol.stack(stack_mol.num).phase = xmlStruct.molecules(ii).phase + 1; % phases in magcad starts from 0 instead of 1
         
         %set molType for the molecules
-        stack_mol.stack(stack_mol.num).molType = xmlStruct.molecules(ii).molType;
+        if QCA_circuit.magcadMolOverwrite==1
+            stack_mol.stack(stack_mol.num).molType = str2double(getMolType(QCA_circuit));
+        else
+            stack_mol.stack(stack_mol.num).molType = xmlStruct.molecules(ii).molType;
+        end
+        
 
         [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_mol.stack(ii).molType));
         number_of_charges = length(dot_position(:,1));
