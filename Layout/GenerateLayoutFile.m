@@ -18,6 +18,9 @@ if QCA_circuit.magcadImporter == 1
     [stack_driver, stack_mol, stack_output] = importQLL(QCA_circuit);
     qll_path = regexp(QCA_circuit.qllFile,'\','split');
     simulation_file_name = qll_path{end};
+    if ~isfield(QCA_circuit,'magcadMolOverwrite')
+        QCA_circuit.magcadMolOverwrite = 0;
+    end
 else
     QCA_circuit = importMatlab(QCA_circuit);
     % create the molecule and the driver stacks

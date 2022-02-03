@@ -12,7 +12,7 @@ function [initial_charge, dot_position, draw_association] = GetMoleculeData(molT
     %                       are connected
     
     switch(molType)
-        case {'0','1','3','4','5','6'} % 'bisfe_4' -> Bisferrocene with 4 charges
+        case {'0','1','3','4','5','6','20'} % 'bisfe_4' -> Bisferrocene with 4 charges
             %initial_charge   = [0.475, 0.471, -0.223, 0.277];  % charge ck=+2V
             initial_charge   = [0.370, 0.352, -0.023, 0.307];  % charge ck=+0V              
             %initial_charge   = [0.027, 0.026,  0.141, 0.806];  % charge ck=-2V
@@ -80,7 +80,7 @@ function [initial_charge, dot_position, draw_association] = GetMoleculeData(molT
                                1,       0,       0];                     
             draw_association =[1 2];
         
-        case '15' % Neutra -> paper neutre
+        case {'15'} % Neutra -> paper neutre
             initial_charge   = [0, 0, 0,  0];  % charge ck=+2V              
             dot_position =  [ -5      -5           0;  %[dot1_x, dot1_y, dot1_z]
                               -5      +5           0;  %[dot2_x, dot2_y, dot2_z]
@@ -100,8 +100,13 @@ function [initial_charge, dot_position, draw_association] = GetMoleculeData(molT
             initial_charge   = [0.5, 0.5, -1, 0];  % charge ck=+2V              
             dot_position =  [ -5      -5           0;  %[dot1_x, dot1_y, dot1_z]
                               -5      +5           0;  %[dot2_x, dot2_y, dot2_z]
+<<<<<<< HEAD
                               0      0           0;  %[dot3_x, dot3_y, dot3_z]
                               +10       0           0]; %[dot4_x, dot4_y, dot4_z]
+=======
+                              +10        0           0;  %[dot3_x, dot3_y, dot3_z]
+                              0      0           0]; %[dot4_x, dot4_y, dot4_z]
+>>>>>>> fae5c81b8661739025820afa2db8bdd9e38de560
             draw_association =[1 3; 2 3];
         case '18' % oxidized counterion -> paper neutre
             initial_charge   = [0.5, 0.5, 0, -1];  % charge ck=+2V              
