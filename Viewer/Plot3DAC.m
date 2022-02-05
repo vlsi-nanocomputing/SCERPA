@@ -1,3 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function out_fig = Plot3DAC(stack_mol, stack_driver, stack_output, settings)
 
 %WARNING: x-z axis are swapped
@@ -15,6 +34,13 @@ textOffset = 2;
 
 %Figure definition
 out_fig = figure('visible','off');
+ha = gca;
+uistack(ha,'bottom');
+ha2=axes('position',[0,0, 0.1,0.12]);
+[x, map]=imread(fullfile('../Documentation/','scerpa_logo.png'));
+image(x)
+colormap (map)
+set(ha2,'handlevisibility','off','visible','off')
 hold on, grid on
 set(gca, 'Projection','perspective'), view(-45,25)
 axis equal, axis vis3d, view(-40,50)

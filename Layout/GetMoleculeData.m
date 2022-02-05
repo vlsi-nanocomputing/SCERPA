@@ -1,3 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [initial_charge, dot_position, draw_association] = GetMoleculeData(molType) 
     % The function GetMoleculeData is used to get geometry information 
     % about the molecule type specified by <<molType>>. 
@@ -100,13 +119,8 @@ function [initial_charge, dot_position, draw_association] = GetMoleculeData(molT
             initial_charge   = [0.5, 0.5, -1, 0];  % charge ck=+2V              
             dot_position =  [ -5      -5           0;  %[dot1_x, dot1_y, dot1_z]
                               -5      +5           0;  %[dot2_x, dot2_y, dot2_z]
-<<<<<<< HEAD
                               0      0           0;  %[dot3_x, dot3_y, dot3_z]
                               +10       0           0]; %[dot4_x, dot4_y, dot4_z]
-=======
-                              +10        0           0;  %[dot3_x, dot3_y, dot3_z]
-                              0      0           0]; %[dot4_x, dot4_y, dot4_z]
->>>>>>> fae5c81b8661739025820afa2db8bdd9e38de560
             draw_association =[1 3; 2 3];
         case '18' % oxidized counterion -> paper neutre
             initial_charge   = [0.5, 0.5, 0, -1];  % charge ck=+2V              

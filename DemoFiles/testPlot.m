@@ -7,13 +7,14 @@ close all
 % load('../Algorithm/simulation_output.mat','stack_driver')
 
 %% FROM FILE
-QLLFile = 'D:\Dropbox\CondivisaGiuliana\topoIntegration\layout.qll';
-QSSFile = 'D:\scerpa\Algorithm\OUTPUT_FILES\0002.qss';
+stack.qllFile = '/mnt/44CEE091CEE07D14/scerpa/DemoFiles/threePhasesWire.qll';
+QSSFile = '/mnt/44CEE091CEE07D14/PhD/tmp/threePhaseWire/SCERPA_OUTPUT_FILES/0002.qss';
 
 addpath ../Algorithm/        
-settings.doubleMolDriverMode=1;
+addpath ../Layout/        
+stack.doubleMolDriverMode=1;
 settings.plot_molnum=0;
-[stack_mol,stack_driver,driver_values,stack_output] = importQLL(QLLFile,1,settings);
+[stack_driver,stack_mol,stack_output] = importQLL(stack);
 [stack_mol,stack_driver] = importQSS(stack_mol,stack_driver,QSSFile);
 
 

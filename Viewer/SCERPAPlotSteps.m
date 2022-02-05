@@ -1,3 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function SCERPAPlotSteps(plotSettings)
 
 %set default settings
@@ -37,7 +56,7 @@ end
 % Plot additional information data
 
 if plotSettings.plot_waveform == 1
-    waveformFig = PlotWaveform(strcat(plotSettings.out_path,'/Additional_Information.txt'), plotSettings);
+    waveformFig = PlotWaveform(strcat(plotSettings.out_path,'/Additional_Information.txt'), stack_driver,stack_mol);
     if plotSettings.fig_saver == 1
         savefig(waveformFig,strcat(figure_path,'/waveformFig.fig'))
     end

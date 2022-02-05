@@ -1,3 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  function out_fig = PlotLogic(stack_mol, stack_driver, stack_output, settings)
  
  P_map = 0;
@@ -27,13 +46,21 @@ end
 
 %consider drivers 2-by-2
 for ii=1:2:stack_driver.num
-    
-    %evaluate polarization
-    P = (stack_driver.stack(ii).charge(1).q + stack_driver.stack(ii+1).charge(2).q - stack_driver.stack(ii).charge(2).q - stack_driver.stack(ii+1).charge(1).q)/...
-        (stack_driver.stack(ii).charge(1).q + stack_driver.stack(ii+1).charge(2).q + stack_driver.stack(ii).charge(2).q + stack_driver.stack(ii+1).charge(1).q);
-
+    % check driver order because in magcad they are reversed
     [p1] = sscanf(char(stack_driver.stack(ii).position),'[%d %d %d]');
     [p2] = sscanf(char(stack_driver.stack(ii+1).position),'[%d %d %d]');
+    
+    if(p1(3) > p2(3)) %check on z coordinates
+        %evaluate polarization
+        P = (stack_driver.stack(ii).charge(1).q + stack_driver.stack(ii+1).charge(2).q - stack_driver.stack(ii).charge(2).q - stack_driver.stack(ii+1).charge(1).q)/...
+            (stack_driver.stack(ii).charge(1).q + stack_driver.stack(ii+1).charge(2).q + stack_driver.stack(ii).charge(2).q + stack_driver.stack(ii+1).charge(1).q);
+    else
+        %evaluate polarization
+        P = (stack_driver.stack(ii+1).charge(1).q + stack_driver.stack(ii).charge(2).q - stack_driver.stack(ii+1).charge(2).q - stack_driver.stack(ii).charge(1).q)/...
+            (stack_driver.stack(ii).charge(1).q + stack_driver.stack(ii+1).charge(2).q + stack_driver.stack(ii).charge(2).q + stack_driver.stack(ii+1).charge(1).q);
+        [p1] = sscanf(char(stack_driver.stack(ii+1).position),'[%d %d %d]');
+        [p2] = sscanf(char(stack_driver.stack(ii).position),'[%d %d %d]');
+    end
     
     %add offset (for white)
     P_map(p1(2)+1,p1(3)+1) = P+2;
@@ -66,6 +93,13 @@ map = [nocircuit;
 
 %create figure
 out_fig = figure('visible','off');
+ha = gca;
+uistack(ha,'bottom');
+ha2=axes('position',[0,0, 0.1,0.12]);
+[x, imageMap]=imread(fullfile('../Documentation/','scerpa_logo.png'));
+image(x)
+colormap (imageMap)
+set(ha2,'handlevisibility','off','visible','off')
 hold on
 imagesc(P_map)
 colormap(map)

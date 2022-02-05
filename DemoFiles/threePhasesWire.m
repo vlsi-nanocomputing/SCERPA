@@ -1,4 +1,4 @@
-clear all
+clear variables
 close all
 
 %clock values definition
@@ -9,7 +9,7 @@ clock_step = 3;
 
 %layout (MagCAD)
 file = 'threePhasesWire.qll';
-circuit.qllFile = sprintf('%s\\%s',pwd,file);
+circuit.qllFile = fullfile(pwd,file);
 circuit.doubleMolDriverMode = 1;   
 circuit.magcadImporter = 1;
 
@@ -43,11 +43,12 @@ circuit.stack_phase(3,:) = [pReset pReset, pCycle pCycle];
 
 
 %SCERPA settings
-settings.out_path = '..\threePhaseWire'; 
+settings.out_path = fullfile('/mnt/44CEE091CEE07D14/PhD/tmp','/threePhaseWire'); 
 settings.damping = 0.6;
 settings.verbosity = 2;
 settings.dumpDriver = 1;
 settings.dumpOutput = 1;
+settings.dumpClock = 1;
 settings.plotIntermediateSteps = 0;
 
 %PLOT settings
@@ -57,7 +58,7 @@ plotSettings.plot_1DCharge = 1;
 plotSettings.plot_logic = 1;
 plotSettings.plot_potential = 1;
 plotSettings.plotSpan = 3;
-plotSettings.fig_saver = 1;
+plotSettings.fig_saver = 0;
 plotSettings.plotList = 0;
 
 %copy outputh path from algorithm settings if specified by the user
@@ -67,8 +68,8 @@ end
 
 %%%%
 this_path = pwd;
-scerpa_path = '..\';
+scerpa_path = fullfile('../');
 cd(scerpa_path)
-generation_status = SCERPA('generateLaunch', circuit, settings);
+%generation_status = SCERPA('generateLaunch', circuit, settings);
                     SCERPA('plotSteps', plotSettings);
 cd(this_path)
