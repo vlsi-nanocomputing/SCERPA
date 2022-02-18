@@ -43,18 +43,18 @@ catch
 end
 
 %get simulation file name
-filename_sim = '../Layout/Database/Simulation_filename.txt';
+filename_sim = '../Layout/Data/Simulation_filename.txt';
 fileID = fopen(filename_sim,'r');
 formatSpec = '%s';
 simulation_file_name = fscanf(fileID,formatSpec);
 fclose(fileID);
 
 % Files to read cross-platform (mat data)
-filename_mol = '../Layout/Database/Data_Molecule.mat';
-filename_driv = '../Layout/Database/Data_Driver.mat';
-filename_out = '../Layout/Database/Data_Output.mat';
-filename_phase = '../Layout/Database/Fake_Phases.mat';
-filename_values_dr =  '../Layout/Database/Values_Driver.mat';
+filename_mol = '../Layout/Data/Data_Molecule.mat';
+filename_driv = '../Layout/Data/Data_Driver.mat';
+filename_out = '../Layout/Data/Data_Output.mat';
+filename_phase = '../Layout/Data/Fake_Phases.mat';
+filename_values_dr =  '../Layout/Data/Values_Driver.mat';
 
 % Output Files
 Sim_Output_file = strcat(settings.out_path,'/Simulation_Output.log');

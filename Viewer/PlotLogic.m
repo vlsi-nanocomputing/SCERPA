@@ -30,13 +30,21 @@
 
 %consider molecules 2-by-2
 for ii=1:2:stack_mol.num
-    
-    %evaluate polarization
-    P = (stack_mol.stack(ii).charge(1).q + stack_mol.stack(ii+1).charge(2).q - stack_mol.stack(ii).charge(2).q - stack_mol.stack(ii+1).charge(1).q)/...
-        (stack_mol.stack(ii).charge(1).q + stack_mol.stack(ii+1).charge(2).q + stack_mol.stack(ii).charge(2).q + stack_mol.stack(ii+1).charge(1).q);
-
+    % check mol order because in magcad they are reversed
     [p1] = sscanf(char(stack_mol.stack(ii).position),'[%d %d %d]');
     [p2] = sscanf(char(stack_mol.stack(ii+1).position),'[%d %d %d]');
+    
+    if(p1(3) < p2(3)) %check on z coordinates
+        %evaluate polarization
+        P = (stack_mol.stack(ii).charge(2).q + stack_mol.stack(ii+1).charge(1).q - stack_mol.stack(ii).charge(1).q - stack_mol.stack(ii+1).charge(2).q)/...
+            (stack_mol.stack(ii).charge(1).q + stack_mol.stack(ii+1).charge(2).q + stack_mol.stack(ii).charge(2).q + stack_mol.stack(ii+1).charge(1).q);
+    else
+        %evaluate polarization
+        P = (stack_mol.stack(ii+1).charge(2).q + stack_mol.stack(ii).charge(1).q - stack_mol.stack(ii+1).charge(1).q - stack_mol.stack(ii).charge(2).q)/...
+            (stack_mol.stack(ii).charge(1).q + stack_mol.stack(ii+1).charge(2).q + stack_mol.stack(ii).charge(2).q + stack_mol.stack(ii+1).charge(1).q);
+        [p1] = sscanf(char(stack_mol.stack(ii+1).position),'[%d %d %d]');
+        [p2] = sscanf(char(stack_mol.stack(ii).position),'[%d %d %d]');
+    end
     
     %add offset (for white)
     P_map(p1(2)+1,p1(3)+1) = P+2;
@@ -45,18 +53,19 @@ for ii=1:2:stack_mol.num
 end
 
 %consider drivers 2-by-2
+
 for ii=1:2:stack_driver.num
     % check driver order because in magcad they are reversed
     [p1] = sscanf(char(stack_driver.stack(ii).position),'[%d %d %d]');
     [p2] = sscanf(char(stack_driver.stack(ii+1).position),'[%d %d %d]');
     
-    if(p1(3) > p2(3)) %check on z coordinates
+    if(p1(3) < p2(3)) %check on z coordinates
         %evaluate polarization
-        P = (stack_driver.stack(ii).charge(1).q + stack_driver.stack(ii+1).charge(2).q - stack_driver.stack(ii).charge(2).q - stack_driver.stack(ii+1).charge(1).q)/...
+        P = (stack_driver.stack(ii).charge(2).q + stack_driver.stack(ii+1).charge(1).q - stack_driver.stack(ii).charge(1).q - stack_driver.stack(ii+1).charge(2).q)/...
             (stack_driver.stack(ii).charge(1).q + stack_driver.stack(ii+1).charge(2).q + stack_driver.stack(ii).charge(2).q + stack_driver.stack(ii+1).charge(1).q);
     else
         %evaluate polarization
-        P = (stack_driver.stack(ii+1).charge(1).q + stack_driver.stack(ii).charge(2).q - stack_driver.stack(ii+1).charge(2).q - stack_driver.stack(ii).charge(1).q)/...
+        P = (stack_driver.stack(ii+1).charge(2).q + stack_driver.stack(ii).charge(1).q - stack_driver.stack(ii+1).charge(1).q - stack_driver.stack(ii).charge(2).q)/...
             (stack_driver.stack(ii).charge(1).q + stack_driver.stack(ii+1).charge(2).q + stack_driver.stack(ii).charge(2).q + stack_driver.stack(ii+1).charge(1).q);
         [p1] = sscanf(char(stack_driver.stack(ii+1).position),'[%d %d %d]');
         [p2] = sscanf(char(stack_driver.stack(ii).position),'[%d %d %d]');

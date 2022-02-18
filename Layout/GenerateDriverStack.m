@@ -17,7 +17,7 @@
 %                                   10.1109/TVLSI.2020.3045198             %
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [driver_stack]=GenerateDriverStack(circuit, row, column, driver_stack, dot_position, draw_association)
+function [driver_stack]=GenerateDriverStack(circuit, row, column, driver_stack, dot_position, draw_association,nCharges)
         % The function GenerateDriverStack is used to create an istance of
         % the stack containing driver information. It extracts the
         % information from the <<circuit>>, based on the actual position in 
@@ -52,8 +52,9 @@ function [driver_stack]=GenerateDriverStack(circuit, row, column, driver_stack, 
 
         
         %eval position of each dot 
-        n_dots = length(dot_position(:,1));
-        for dd=1:n_dots
+        %n_dots = length(dot_position(:,1));
+        driver_para.chargeNum = nCharges;
+        for dd=1:nCharges
             %rotate - dot(i) =[x y z]
             dot_rotated = Rx*Ry*Rz*[dot_position(dd,1); dot_position(dd,2); dot_position(dd,3)];
             

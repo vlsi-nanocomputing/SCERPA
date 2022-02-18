@@ -1,6 +1,0 @@
-CHARGES 4
-
-CLOCKDATA 3
-ck1.txt -2 V 39 values
-ck2.txt 0 V 36 values
-ck3.txt +2 V 37 values

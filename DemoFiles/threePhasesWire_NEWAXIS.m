@@ -17,9 +17,21 @@ clock_step = 3;
 % circuit.molecule = 'bisfe_4';
 
 %layout (MATLAB)
-circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3' 'out_y'};
+circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3' 'out_1'};
 circuit.magcadImporter = 0;
- 
+
+circuit.plotLayout = 1;
+circuit.dist_x = 10;
+circuit.dist_y = 2 * circuit.dist_x;
+circuit.shift_x = zeros(1,27);
+circuit.shift_y = zeros(1,27);
+circuit.shift_z = zeros(1,27);
+circuit.rotation_x = zeros(1,27);
+circuit.rotation_y = zeros(1,27);
+circuit.rotation_z = zeros(1,27);
+
+
+
 %drivers and clock
 D0 = num2cell(-4.5*ones(1,clock_step*4));
 D1 = num2cell(+4.5*ones(1,clock_step*4));
@@ -66,10 +78,13 @@ if isfield(settings,'out_path')
     plotSettings.out_path = settings.out_path;
 end
 
+
 %%%%
 this_path = pwd;
 scerpa_path = fullfile('../');
 cd(scerpa_path)
+%
 generation_status = SCERPA('generateLaunch', circuit, settings);
                     SCERPA('plotSteps', plotSettings);
+
 cd(this_path)

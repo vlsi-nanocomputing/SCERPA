@@ -70,7 +70,7 @@ else
     
 
     %plot clock
-    disp('Plotting clocks')
+    disp('Plotting clocks waveform')
     
     for cc = 1:N_phase
         % find a molecule belonging to phase cc
@@ -100,7 +100,7 @@ else
 
 
     %plot drivers
-    disp('Plotting inputs')
+    disp('Plotting inputs waveform')
     
     driverIdentifierList = {driverStack.stack.identifier};
 
@@ -112,7 +112,7 @@ else
     
         subplot(N_subplot,1,plot_row), hold on
         %plot_data = getfield(data,char(availableRows(in_rows(dd))));
-        plot_data = max(-1,min(1,- getfield(data,char(availableRows(in_rows(dd)))))); % plot the difference between dot1.charge and dot2.charge [polarization]
+        plot_data = min(1,max(-1, getfield(data,char(availableRows(in_rows(dd)))))); % plot the difference between dot2.charge and dot1.charge [polarization]
         plot(data.Time,plot_data,'-r','LineWidth',1.5, 'MarkerSize',10)
         ylabel(drLabel,'Interpreter', 'none');
         yticklabels({'L','H'}), yticks([-1 1]), ylim([-1.1 1.1]);
@@ -125,13 +125,13 @@ else
     end
 
     %plot outputs
-    disp('Plotting outputs')
+    disp('Plotting outputs waveform')
 
     for oo = 1:Noutputs
         
         subplot(N_subplot,1,plot_row), hold on
         %plot_data = getfield(data,char(availableRows(out_rows(oo))));
-        plot_data = 1-1/0.1*max(-0.1,min(0.1,getfield(data,char(availableRows(out_rows(oo))))));
+        plot_data = 1-1/0.1*min(0.1,max(-0.1,-getfield(data,char(availableRows(out_rows(oo))))));
         plot(data.Time,plot_data,'-b','LineWidth',1.5, 'MarkerSize',10)
         ylabel(sprintf('%s',char(availableRows(out_rows(oo)))),'Interpreter', 'none');
         yticklabels({'L','H'}), yticks([0 2]), ylim([-0.1 2.1]);

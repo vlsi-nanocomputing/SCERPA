@@ -22,8 +22,6 @@ function return_code = GenerateLayoutFile(QCA_circuit)
 % provided by the user in the <<QCA_circuit>>, creates the layout files and
 % saves them in the Database directory.
 
-
-
 %SCERPA version
 SCERPA_version = 4;
 
@@ -226,10 +224,10 @@ end
 
 %% Output file creation
 % Check if the directory "Database" is present
-if exist('Database','dir')
-    delete('Database/*');  % delete its content 
+if exist('Data','dir')
+    delete('Data/*');  % delete its content 
 else
-    mkdir('Database');     % if not present. It is created.
+    mkdir('Data');     % if not present. It is created.
 end
 
 %===================================================================================================================================================================
@@ -241,7 +239,7 @@ end
 %     Plotting(stack_mol_PV, stack_driver, dot_position, dist_z, dist_y, QCA_circuit.structure, QCA_circuit.rotation, QCASurface, electrode_variation)
 
 % save simulation filename
-filename = sprintf('Database/Simulation_filename.txt');
+filename = sprintf('Data/Simulation_filename.txt');
 fileID = fopen(filename,'wt');
 fprintf(fileID,'%s', simulation_file_name);
 fclose(fileID);
@@ -299,13 +297,13 @@ end
 
     
 %%% FILE FOR MOLECULE DATA
-filename = sprintf('Database/Data_Molecule.mat');
+filename = sprintf('Data/Data_Molecule.mat');
 fprintf('Creating molecule data file "%s"... ', filename)
 save(filename,'matrix_mol');
 fprintf('[DONE] \n')
     
 %%% FILE FOR COMSOL
-filename = sprintf('Database/Comsol_data.txt');
+filename = sprintf('Data/Comsol_data.txt');
 fprintf('Creating COMSOL file "%s"... ', filename)
 fileID = fopen(filename,'wt');
 fprintf(fileID,'%s\n', mol_parameter{:,1});
@@ -315,6 +313,7 @@ fprintf('[DONE] \n')
 
 %===================================================================================================================================================================
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   DATA DRIVERS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+id_num = id_num+1;
 for ii=1:stack_driver.num
     k = (ii-1)*8 + 1;
     name = stack_driver.stack(ii).identifier;
@@ -344,18 +343,19 @@ for ii=1:stack_driver.num
 end
 
 %Driver files
-filename = 'Database/Data_Driver.mat';
+filename = 'Data/Data_Driver.mat';
 fprintf('Creating driver geometry file "%s"... ', filename)
 save(filename,'matrix_driv');
 fprintf('[DONE] \n')
 
-filename = 'Database/Values_Driver.mat';
+filename = 'Data/Values_Driver.mat';
 fprintf('Creating driver value file "%s"... ', filename)
 save(filename,'Values_Dr');
 fprintf('[DONE] \n')
 
 %===================================================================================================================================================================
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   DATA OUTPUTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+id_num = id_num+1;
 for ii=1:stack_output.num
     k = (ii-1)*8 + 1;
     name = stack_output.stack(ii).identifier;
@@ -387,7 +387,7 @@ if stack_output.num == 0 % output may be not present
     matrix_out = cell(0,0);
 end
 %Output files
-filename = 'Database/Data_Output.mat';
+filename = 'Data/Data_Output.mat';
 fprintf('Creating output geometry file "%s"... ', filename)
 save(filename,'matrix_out');
 fprintf('[DONE] \n')
@@ -424,7 +424,7 @@ fprintf('[DONE] \n')
 % end
 
 %Clock file generation
-filename = 'Database/Fake_Phases.mat';
+filename = 'Data/Fake_Phases.mat';
 fprintf('Creating clock value file "%s"... ', filename)
 save(filename,'stack_clock');
 fprintf('[DONE] \n')

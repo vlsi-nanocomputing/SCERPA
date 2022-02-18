@@ -18,7 +18,13 @@
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [status] = SCERPA(command,option1,option2)
+    
 
+    addpath('./Algorithm')
+    addpath('./Database')
+    addpath('./Layout')
+    addpath('./Viewer')
+    
     %No command error: automatically show "help"
     if ~exist('command','var')
          disp('[ERROR] No command! SCERPA does not know what to do...')

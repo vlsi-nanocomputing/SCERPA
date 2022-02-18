@@ -22,8 +22,7 @@ function [CK] = Interp_coeff_bilinear(molecule)
 formatSpec = '%f %f %f %f %f'; % file format for reading
 
 % get the directory name of the molecule
-% cd Characteristics_Setting
-dirList = dir('Characteristics_Setting');
+dirList = dir('../Database');
 dirNamesList = {dirList(:).name};
 molIdentifier = sprintf('%d.',molecule);
 index = strncmp(dirNamesList,molIdentifier,2);
@@ -32,11 +31,11 @@ directoryName = dirNamesList{index};
 % filename_setting = sprintf('%s/characteristics_data.xlsx',directoryName);
 % [num_data,txt_data,raw_data] = xlsread(filename_setting);
 
-filename_setting = sprintf('Characteristics_Setting/%s/info.txt',directoryName);
+filename_setting = fullfile('..','Database',directoryName,'info.txt');
 molInfo = molInfoRead(filename_setting);
 
 for jj = 1:double(molInfo.nClockData)
-    filename = sprintf('Characteristics_Setting/%s/%s', directoryName, molInfo.file{jj});
+    filename = fullfile('..','Database',directoryName,molInfo.file{jj});
     fileID = fopen(filename,'r');
     sizeA = [5 molInfo.values(jj)];
     A = fscanf(fileID,formatSpec, sizeA);

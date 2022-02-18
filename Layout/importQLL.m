@@ -53,8 +53,10 @@ for ii = 1:length(xmlStruct.driver.name)
         
 
         
-        [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_driver.stack(2*ii).molType));
-        number_of_charges = length(dot_position(:,1));
+        [number_of_charges, dot_position, draw_association] = GetMoleculeData(num2str(stack_driver.stack(2*ii).molType));
+        %number_of_charges = length(dot_position(:,1));
+        stack_driver.stack(2*ii).chargeNum = number_of_charges;
+        stack_driver.stack(2*ii-1).chargeNum = number_of_charges;
 
         %effective position of the cell (necesssary for rotation implementation)
         y_cell_center = dist_y * xmlStruct.driver.y(ii); %position of cell center
@@ -77,8 +79,8 @@ for ii = 1:length(xmlStruct.driver.name)
             stack_driver.stack(2*ii).charge(cc).z = z_dot_in_cell_b*cosd(theta_driver) - y_dot_in_cell*sind(theta_driver) + z_cell_center; 
             stack_driver.stack(2*ii-1).charge(cc).z = z_dot_in_cell_a*cosd(theta_driver) - y_dot_in_cell*sind(theta_driver) + z_cell_center; 
             
-            stack_driver.stack(2*ii).charge(cc).q = initial_charge(cc);
-            stack_driver.stack(2*ii-1).charge(cc).q = initial_charge(cc);
+            stack_driver.stack(2*ii).charge(cc).q = 0;
+            stack_driver.stack(2*ii-1).charge(cc).q = 0;
         
         end 
         stack_driver.stack(2*ii).association = draw_association;
@@ -100,8 +102,8 @@ for ii = 1:length(xmlStruct.driver.name)
         else
             stack_driver.stack(ii).molType = xmlStruct.molecules(1).molType;
         end
-        [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_driver.stack(ii).molType));
-        number_of_charges = length(dot_position(:,1));
+        [number_of_charges, dot_position, draw_association] = GetMoleculeData(num2str(stack_driver.stack(ii).molType));
+        %number_of_charges = length(dot_position(:,1));
 
         %effective position of the cell (necesssary for rotation implementation)
         y_cell_center = dist_y * xmlStruct.driver.y(ii); %position of cell center
@@ -109,6 +111,8 @@ for ii = 1:length(xmlStruct.driver.name)
         
         theta_driver = xmlStruct.driver.angle(ii);
         %update driver charge and positions (mol 1)
+        stack_driver.stack(ii).chargeNum = number_of_charges;
+
         for cc=1:number_of_charges
             stack_driver.stack(ii).charge(cc).x = dot_position(cc,1); 
             
@@ -118,7 +122,7 @@ for ii = 1:length(xmlStruct.driver.name)
             
             stack_driver.stack(ii).charge(cc).y = y_dot_in_cell*cosd(theta_driver) + z_dot_in_cell*sind(theta_driver) +  y_cell_center;
             stack_driver.stack(ii).charge(cc).z = z_dot_in_cell*cosd(theta_driver) - y_dot_in_cell*sind(theta_driver) + z_cell_center; 
-            stack_driver.stack(ii).charge(cc).q = initial_charge(cc);
+            stack_driver.stack(ii).charge(cc).q = 0;
             
         end 
         stack_driver.stack(ii).association = draw_association;
@@ -141,8 +145,9 @@ for ii = 1:stack_output.num
      	stack_output.stack(ii).molType = xmlStruct.molecules(1).molType;
     end
         
-    [~, dot_position, draw_association] = GetMoleculeData(num2str(stack_output.stack(ii).molType));
-    number_of_charges = length(dot_position(:,1));
+    [number_of_charges, dot_position, draw_association] = GetMoleculeData(num2str(stack_output.stack(ii).molType));
+    %number_of_charges = length(dot_position(:,1));
+    stack_output.stack(ii).chargeNum = number_of_charges;
 
     %effective position of the cell (necesssary for rotation implementation)
     y_cell_center = dist_y * xmlStruct.output.y(ii); %position of cell center
@@ -270,8 +275,9 @@ for ii = 1:length(xmlStruct.molecules)
             stack_mol.stack(stack_mol.num).molType = xmlStruct.molecules(ii).molType;
         end
 
-        [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_mol.stack(ii).molType));
-        number_of_charges = length(dot_position(:,1)); 
+        [number_of_charges, dot_position, draw_association] = GetMoleculeData(num2str(stack_mol.stack(ii).molType));
+        %number_of_charges = length(dot_position(:,1)); 
+        stack_mol.stack(stack_mol.num).chargeNum = number_of_charges;
 
         %update molecule charge and positions (mol 1)
         for cc=1:number_of_charges
@@ -286,7 +292,7 @@ for ii = 1:length(xmlStruct.molecules)
             stack_mol.stack(stack_mol.num).charge(cc).y = y_mol_rotation*cosd(theta_cell) + z_mol_rotation*sind(theta_cell) + y_cell_center + mol1_yshift;
             stack_mol.stack(stack_mol.num).charge(cc).z = z_mol_rotation*cosd(theta_cell) - y_mol_rotation*sind(theta_cell) + z_cell_center + mol1_xshift; 
             
-            stack_mol.stack(stack_mol.num).charge(cc).q = initial_charge(cc);
+            stack_mol.stack(stack_mol.num).charge(cc).q = 0;
         end 
         stack_mol.stack(stack_mol.num).association = draw_association;
         
@@ -320,8 +326,9 @@ for ii = 1:length(xmlStruct.molecules)
         end
         
 
-        [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_mol.stack(ii).molType));
-        number_of_charges = length(dot_position(:,1));
+        [number_of_charges, dot_position, draw_association] = GetMoleculeData(num2str(stack_mol.stack(ii).molType));
+        %number_of_charges = length(dot_position(:,1));
+        stack_mol.stack(stack_mol.num).chargeNum = number_of_charges;
 
         %update molecule charge and positions (mol 1)
         for cc=1:number_of_charges
@@ -336,7 +343,7 @@ for ii = 1:length(xmlStruct.molecules)
             stack_mol.stack(stack_mol.num).charge(cc).y = y_mol_rotation*cosd(theta_cell) + z_mol_rotation*sind(theta_cell) + y_cell_center + mol2_yshift;
             stack_mol.stack(stack_mol.num).charge(cc).z = z_mol_rotation*cosd(theta_cell) - y_mol_rotation*sind(theta_cell) + z_cell_center + mol2_xshift; 
             
-            stack_mol.stack(stack_mol.num).charge(cc).q = initial_charge(cc);
+            stack_mol.stack(stack_mol.num).charge(cc).q = 0;
         end 
         stack_mol.stack(stack_mol.num).association = draw_association;
         

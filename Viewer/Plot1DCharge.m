@@ -61,22 +61,22 @@ end
 dataTable = sortrows(dataTable,1);
 
 out_fig = figure('visible','off');
+
 ha = gca;
 uistack(ha,'bottom');
-ha2=axes('position',[0,0, 0.1,0.12]);
+ha2=axes('position',[0,0, 0.12,0.14]);
 [x, map]=imread(fullfile('../Documentation/','scerpa_logo.png'));
-image(x)
+imagesc(x)
 colormap (map)
 set(ha2,'handlevisibility','off','visible','off')
+
 hold on, grid on;
 plot(cell2mat(dataTable(:,1)),cell2mat(dataTable(:,3)),'b--*',cell2mat(dataTable(:,1)),cell2mat(dataTable(:,4)),'r--*','Linewidth',4,'MarkerSize',10);
 axis([0 number_of_mols -0.2 1.2])
 xticks(cell2mat(dataTable(:,1)));xticklabels(string(dataTable(:,2)));xtickangle(90);
 set(gca,'TickLabelInterpreter','none')
- 
 legend('Dot1','Dot2');title('Charge distribution');
 xlabel('Molecule'); ylabel('Aggregated charge distribution Dot1 & Dot2'); 
-
 
 
  end
