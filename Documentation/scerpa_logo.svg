@@ -7,13 +7,14 @@
    viewBox="0 0 134.70384 134.70384"
    version="1.1"
    id="svg5908"
-   inkscape:version="1.1.1 (26b7af14f2, 2022-01-19)"
+   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
    sodipodi:docname="scerpa_logo.svg"
    inkscape:export-filename="/mnt/44CEE091CEE07D14/scerpa/Documentation/scerpa_logo.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -29,13 +30,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.9899495"
-     inkscape:cx="37.88072"
+     inkscape:cx="164.14979"
      inkscape:cy="237.38585"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="2560"
-     inkscape:window-height="1403"
+     inkscape:window-width="1920"
+     inkscape:window-height="1043"
      inkscape:window-x="1920"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -135,15 +136,29 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;line-height:1.25;font-family:OpenSans-Bold;-inkscape-font-specification:OpenSans-Bold;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="37.142437"
-       y="153.52025"
-       id="text10473"><tspan
-         sodipodi:role="line"
-         id="tspan10471"
-         x="37.142437"
-         y="153.52025"
-         style="font-size:7.05556px;stroke-width:0.264583">ToPoliNano Technologies</tspan></text>
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;line-height:1.25;font-family:OpenSans-Bold;-inkscape-font-specification:OpenSans-Bold;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       id="text10473"
+       inkscape:transform-center-x="-1.6878566"
+       inkscape:transform-center-y="0.16296524"
+       transform="translate(3.0722945,-3.3633645)"><textPath
+         xlink:href="#path10440"
+         startOffset="50%"
+         id="textPath6479"><tspan
+           id="tspan10471"
+           style="font-size:7.05556px;text-align:center;text-anchor:middle;stroke-width:0.264583">ToPoliNano  </tspan><tspan
+           style="font-size:7.05556px;text-align:center;text-anchor:middle;stroke-width:0.264583"
+           id="tspan2658">Technologies                                                                                                 </tspan></textPath></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;line-height:1.25;font-family:OpenSans-Bold;-inkscape-font-specification:OpenSans-Bold;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       id="text10473-3"><textPath
+         xlink:href="#path5675"
+         startOffset="50%"
+         id="textPath6038"><tspan
+           id="tspan10471-6"
+           style="font-size:7.05556px;text-align:center;text-anchor:middle;stroke-width:0.264583">ToPoliNano  </tspan><tspan
+           style="font-size:7.05556px;text-align:center;text-anchor:middle;stroke-width:0.264583"
+           id="tspan2658-7">Technologies</tspan></textPath></text>
     <path
        style="opacity:1;fill:#00ff66;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.9000001;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="path10385-9"
@@ -180,5 +195,10 @@
        x="-127.43629"
        y="-175.9026"
        transform="scale(-1)" />
+    <path
+       style="fill:none;stroke:#ff2a2a;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 84.45945,41.6224 c 0,0 52.55764,-12.845654 80.81314,12.900697 31.65003,28.839432 15.9672,77.192953 15.9672,77.192953"
+       id="path5675"
+       sodipodi:nodetypes="csc" />
   </g>
 </svg>
