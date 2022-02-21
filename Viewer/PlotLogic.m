@@ -100,15 +100,16 @@ map = [nocircuit;
 
     blue];
 
-%create figure
-out_fig = figure('visible','off');
+%figure creation
+dpi = 150;            % Resolution
+sz = [0 0 2880 1800]; % Image size in pixels
+out_fig = figure('visible','off','PaperUnits','inches','PaperPosition', sz/dpi,'PaperPositionMode','manual','position',[0 0  1920 1080]);
 ha = gca;
 uistack(ha,'bottom');
-ha2=axes('position',[0,0, 0.1,0.12]);
-[x, imageMap]=imread(fullfile('../Documentation/','scerpa_logo.png'));
-image(x)
-colormap (imageMap)
+ha2=axes('OuterPosition',[0,0, 1,1],'Position',[0,0, 0.14,0.14]);
+hIm = imshow(fullfile('..','Documentation','scerpa_logo.png'));
 set(ha2,'handlevisibility','off','visible','off')
+
 hold on
 imagesc(P_map)
 colormap(map)

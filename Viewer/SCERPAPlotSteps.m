@@ -61,6 +61,7 @@ if plotSettings.plot_waveform == 1
         savefig(waveformFig,strcat(figure_path,'/waveformFig.fig'))
     end
     saveas(waveformFig,strcat(figure_path,'/waveformFig.jpg'))
+    %print('-r150','-dtiff','histogram.tiff');
 end
 
 % Plot steps

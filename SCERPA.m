@@ -17,18 +17,16 @@
 %                                   10.1109/TVLSI.2020.3045198             %
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [status] = SCERPA(command,option1,option2)
+function [status] = SCERPA(command,option1,option2,option3)
     
+    option1.pathList = config('internal');
+    option2.pathList = option1.pathList;
+    option3.pathList = option1.pathList;
+   
 
-    addpath('./Algorithm')
-    addpath('./Database')
-    addpath('./Layout')
-    addpath('./Viewer')
-    
     %No command error: automatically show "help"
     if ~exist('command','var')
-         disp('[ERROR] No command! SCERPA does not know what to do...')
-         return
+         error('[ERROR][001] Missing command! SCERPA does not know what to do...')
     end
 
     % commands
@@ -84,6 +82,12 @@ function [status] = SCERPA(command,option1,option2)
                 status = 1;
                 return
             end
+        case('generateLaunchView') %generate and launch
+            if exist('option1','var')
+                if exist('option2','var')
+                    SCERPA('generateLaunch',option1,option2);
+                end
+            end
         case char('plotSteps')
             %close all
             disp('Plotting Results!')
@@ -95,5 +99,29 @@ function [status] = SCERPA(command,option1,option2)
         otherwise
             disp('Command not valid!')
     end
+end
+
+function displayHeader()
+
+    disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    disp('%                                                                          %')
+    disp('%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %')
+    disp('%                                                                          %')
+    disp('%       VLSI Nanocomputing Research Group                                  %')
+    disp('%       Dept. of Electronics and Telecommunications                        %')
+    disp('%       Politecnico di Torino, Turin, Italy                                %')
+    disp('%       (https://www.vlsilab.polito.it/)                                   %')
+    disp('%                                                                          %')
+    disp('%       People [people you may contact for info]                           %')
+    disp('%         Yuri Ardesi (yuri.ardesi@polito.it)                              %')
+    disp('%         Giuliana Beretta (giuliana.beretta@polito.it)                    %')
+    disp('%                                                                          %')
+    disp('%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %')
+    disp('%                                                                          %')
+    disp('%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %')
+    disp('%                                   10.1109/TVLSI.2020.3045198             %')
+    disp('%                                                                          %')
+    disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+
 end
 

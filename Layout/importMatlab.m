@@ -44,6 +44,9 @@ else % if components field is present, check dimensions
     end
 end
 
+molTypeList = str2double(unique([QCA_circuit.components(:)]));
+molCitation(molTypeList);
+
 %get intermolecular distances
 if ~isfield(QCA_circuit,'dist_z')
     QCA_circuit.dist_z = 10;
