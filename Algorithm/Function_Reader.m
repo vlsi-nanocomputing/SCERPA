@@ -101,8 +101,6 @@ stack_clock = raw_phase;
 % DRIVER VALUES
 driver_values = raw_values;
 
-disp('Loading Complete')
-
 end
 
 

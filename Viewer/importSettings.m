@@ -26,10 +26,11 @@ function scerpaSettings = importSettings(userSettings)
 % output path
 if isfield(userSettings,'out_path') 
     % set by user
-    scerpaSettings.out_path = strcat(userSettings.out_path,'/SCERPA_OUTPUT_FILES');
+    scerpaSettings.out_path = fullfile(userSettings.out_path,'SCERPA_OUTPUT_FILES');
 else
     % not set by the user!
-    scerpaSettings.out_path = '../OUTPUT_FILES';
+    scerpaSettings.out_path = fullfile('..','OUTPUT_FILES');
+    warning('Default output file location');
 end
 
 % general plot
@@ -59,6 +60,8 @@ scerpaSettings.plot_potential_tipHeight = setDefault(userSettings,'plot_potentia
 % Waveform Plot settings
 scerpaSettings.plot_waveform = setDefault(userSettings,'plot_waveform',0);
 
+% Quality setting
+scerpaSettings.HQimage = setDefault(userSettings,'HQimage',0);
 
 end
 

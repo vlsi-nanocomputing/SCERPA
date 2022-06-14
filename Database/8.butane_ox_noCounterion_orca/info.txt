@@ -8,6 +8,6 @@ ASSOCIATION 1
 1 2
 
 CLOCKDATA 3
-buta1.txt -2 V 23 values
-buta2.txt 0 V 23 values
-buta3.txt +2 V 23 values
+<1> buta1.txt -2 V 23 values </1> 
+<2> buta2.txt 0 V 23 values </2>
+<13> buta3.txt +2 V 23 values </3>

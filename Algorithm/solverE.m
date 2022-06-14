@@ -229,15 +229,15 @@ for time = 1:n_times
             
             %max step reached, increase tolerance (LP Mode)
             max_error=settings.conv_threshold_LP;
-            disp('Warning: low precision');
+            warning('Low precision');
             
             if (scfStep==settings.max_step + settings.LPmode)
                 
                 %max step reached, LP mode didn't converge, increase tolerance
                 max_error=settings.conv_threshold_LLP;
-                disp('Warning very low precision');
+                warning('Very low precision');
                 if (scfStep==settings.max_step + settings.LPmode + settings.LLPmode)
-                    disp('No convergence');
+                    warning('No convergence');
                     pause
                     break;
                 end
@@ -410,7 +410,7 @@ for time = 1:n_times
                 end
         else
             %%%%% Not implemented
-            error('[SCERPA] Relative convergence is not implemented yet!')
+            error('[ERROR][012] Relative convergence is not implemented yet!')
         end
 
         if settings.plotIntermediateSteps == 1

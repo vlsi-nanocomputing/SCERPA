@@ -10,10 +10,10 @@ ASSOCIATION 3
 3 4
 
 CLOCKDATA 7
-ck20.txt +2 V 24 values
-ck15.txt +1.5 V 24 values
-ck10.txt +1 V 24 values
-ck00.txt 0 V 24 values
-ckm10.txt -1 V 24 values
-ckm15.txt -1.5 V 24 values
-ckm20.txt -2 V 24 values
+<1> ck20.txt +2 V 24 values </1>
+<2> ck15.txt +1.5 V 24 values </2>
+<3> ck10.txt +1 V 24 values </3>
+<4> ck00.txt 0 V 24 values </4>
+<5> ckm10.txt -1 V 24 values </5>
+<6> ckm15.txt -1.5 V 24 values </6>
+<7> ckm20.txt -2 V 24 values </7>

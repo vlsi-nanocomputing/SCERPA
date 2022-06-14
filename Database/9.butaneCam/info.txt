@@ -8,6 +8,6 @@ ASSOCIATION 1
 1 2
 
 CLOCKDATA 3
-only.txt -2 V 23 values
-only.txt +2 V 23 values
-only.txt +2 V 23 values
+<1> only.txt -2 V 23 values </1>
+<2> only.txt +2 V 23 values </2>
+<3> only.txt +2 V 23 values </3>

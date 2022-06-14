@@ -62,14 +62,25 @@ dataTable = sortrows(dataTable,1);
 
 
 %figure creation
-dpi = 150;            % Resolution
-sz = [0 0 2880 1800]; % Image size in pixels
-out_fig = figure('visible','off','PaperUnits','inches','PaperPosition', sz/dpi,'PaperPositionMode','manual','position',[0 0  1920 1080]);
-ha = gca;
-uistack(ha,'bottom');
-ha2=axes('OuterPosition',[0,0, 1,1],'Position',[0,0, 0.14,0.14]);
-hIm = imshow(fullfile('..','Documentation','scerpa_logo.png'));
-set(ha2,'handlevisibility','off','visible','off')
+if settings.HQimage
+    dpi = 150;            % Resolution
+    sz = [0 0 2880 1800]; % Image size in pixels
+    out_fig = figure('visible','off','PaperUnits','inches','PaperPosition', sz/dpi,'PaperPositionMode','manual','position',[0 0  1920 1080]);
+    ha = gca;
+    uistack(ha,'bottom');
+    ha2=axes('OuterPosition',[0,0, 1,1],'Position',[0,0, 0.14,0.14]);
+    hIm = imshow(fullfile('..','Documentation','scerpa_logo.png'));
+    set(ha2,'handlevisibility','off','visible','off')
+else
+    out_fig = figure('visible','off');
+    ha = gca;
+    uistack(ha,'bottom');
+    ha2=axes('OuterPosition',[0,0, 1,1],'Position',[0,0, 0.14,0.14]);
+    [LogoImage, map] = imread(fullfile('..','Documentation','scerpa_logo.png'));
+    image(LogoImage)
+    colormap (map)
+    set(ha2,'handlevisibility','off','visible','off')
+end
 
 hold on, grid on;
 plot(cell2mat(dataTable(:,1)),cell2mat(dataTable(:,3)),'b--*',cell2mat(dataTable(:,1)),cell2mat(dataTable(:,4)),'r--*','Linewidth',4,'MarkerSize',10);

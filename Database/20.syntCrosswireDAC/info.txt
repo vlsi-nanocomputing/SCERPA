@@ -10,5 +10,5 @@ ASSOCIATION 3
 3 4
 
 CLOCKDATA 2
-ck1.txt -2 V 70 values
-ck3.txt +2 V 70 values
+<1> ck1.txt -2 V 70 values </1> 
+<2> ck3.txt +2 V 70 values </2> 

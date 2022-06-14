@@ -43,21 +43,22 @@ catch
 end
 
 %get simulation file name
-filename_sim = '../Layout/Data/Simulation_filename.txt';
+layout_data_location = fullfile('..','Layout','Data');
+filename_sim = fullfile(layout_data_location,'Simulation_filename.txt');
 fileID = fopen(filename_sim,'r');
 formatSpec = '%s';
 simulation_file_name = fscanf(fileID,formatSpec);
 fclose(fileID);
 
 % Files to read cross-platform (mat data)
-filename_mol = '../Layout/Data/Data_Molecule.mat';
-filename_driv = '../Layout/Data/Data_Driver.mat';
-filename_out = '../Layout/Data/Data_Output.mat';
-filename_phase = '../Layout/Data/Fake_Phases.mat';
-filename_values_dr =  '../Layout/Data/Values_Driver.mat';
+filename_mol = fullfile(layout_data_location,'Data_Molecule.mat');
+filename_driv = fullfile(layout_data_location,'Data_Driver.mat');
+filename_out = fullfile(layout_data_location,'Data_Output.mat');
+filename_phase = fullfile(layout_data_location,'Fake_Phases.mat');
+filename_values_dr =  fullfile(layout_data_location,'Values_Driver.mat');
 
 % Output Files
-Sim_Output_file = strcat(settings.out_path,'/Simulation_Output.log');
+Sim_Output_file = fullfile(settings.out_path,'Simulation_Output.log');
 fileID = fopen(Sim_Output_file,'wt');
 header = [  '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',...
             '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n',...
@@ -118,6 +119,8 @@ for i = 1:length(molTypeList)
     CK.stack(molTypeList(i)+1) = reshapeTC(transchar); % put transchar in fixed position corresponding to molType number (+1 to start from 1 instead of 0)
 end
 CK.length = length(molTypeList);
+
+disp('Loading Complete')
 
 %create distance matrix
 disp('Creating distance matrix...')

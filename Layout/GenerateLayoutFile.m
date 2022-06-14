@@ -17,7 +17,7 @@
 %                                   10.1109/TVLSI.2020.3045198             %
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function return_code = GenerateLayoutFile(QCA_circuit)
+function GenerateLayoutFile(QCA_circuit)
 % The function GenerateLayoutFile checks the correctness of the inputs
 % provided by the user in the <<QCA_circuit>>, creates the layout files and
 % saves them in the Database directory.
@@ -430,7 +430,5 @@ save(filename,'stack_clock');
 fprintf('[DONE] \n')
 
 fprintf('\nSCERPA is ready to start.\n\n')
-
-return_code=0;
 
 end

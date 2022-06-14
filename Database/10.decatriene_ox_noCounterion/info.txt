@@ -9,6 +9,6 @@ ASSOCIATION 2
 2 3
 
 CLOCKDATA 3
-deca1.txt -2 V 17 values
-deca2.txt 0 V 17 values
-deca3.txt +2 V 17 values
+<1> deca1.txt -2 V 17 values </1> 
+<2> deca2.txt 0 V 17 values </2>
+<3> deca3.txt +2 V 17 values </3>

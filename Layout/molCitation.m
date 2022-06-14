@@ -26,7 +26,7 @@ for ii = 1:length(molList)
             disp('  + Ardesi Y., Pulimeno A., Graziano M., Riente F., and Piccinini G., "Effectiveness of Molecules for Quantum Cellular Automata as Computing Devices." J. Low Power Electron. Appl. 2018, 8, 24. https://doi.org/10.3390/jlpea8030024')
         case 9
             disp('9.butaneCam')
-            disp('  + ENERGIA')
+            disp('  + Ardesi Y., Graziano M., and Piccinini G., "A Model for the Evaluation of Monostable Molecule Signal Energy in Molecular Field-Coupled Nanocomputing." J. Low Power Electron. Appl. 2022, 12, 13. https://doi.org/10.3390/jlpea12010013')
         case 10
             disp('10.decatriene_ox_noCounterion')
             disp('  + Ardesi Y., Pulimeno A., Graziano M., Riente F., and Piccinini G., "Effectiveness of Molecules for Quantum Cellular Automata as Computing Devices." J. Low Power Electron. Appl. 2018, 8, 24. https://doi.org/10.3390/jlpea8030024')

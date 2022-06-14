@@ -137,7 +137,7 @@ end
 
 %run('GenerateElectrodesStackTest.m');
 %GenerateElectrodesStack(dot_position, dist_z, dist_y, QCA_circuit_structure, QCA_circuit_rotation, QCASurface, electrode_variation);
-disp('[WARNING] Electrode view disable');
+warning('Electrode view disabled');
 
 end
 
