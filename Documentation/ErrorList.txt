@@ -11,4 +11,4 @@
 [011] Vext matrix is not well defined (size is not consistent)!
 [012] Relative convergence is not implemented yet!
 [013] Unknown molecule (circuit.molecule)
-[ERROR][014] Wrong molecule formate, please write the corresponding number (circuit.molecule)
+[ERROR][014] Wrong molecule format, please write the corresponding number (circuit.molecule)

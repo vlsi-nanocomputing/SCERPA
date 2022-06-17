@@ -18,11 +18,11 @@ for ii = 1:length(molList)
             disp('  + Arima V., et al. "Toward quantum-dot cellular automata units: thiolated-carbazole linked bisferrocenes." Nanoscale 4.3 (2012): 813-823')
         case 3
             disp('3.bisfe4_ox_noCounterion')
-            disp('  + Arima V., et al. "Toward quantum-dot cellular automata units: thiolated-carbazole linked bisferrocenes." Nanoscale 4.3 (2012): 813-823')
+            disp('  + Arima V., et al. "Toward quantum-dot cellular automata units: thiolated-carbazole linked bisferrocenes." Nanoscale 4.3 (2012): 813-823. https://doi.org/10.1039/C1NR10988J')
             disp('  + Ardesi Y., Pulimeno A., Graziano M., Riente F., and Piccinini G., "Effectiveness of Molecules for Quantum Cellular Automata as Computing Devices." J. Low Power Electron. Appl. 2018, 8, 24. https://doi.org/10.3390/jlpea8030024')
         case 7
             disp('7.butane_ox_noCounterion')
-            disp('  + Craig S. L., Isaksen B., and Lieberman M., "Molecular quantum-dot cellular automata." Journal of the American Chemical Society 125.4 (2003): 1056-1063')
+            disp('  + Craig S. L., Isaksen B., and Lieberman M., "Molecular quantum-dot cellular automata." Journal of the American Chemical Society 125.4 (2003): 1056-1063. https://doi.org/10.1021/ja026856g')
             disp('  + Ardesi Y., Pulimeno A., Graziano M., Riente F., and Piccinini G., "Effectiveness of Molecules for Quantum Cellular Automata as Computing Devices." J. Low Power Electron. Appl. 2018, 8, 24. https://doi.org/10.3390/jlpea8030024')
         case 9
             disp('9.butaneCam')
@@ -30,6 +30,7 @@ for ii = 1:length(molList)
         case 10
             disp('10.decatriene_ox_noCounterion')
             disp('  + Ardesi Y., Pulimeno A., Graziano M., Riente F., and Piccinini G., "Effectiveness of Molecules for Quantum Cellular Automata as Computing Devices." J. Low Power Electron. Appl. 2018, 8, 24. https://doi.org/10.3390/jlpea8030024')
+            disp('  + Lu Y., Liu M., and Lent C., "Molecular quantum-dot cellular automata: From molecular structure to circuit dynamics." Journal of Applied Physics 2007, 102, 034311. https://doi.org/10.1063/1.2767382')
         case 15
             disp('15.ideal_neutral')
             disp('  + Ardesi Y., Beretta G., Vacca M., Piccinini G., and Graziano M., "Impact of Molecular Electrostatics on Field-Coupled Nanocomputing and Quantum-Dot Cellular Automata Circuits." Electronics 2022, 11, 276. https://doi.org/10.3390/electronics11020276')

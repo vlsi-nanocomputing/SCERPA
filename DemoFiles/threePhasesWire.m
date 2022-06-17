@@ -17,7 +17,7 @@ clock_step = 3;
 circuit.molecule = '1';
 
 %layout (MATLAB)
-circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3' 'out_y'};
+circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3' 'Out_y'};
 % circuit.components = {'7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7'};;
 circuit.magcadImporter = 0;
  
@@ -50,7 +50,7 @@ settings.verbosity = 0;
 settings.dumpDriver = 1;
 settings.dumpOutput = 1;
 settings.dumpClock = 1;
-settings.plotIntermediateSteps = 0;
+
 
 %PLOT settings
 plotSettings.plot_waveform = 1;
@@ -60,7 +60,6 @@ plotSettings.plot_logic = 1;
 plotSettings.plot_potential = 1;
 plotSettings.plotSpan = 3;
 plotSettings.fig_saver = 1;
-plotSettings.plotList = 0;
 plotSettings.HQimage = 1;
 
 %copy outputh path from algorithm settings if specified by the user

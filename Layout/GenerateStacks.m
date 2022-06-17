@@ -38,7 +38,7 @@ function [driver_stack, mol_stack, out_stack] = GenerateStacks(QCA_circuit)
             if (strncmp(QCA_circuit.structure(i,l),'Dr',2)) % if there is a driver
                 [nCharges,dot_position, draw_association] = GetMoleculeData(QCA_circuit.components{i,l});
                 [driver_stack] = GenerateDriverStack(QCA_circuit, i, l, driver_stack, dot_position, draw_association,nCharges);
-            elseif (strncmp(QCA_circuit.structure(i,l),'out',3)) % if there is an output
+            elseif (strncmp(QCA_circuit.structure(i,l),'Out',3)) % if there is an output
                 [nCharges,dot_position, draw_association] = GetMoleculeData(QCA_circuit.components{i,l});
                 [out_stack] = GenerateOutputStack(QCA_circuit, i, l, out_stack, dot_position, draw_association,nCharges);
             elseif QCA_circuit.structure{i,l}~=0 % if there is a molecule

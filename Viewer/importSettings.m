@@ -35,6 +35,7 @@ end
 
 % general plot
 scerpaSettings.fig_saver = setDefault(userSettings,'fig_saver',0);
+scerpaSettings.HQimage = setDefault(userSettings,'HQimage',0);
 scerpaSettings.plotSpan = setDefault(userSettings,'plotSpan',1);
 scerpaSettings.plotList = setDefault(userSettings,'plotList',0);
 
@@ -60,8 +61,6 @@ scerpaSettings.plot_potential_tipHeight = setDefault(userSettings,'plot_potentia
 % Waveform Plot settings
 scerpaSettings.plot_waveform = setDefault(userSettings,'plot_waveform',0);
 
-% Quality setting
-scerpaSettings.HQimage = setDefault(userSettings,'HQimage',0);
 
 end
 

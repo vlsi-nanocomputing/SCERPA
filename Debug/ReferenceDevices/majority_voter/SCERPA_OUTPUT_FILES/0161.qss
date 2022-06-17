@@ -1,0 +1,58 @@
+############################################################
+#
+# Self-Consistent Electrostatic Potential Algorithm (SCERPA)
+#					#
+# VLSI Nanocomputing Research Group 
+# Dept. of Electronics and Telecommunications 
+# Politecnico di Torino, Turin, Italy  
+# (https://www.vlsilab.polito.it/) 
+#
+# People [people you may contact for info] 
+# 	 Yuri Ardesi (yuri.ardesi@polito.it) 
+# 	 Giuliana Beretta (giuliana.beretta@polito.it) 
+#
+# Supervision: Gianluca Piccinini, Mariagrazia Graziano 
+#
+# Relevant pubblications doi  
+# 	 10.1109/TCAD.2019.2960360   
+# 	 10.1109/TVLSI.2020.3045198  
+#
+############################################################
+# Begin: Header
+# Title: majority_voter.qll
+#
+# Desc: Optional description line.
+# Desc: Total simulation time:  161 ps
+# valuedim: 4    ## Value dimension: number of values per element
+#
+# valueunits: a.u. a.u. a.u. a.u.
+# valuelabels: "Q1 Aggregated Charge"  "Q2 Aggregated Charge" "Q3 Aggregated Charge" "Q4 Aggregated Charge"
+#
+# End: Header
+#
+#
+# Begin: data text
+0010a   0.0030   0.9270   -0.2120  -0.7170
+0010b   0.9290   0.0000   -0.2120  -0.7170
+0011a   0.9290   0.0000   -0.2120  -0.7170
+0011b   0.0030   0.9270   -0.2120  -0.7170
+0012a   0.0030   0.9270   -0.2120  -0.7170
+0012b   0.9290   0.0000   -0.2120  -0.7170
+0002a   0.6088   0.3282   -0.2193  -0.7180
+0002b   0.2171   0.7176   -0.2174  -0.7180
+0003a   0.0283   0.0247   0.1410  -0.1940
+0003b   0.0312   0.0230   0.1417  -0.1950
+0004a   0.0318   0.0230   0.1444  -0.1991
+0004b   0.0264   0.0266   0.1410  -0.1940
+0005a   0.0275   0.0255   0.1410  -0.1940
+0005b   0.0250   0.0287   0.1403  -0.1940
+0006a   0.7280   0.2065   -0.2175  -0.7175
+0006b   0.3686   0.5683   -0.2199  -0.7180
+0007a   0.8942   0.0338   -0.2110  -0.7170
+0007b   0.1214   0.8108   -0.2153  -0.7171
+0008a   0.9090   0.0180   -0.2100  -0.7170
+0008b   0.0181   0.9087   -0.2098  -0.7170
+0009a   0.8599   0.0700   -0.2129  -0.7170
+0009b   0.0195   0.9076   -0.2101  -0.7170
+# End: data text
+

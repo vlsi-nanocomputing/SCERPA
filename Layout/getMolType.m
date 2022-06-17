@@ -40,7 +40,7 @@ else
             error('[ERROR][013] Unknown molecule (circuit.molecule)')
         end
     else
-        error('[ERROR][014] Wrong molecule formate, please write the corresponding number (circuit.molecule)')
+        error('[ERROR][014] Wrong molecule format, please write the corresponding number (circuit.molecule)')
     end
     
     

@@ -476,7 +476,7 @@ for time = 1:n_times
    
 
     timeComputation(time) = toc;
-    disp(timeComputation(time))
+    fprintf('Computation Time: %f s\n\n ',timeComputation(time))
     if settings.printConvergenceTable==1
        ConvergenceTable(stack_mol,pre_driver_effect,Vout,CK,max_error)
     end
