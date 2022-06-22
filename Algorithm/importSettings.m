@@ -32,6 +32,10 @@ scerpaSettings.timestep = setDefault(userSettings,'timestep',1);
 
 % Energy
 scerpaSettings.energyEval = setDefault(userSettings,'energyEval',0);
+scerpaSettings.evalConformationEnergy = setDefault(userSettings,'evalConformationEnergy',0);
+scerpaSettings.evalIntermolecularEnergy = setDefault(userSettings,'evalIntermolecularEnergy',0);
+scerpaSettings.evalPolarizationEnergy = setDefault(userSettings,'evalPolarizationEnergy',0);
+scerpaSettings.evaluateFieldEnergy = setDefault(userSettings,'evaluateFieldEnergy',0);
 
 % output plot
 if isfield(userSettings,'out_path') 
@@ -40,13 +44,12 @@ if isfield(userSettings,'out_path')
     mkdir (scerpaSettings.out_path)
 else
     % not set by the user!
-    scerpaSettings.out_path = '../OUTPUT_FILES';
+    scerpaSettings.out_path = fullfile('..','OUTPUT_FILES');
 end
 scerpaSettings.plot_plotAbsoluteCharge = setDefault(userSettings,'plot_plotAbsoluteCharge',1);
 scerpaSettings.plotIntermediateSteps = setDefault(userSettings,'plotIntermediateSteps',0);
 scerpaSettings.plotActiveRegionWindow = setDefault(userSettings,'plotActiveRegionWindow',0);
 scerpaSettings.plot_3dfig = setDefault(userSettings,'plot_3dfig',0);
-scerpaSettings.plot_voltage = setDefault(userSettings,'plot_voltage',0);
 scerpaSettings.plot_chargeFig = setDefault(userSettings,'plot_chargeFig',0);
 scerpaSettings.plot_clock = setDefault(userSettings,'plot_clock',0);
 scerpaSettings.plot_molnum = setDefault(userSettings,'plot_molnum',1);

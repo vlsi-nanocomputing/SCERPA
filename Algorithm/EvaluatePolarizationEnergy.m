@@ -17,30 +17,37 @@
 %                                   10.1109/TVLSI.2020.3045198             %
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [ W ] = EvaluateExchangeEnergy(mol_1, mol_2)
-    %constants
-    q = 1.60217662e-19;
-    e0 = 8.854187817e-12;
-    k = 1/(4*pi*e0);
+function [ W ] = EvaluatePolarizationEnergy( mol, Px, Py, Pz, mu0)
+% function [ W ] = EvaluateInternalEnergy( mol, Px, Py, Pz, n_charges_per_molecule, n_mol)
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+
+%non conviene fare una funzione che calcoli gi� l'energia del sistema,
+%perch� potrebbero esserci molecole con diverso numero di cariche nello
+%stesso sistema (tipico quando abbiamo il driver a 3 e le molecole a 91)
+%funzione solo per la singola molecola, per adesso, poi vediamo
+
+% il dipolo funziona abbastanza bene sulle cariche aggregate, ma solo su y
+% (switching)... poi bisogna lavorare sulla parte di clock, ma se ne
+% parler� pi� avanti, forse basta usare le cariche aggregate nuove (ESP
+% based). EDIT: mettendo tre cariche funziona anche sulla direzione del
+% clock. Ma per ora non importa, basta che funzioni bene sulla direzione di
+% switching.
+
+%calcola il dipolo
+mu=[0 0 0];
+q = 1.60217662e-19;
+
+ref = [mean(mol.x) mean(mol.y) mean(mol.z)];
+
+%loop each atom
+for ii=1:mol.n_atoms
+
+    %evaluate dipole factor
+    mu = mu + q*mol.espCharge(ii)* 1e-10*[mol.x(ii)-ref(1) mol.y(ii)-ref(2) mol.z(ii)-ref(3)];
+
+end
     
-    %evaluate exchange energy
-    N1 = length(mol_1.x);
-    N2 = length(mol_2.x);
-    
-    W = 0;
-    
-    for qq_mol1 = 1:N1
-        for qq_mol2 = 1:N2
-            
-                Qprod = q^2*mol_1.espCharge(qq_mol1)*mol_2.espCharge(qq_mol2);
-                
-                xdist = 1e-10*(mol_1.x(qq_mol1) - mol_2.x(qq_mol2));
-                ydist = 1e-10*(mol_1.y(qq_mol1) - mol_2.y(qq_mol2));
-                zdist = 1e-10*(mol_1.z(qq_mol1) - mol_2.z(qq_mol2));
-                dist = sqrt(xdist^2 + ydist^2 + zdist^2);
-                
-                W = W + k*Qprod/dist;
-        end
-    end
-    
+W = 0.5*((mu(1) - mu0(1))^2/Px +(mu(2) - mu0(2))^2/Py + (mu(3) - mu0(3))^2/Pz );
+
 end

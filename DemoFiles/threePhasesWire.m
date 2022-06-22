@@ -14,7 +14,7 @@ clock_step = 3;
 % circuit.magcadImporter = 1;
 
 %molecule
-circuit.molecule = '1';
+circuit.molecule = '9';
 
 %layout (MATLAB)
 circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3' 'Out_y'};
@@ -50,7 +50,12 @@ settings.verbosity = 0;
 settings.dumpDriver = 1;
 settings.dumpOutput = 1;
 settings.dumpClock = 1;
-
+settings.dumpEnergy = 1;
+settings.evalConformationEnergy = 1;
+settings.evalIntermolecularEnergy = 1;
+settings.evalPolarizationEnergy = 1;
+settings.EvaluateFieldEnergy = 1;
+settings.energyEval = 1;
 
 %PLOT settings
 plotSettings.plot_waveform = 1;

@@ -104,8 +104,12 @@ else
     end
     
     %dump energy
-    if settings.dumpEnergy == 1
-        fprintf(fileTable," %f %f %f %f",stack_energy(time).W_int(end),stack_energy(time).W_ex(end),stack_energy(time).W_clk(end),stack_energy(time).W_tot(end));
+    if settings.dumpEnergy == 1 
+        if settings.energyEval == 1
+            fprintf(fileTable," %f %f %f %f %f",stack_energy(time).W_0_tot(end),stack_energy(time).W_int(end),stack_energy(time).W_ex(end),stack_energy(time).W_clk(end),stack_energy(time).W_tot(end));
+        else
+            warning('Enable the setting for energy evaluation (energyEval = 1)')
+            fprintf(fileTable," %f %f %f %f %f",0,0,0,0,0);
+        end
     end
-end
 end

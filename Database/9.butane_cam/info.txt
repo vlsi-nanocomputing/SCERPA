@@ -11,3 +11,10 @@ CLOCKDATA 3
 <1> only.txt -2 V 23 values </1>
 <2> only.txt +2 V 23 values </2>
 <3> only.txt +2 V 23 values </3>
+
+ENERGY
+W_0 =  -390.206 a.u.
+mu_0 = -7.6e-5 ; +2.3e-3 ; 2.5e-5  D
+alpha_xx = "inf" a.u.
+alpha_yy = "2226.84" a.u.
+alpha_zz = "inf" a.u.

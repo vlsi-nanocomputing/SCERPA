@@ -263,17 +263,7 @@ for time = 1:n_times
             end
             
             if settings.plotActiveRegionWindow==1
-                plot_activeMol = zeros(1,stack_mol.num);
-                plot_activeMol(activeMolecules) = 0.05;
-
-                plot_evaluationMol = zeros(1,stack_mol.num);
-%                 plot_evaluationMol(find(activeListMolecule==1)) = 1;
-                plot_evaluationMol(activeListMolecule==1) = 0.05;
-
-                figure(2000000), clf, hold on
-                    plot(1:stack_mol.num,voltageVariation, [1 stack_mol.num], [settings.activeRegionThreshold settings.activeRegionThreshold], 1:stack_mol.num, plot_activeMol, 1:stack_mol.num, plot_evaluationMol)
-                    legend('Voltage variation','TH','active','evaluated')
-                    drawnow
+                plotActiveRegionWindow(stack_mol.num,activeMolecules,activeListMolecule,voltageVariation,settings.activeRegionThreshold)
             end
             
             evaluationRange = find(activeListMolecule==1);
@@ -290,22 +280,7 @@ for time = 1:n_times
             evaluationRange = 1:stack_mol.num;
             activeRegionMode = 2; %avoid re-evaluation in refining mode
         end
-           
-        %plot of AR mode
-        if settings.plotActiveRegionWindow==1
-            plot_activeMol = zeros(1,stack_mol.num);
-            plot_activeMol(activeMolecules) = 0.05;
-
-            plot_evaluationMol = zeros(1,stack_mol.num);
-    %                 plot_evaluationMol(find(activeListMolecule==1)) = 1;
-            plot_evaluationMol(activeListMolecule==1) = 0.05;
-
-            figure(2000000), clf, hold on
-                plot(1:stack_mol.num,voltageVariation, [1 stack_mol.num], [settings.activeRegionThreshold settings.activeRegionThreshold], 1:stack_mol.num, plot_activeMol, 1:stack_mol.num, plot_evaluationMol)
-                legend('Voltage variation','TH','active','evaluated')
-                drawnow
-        end
-         
+        
         
         %evaluate voltage on each molecule
         for jj_mol=evaluationRange
@@ -315,7 +290,7 @@ for time = 1:n_times
 
             %if refining is active, evaluate the interaction with all
             %molecules
-            if interactionRadiusMode==1 %si pu� fare in modo pi� furbo
+            if interactionRadiusMode==1 %si può fare in modo più furbo
                 nearMolecules = stack_mol.stack(jj_mol).interactionRXlist;
             else
                 nearMolecules = 1:stack_mol.num;
@@ -438,8 +413,9 @@ for time = 1:n_times
         
         %save energy
         if settings.energyEval==1
-            [W_int,W_ex,W_clk,W_tot] = EvaluateEnergy(stack_driver, stack_mol, Vout, CK);
+            [W_0_tot,W_int,W_ex,W_clk,W_tot] = EvaluateEnergy(settings, stack_driver, stack_mol, Vout, CK);
             stack_energy(time).steps = stack_energy(time).steps+1;
+            stack_energy(time).W_0_tot(stack_energy(time).steps) = W_0_tot;
             stack_energy(time).W_int(stack_energy(time).steps) = W_int;
             stack_energy(time).W_ex(stack_energy(time).steps) = W_ex;
             stack_energy(time).W_clk(stack_energy(time).steps) = W_clk;

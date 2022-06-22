@@ -61,8 +61,8 @@ if settings.plot_clock==1
     for ii=1:stack_mol.num
 %             [coord] = sscanf(stack_mol.stack(ii).position,'[%d %d %d]');
         [coord] = sscanf(char(stack_mol.stack(ii).position),'[%d %d %d]');
-        clockMap(coord(2)+1,coord(3)+1) = stack_mol.stack(ii).clock;
-
+%         clockMap(coord(2)+1,coord(3)+1) = stack_mol.stack(ii).clock
+        clockMap(coord(2),coord(3)) = stack_mol.stack(ii).clock
     end
 
     fig_4 = figure(3*figure_index-2); hold on
@@ -205,14 +205,6 @@ if settings.plot_chargeFig==1
     xlabel('Molecule number along the wire');
     ylabel('Aggregated charge distribution Dot1 & Dot2'); 
 
-end
-
-%%% Runtime Voltage Plot
-if settings.plot_voltage==1
-    figure(500000),hold on, grid on, grid minor
-    title('Input Voltage on each molecule');
-    xlabel('Molecule number'), ylabel('Input Voltage [V]')
-    plot(Vout)
 end
 
 drawnow
