@@ -52,10 +52,8 @@ function [driver_stack]=GenerateDriverStack(circuit, row, column, driver_stack, 
 
         
         %eval position of each dot 
-        %n_dots = length(dot_position(:,1));
         driver_para.chargeNum = nCharges;
         for dd=1:nCharges
-            %rotate - dot(i) =[x y z]
             dot_rotated = Rx*Ry*Rz*[dot_position(dd,1); dot_position(dd,2); dot_position(dd,3)];
             
             %evaluate new position (rotation+shift)

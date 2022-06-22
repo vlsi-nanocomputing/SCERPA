@@ -133,11 +133,6 @@ for ii=1:stack_output.num
 
 end
 
-% end
-
-%run('GenerateElectrodesStackTest.m');
-%GenerateElectrodesStack(dot_position, dist_z, dist_y, QCA_circuit_structure, QCA_circuit_rotation, QCASurface, electrode_variation);
-warning('Electrode view disabled');
 
 end
 

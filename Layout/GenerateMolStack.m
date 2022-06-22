@@ -51,10 +51,8 @@ function [mol_stack]=GenerateMolStack(circuit, row, column, mol_stack, dot_posit
               0               ,       0          , 1 ];
           
         %eval position of each dot 
-        %n_dots = length(dot_position(:,1));
         mol_para.chargeNum = nCharges;
         for dd=1:nCharges
-            %rotate - dot(i) =[x y z]
             dot_rotated = Rx*Ry*Rz*[dot_position(dd,1); dot_position(dd,2); dot_position(dd,3)];
             
             %evaluate new position (rotation+shift)

@@ -42,14 +42,14 @@ function [chargeNum, dot_position, draw_association] = GetMoleculeData(molType)
     in_str=fileread(filename); % string to analyze
 
     % read num of charges from database file
-    xpr = ['CHARGES (\d)\n'];
+    xpr = ['CHARGES (\d)\r?\n'];
     nCharges = regexp(in_str, xpr, 'tokens');
     chargeNum = str2double(cell2mat(nCharges{1,1}));
 
     % read dots coordinates from database file
     xcoo_expr = '(?<x>[-+]?\d*\.?\d+)[ ]{1,}';
     ycoo_expr = '(?<y>[-+]?\d*\.?\d+)[ ]{1,}';
-    zcoo_expr = '(?<z>[-+]?\d*\.?\d+)\n';
+    zcoo_expr = '(?<z>[-+]?\d*\.?\d+)\r?\n';
     coo_xpr = [ xcoo_expr ycoo_expr zcoo_expr];
     coo = regexp(in_str,coo_xpr,'names');
     
@@ -58,13 +58,13 @@ function [chargeNum, dot_position, draw_association] = GetMoleculeData(molType)
     dot_position(:,3) = str2num(char({coo.z})); %assign z coordinates to third column
 
     % read dots associations from database file
-    xpr = ['ASSOCIATION\s*(\d)\n'];
+    xpr = ['ASSOCIATION\s*(\d)\r?\n'];
     num_associations_cell = regexp(in_str,xpr,'tokens');
     num_associations = str2double(cell2mat(num_associations_cell{1,1}));
     
-    xpr = ['ASSOCIATION\s*\d\n[\d\s*\d\s*\n]+'];
+    xpr = ['ASSOCIATION\s*\d\r?\n[\d\s*\d\s*\r?\n]+'];
     match_str = regexp(in_str, xpr, 'match');
-    associations_cell = regexp(char(match_str),'(\d)\s*(\d)\s*\n+','tokens');
+    associations_cell = regexp(char(match_str),'(\d)\s*(\d)\s*\r?\n+','tokens');
     
     draw_association = zeros(num_associations,2);
     for ii=1:num_associations
@@ -72,68 +72,5 @@ function [chargeNum, dot_position, draw_association] = GetMoleculeData(molType)
     end
     
   
-    
-
-%     %open file
-%     fileId = fopen(filename);
-%     
-%     %loop on lines
-%     tline = fgetl(fileId);
-%  
-%     while ischar(tline)
-% 
-%         % find charges section
-%         if (regexp(tline, 'CHARGES [0-9]+') == 1) 
-%             
-%             %get number of charges
-%             nCharges = textscan(tline,'CHARGES %d');
-%             chargeNum = nCharges{1};
-%             for ii=1:chargeNum
-%                 
-%                 %get line
-%                 tline = fgetl(fileId);
-%                 
-%                 %scan line
-%                 scannedData = textscan(tline,'%f %f %f');
-%                 
-%                 %obtain data
-%                 dot_position(ii,1) = scannedData{1};
-%                 dot_position(ii,2) = scannedData{2};
-%                 dot_position(ii,3) = scannedData{3};
-%                 
-%             end
-%             
-%         end
-% 
-%         % find associations section
-%         if (regexp(tline, 'ASSOCIATION [0-9]+') == 1) 
-%             
-%             %get number of charges
-%             nAssociations = textscan(tline,'ASSOCIATION %d');
-%             
-%             for ii=1:nAssociations{1}
-%                 
-%                 %get line
-%                 tline = fgetl(fileId);
-%                 
-%                 %scan line
-%                 scannedData = textscan(tline,'%f %f');
-%                 
-%                 %obtain data
-%                 draw_association(ii,1) = scannedData{1};
-%                 draw_association(ii,2) = scannedData{2};
-%                 
-%             end
-%             
-%         end
-%       
-%         %get new line
-%         tline = fgetl(fileId);   
-%         
-%     end
-%     
-%     %close file
-%     fclose(fileId);
-
 end
     
