@@ -18,40 +18,7 @@
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [] = RunTimePlotting(Vout, Charge_on_wire_done_set, stack_mol, stack_driver, stack_output, settings, figure_index)
-
-%     %%%% Runtime Logic Plot
-%     if settings.plot_logic ==1
-%         P_map = 0;
-%         
-%         %consider molecules 2-by-2
-%         for ii=1:2:stack_mol.num
-%             %evaluate polarization
-%             
-%             P = (stack_mol.stack(ii).charge(1).q + stack_mol.stack(ii+1).charge(2).q - stack_mol.stack(ii).charge(2).q - stack_mol.stack(ii+1).charge(1).q)/...
-%                 (stack_mol.stack(ii).charge(1).q + stack_mol.stack(ii+1).charge(2).q + stack_mol.stack(ii).charge(2).q + stack_mol.stack(ii+1).charge(1).q);
-%             
-%             
-%             [p1] = sscanf(char(stack_mol.stack(ii).position),'[%d %d %d]');
-%             [p2] = sscanf(char(stack_mol.stack(ii+1).position),'[%d %d %d]');
-%             P_map(p1(2)+1,p1(3)+1) = P+2;
-%             P_map(p2(2)+1,p2(3)+1) = P+2;
-%             
-%             
-%         end
-%         
-%         map = [1 1 1; 1 1 1; 1 0 0; 0.5 0 0; 0 0 0; 0 0 0.5; 0 0 1];
-%         fig_3 = figure(3*figure_index-3); hold on
-%         imagesc(P_map)
-%         colormap(map)
-%         colorbar('XTickLabel',{'P = -1','P = 1'},'XTick',[1 3])
-%         caxis([0 3])
-%         axis equal
-%         xlabel('Z direction'); ylabel('Y direction'); zlabel('X direction');
-% %         set(gca,'zdir','reverse') 
-%         set(gca,'ydir','reverse') 
-%         
-%     end
-    
+  
 %%%% Runtime Clock Plot
 
 if settings.plot_clock==1
@@ -59,10 +26,8 @@ if settings.plot_clock==1
 
     %consider clock of each molecule
     for ii=1:stack_mol.num
-%             [coord] = sscanf(stack_mol.stack(ii).position,'[%d %d %d]');
         [coord] = sscanf(char(stack_mol.stack(ii).position),'[%d %d %d]');
-%         clockMap(coord(2)+1,coord(3)+1) = stack_mol.stack(ii).clock
-        clockMap(coord(2),coord(3)) = stack_mol.stack(ii).clock
+        clockMap(coord(2)+1,coord(3)+1) = stack_mol.stack(ii).clock;
     end
 
     fig_4 = figure(3*figure_index-2); hold on

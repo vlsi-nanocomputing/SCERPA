@@ -27,7 +27,6 @@ end
 
 %determine size of layout
 [row, column] = size(QCA_circuit.structure);
-fprintf('Layout grid is: %d x %d \n',row,column)
 
 %molecules type definition
 molType = getMolType(QCA_circuit);
@@ -56,10 +55,6 @@ if ~isfield(QCA_circuit,'dist_y')
     QCA_circuit.dist_y = 2*QCA_circuit.dist_z;  
     warning('Default vertical intermolecular distance (y)');
 end
-
-%fprintf('Molecule: %s\n',QCA_circuit.molecule)
-fprintf('Intermolecular distance: %.2f nm\n',QCA_circuit.dist_z/10)
-fprintf('Vertical intermolecular distance: %.2f nm\n',QCA_circuit.dist_y/10)
 
 %rotation on x
 if ~isfield(QCA_circuit,'rotation_x')

@@ -56,8 +56,6 @@ scerpaSettings.plot_potential_padding = setDefault(userSettings,'plot_potential_
 scerpaSettings.plot_potential_saturationVoltage = setDefault(userSettings,'plot_potential_saturationVoltage',6);
 scerpaSettings.plot_potential_tipHeight = setDefault(userSettings,'plot_potential_tipHeight',-3.5 -2);
 
-% scerpaSettings.plot_clock = setDefault(userSettings,'plot_clock',0);
-
 % Waveform Plot settings
 scerpaSettings.plot_waveform = setDefault(userSettings,'plot_waveform',0);
 

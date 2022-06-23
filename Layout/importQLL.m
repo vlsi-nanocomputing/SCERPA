@@ -17,7 +17,7 @@
 %                                   10.1109/TVLSI.2020.3045198             %
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [stack_driver, stack_mol, stack_output] = importQLL(QCA_circuit)
+function [stack_driver, stack_mol, stack_output,dist_y,dist_z] = importQLL(QCA_circuit)
 
 xmlStruct = xmlRead(QCA_circuit.qllFile);
 
@@ -26,6 +26,8 @@ if ~isfield(QCA_circuit,'dist_y')
 else
     dist_y = QCA_circuit.dist_y;
 end
+
+dist_z=xmlStruct.dist_z;
 
 if ~isfield(QCA_circuit,'magcadMolOverwrite') 
     QCA_circuit.magcadMolOverwrite = 0;

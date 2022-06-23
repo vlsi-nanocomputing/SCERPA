@@ -1,16 +1,15 @@
 clear variables
 close all
 
-%clock values definition
+%clock values definitions
 clock_low = -2;
 clock_high = +2;
 clock_step = 3;
 
-
 %layout (MagCAD)
 % file = 'threePhasesWire.qll';
 % circuit.qllFile = fullfile(pwd,file);
-% circuit.doubleMolDriverMode = 1;   
+% circuit.doubleMolDriverMode = 1;   sc
 % circuit.magcadImporter = 1;
 
 %molecule
@@ -54,8 +53,9 @@ settings.dumpEnergy = 1;
 settings.evalConformationEnergy = 1;
 settings.evalIntermolecularEnergy = 1;
 settings.evalPolarizationEnergy = 1;
-settings.EvaluateFieldEnergy = 1;
+settings.evalFieldEnergy = 1;
 settings.energyEval = 1;
+
 
 %PLOT settings
 plotSettings.plot_waveform = 1;
@@ -73,9 +73,11 @@ if isfield(settings,'out_path')
 end
 
 %%%%
+diary on
 this_path = pwd;
 scerpa_path = fullfile('../');
 cd(scerpa_path)
 SCERPA('generateLaunchView', circuit, settings, plotSettings);
 %SCERPA('plotSteps', plotSettings);
 cd(this_path)
+diary off, movefile('diary','logfile.log')

@@ -86,7 +86,7 @@ directoryName = dirNamesList{index};
 filename = fullfile('..','Database',directoryName,'info.txt');
 in_str=fileread(filename); % string to analyze
   
-xpr = 'ENERGY\n';
+xpr = 'ENERGY\r?\n';
 energy_data = regexp(in_str, xpr, 'match');
 
 if isempty(energy_data)
@@ -97,12 +97,12 @@ if isempty(energy_data)
     W_tot = 0;
 else
     abq = '([^"]+)'; 
-    xpr = ['W_0\s*=\s*([-+]?\d*\.?\d+)\s*a.u.\n'];
+    xpr = ['W_0\s*=\s*([-+]?\d*\.?\d+)\s*a.u.\r?\n'];
     conformationEnergy = regexp(in_str, xpr, 'tokens');
     W_0_hartree = str2double(char(conformationEnergy{:}));
     W_0 = W_0_hartree*4.359748199e-18; %conformation energy from Hartree to Joule
 
-    xpr = ['mu_0\s*=\s*(?<x>[-+]?\d*\.?\d+e[-+]?\d)\s*;\s*(?<y>[-+]?\d*\.?\d+e[-+]?\d)\s*;\s*(?<z>[-+]?\d*\.?\d+e[-+]?\d)\s*D\n'];
+    xpr = ['mu_0\s*=\s*(?<x>[-+]?\d*\.?\d+e[-+]?\d)\s*;\s*(?<y>[-+]?\d*\.?\d+e[-+]?\d)\s*;\s*(?<z>[-+]?\d*\.?\d+e[-+]?\d)\s*D\r?\n'];
     dipole = regexp(in_str,xpr,'names');
     mu0(1) = str2double(char(dipole.x))*3.33564e-30; %conversion from Debye to SI
     mu0(2) = str2double(char(dipole.y))*3.33564e-30; %conversion from Debye to SI
@@ -147,9 +147,9 @@ else
     
     %evaluate clock energy
     W_clk = 0;
-    if settings.evaluateFieldEnergy==1
+    if settings.evalFieldEnergy==1
         for ii_mol = 1:length(mol)
-             W_clk = W_clk + EvaluateFieldEnergy( mol(ii_mol), -clock, 0, 0);
+             W_clk = W_clk + EvaluateFieldEnergy( mol(ii_mol),-stack_mol.stack(ii).clock, 0, 0);
         end
     end
     

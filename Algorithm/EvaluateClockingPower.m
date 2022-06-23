@@ -18,8 +18,9 @@
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [total_dissipated_energy,dissipated_power] = EvaluateClockingPower(stack_mol,stack_clock,settings)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+
+disp('[BETA] Evaluating Power dissipation...')
+settings.timestep = 1/100e12;
 technology.plateDistance = 3e-9;
 technology.plateSection = 1e-9*2e-9;
 technology.epsilon_r = 1;

@@ -18,18 +18,19 @@
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function SCERPA(command,option1,option2,option3)
+
+    warning off backtrace
     
-    
-    %No command error: automatically show "help"
+    %No command error
     if ~exist('command','var')
-         error('[ERROR][001] Missing command! SCERPA does not know what to do...')
+         error("[ERROR][001] Missing command! SCERPA does not know what to do. Type SCERPA('help') to open the documentation." )
     end
 
     % commands
     switch command
 
         case char('help') % Open help file
-            edit(fullfile('README.md'))
+            open(fullfile('Documentation','SCERPA_documentation.pdf'))
 
         case char('generate') % Generate SCERPA Layout files
             close all
@@ -52,11 +53,8 @@ function SCERPA(command,option1,option2,option3)
                 warning('Default settings')
             end
             cd ..
-            %open log file
-%             open('../OUTPUT_FILES/Simulation_Output.log')
         
         case char('plotSteps')
-            %close all
             disp('Plotting Results!')
             cd Viewer
             if exist('option1','var')
@@ -67,24 +65,10 @@ function SCERPA(command,option1,option2,option3)
             end
             cd ..
         
-        case char('topoLaunch') %retrocompatibility
-            if exist('option1','var')
-                option1.magcadImporter = 1;
-                SCERPA('generate', option1);
-                if exist('option2','var')
-                    SCERPA('launch',option2);
-                else
-                    SCERPA('launch');
-                end
-            else
-                error('[ERROR][002] Missing circuit.')
-            end
-
         case('generateLaunch') %generate and launch
             if exist('option1','var')
                 SCERPA('generate', option1);
                 if exist('option2','var')
-                    %option2.circuit = option1; %pass things which are not managed by the layour generator directly to scerpa (compatibility)
                     SCERPA('launch',option2);
                 else
                     SCERPA('launch');
@@ -110,32 +94,9 @@ function SCERPA(command,option1,option2,option3)
             end
         
         otherwise
-            error('[ERROR][003] Command not valid!')
+            error("[ERROR][003] Command not valid! Type SCERPA('help') to open the documentation.")
     end
-end
 
-
-function displayHeader()
-
-    disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-    disp('%                                                                          %')
-    disp('%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %')
-    disp('%                                                                          %')
-    disp('%       VLSI Nanocomputing Research Group                                  %')
-    disp('%       Dept. of Electronics and Telecommunications                        %')
-    disp('%       Politecnico di Torino, Turin, Italy                                %')
-    disp('%       (https://www.vlsilab.polito.it/)                                   %')
-    disp('%                                                                          %')
-    disp('%       People [people you may contact for info]                           %')
-    disp('%         Yuri Ardesi (yuri.ardesi@polito.it)                              %')
-    disp('%         Giuliana Beretta (giuliana.beretta@polito.it)                    %')
-    disp('%                                                                          %')
-    disp('%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %')
-    disp('%                                                                          %')
-    disp('%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %')
-    disp('%                                   10.1109/TVLSI.2020.3045198             %')
-    disp('%                                                                          %')
-    disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-    
+    warning on backtrace
 end
 

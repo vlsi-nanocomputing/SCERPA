@@ -21,7 +21,7 @@ function fileTable = Function_SaveTable(constructMode,settings,stack_mol,stack_d
 
 if constructMode ==1
     %create file
-    add_info_path = strcat(settings.out_path,'/Additional_Information.txt');
+    add_info_path = fullfile(settings.out_path,'Additional_Information.txt');
     fileTable = fopen(add_info_path,'wt');
     fprintf(fileTable,'Time');
     
@@ -50,7 +50,7 @@ if constructMode ==1
         end
     end
     
-     %dump output
+    %dump output
     if settings.dumpOutput == 1
         for ii=1:stack_output.num
             fprintf(fileTable," out_%s",stack_output.stack(ii).identifier);

@@ -17,8 +17,8 @@
 %                                   10.1109/TVLSI.2020.3045198             %
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [ W ] = EvaluatePolarizationEnergy( mol, Px, Py, Pz, mu0)
-% function [ W ] = EvaluateInternalEnergy( mol, Px, Py, Pz, n_charges_per_molecule, n_mol)
+function [ W ] = EvaluatePolarizationEnergy( mol, alpha_xx, alpha_yy, alpha_zz, mu0)
+% function [ W ] = EvaluateInternalEnergy( mol, alpha_xx, alpha_yy, alpha_zz, n_charges_per_molecule, n_mol)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -48,6 +48,6 @@ for ii=1:mol.n_atoms
 
 end
     
-W = 0.5*((mu(1) - mu0(1))^2/Px +(mu(2) - mu0(2))^2/Py + (mu(3) - mu0(3))^2/Pz );
+W = 0.5*((mu(1) - mu0(1))^2/alpha_xx +(mu(2) - mu0(2))^2/alpha_yy + (mu(3) - mu0(3))^2/alpha_zz );
 
 end

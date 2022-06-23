@@ -17,22 +17,20 @@
 %                                   10.1109/TVLSI.2020.3045198             %
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,circuit)
+function [stack_mol,stack_driver] = applyRoughness(stack_mol,stack_driver,circuit)
 
-    plot_substrate_map = 0;
+    plot_substrate_map = 1;
 %   plot_substrate_map = 0;
     switch circuit.substrate.mode 
         case 'map'
-            disp('Applying substrate map...')
-          %plot map
-          if plot_substrate_map==1
-              figure(999) 
-                  surf(circuit.substrate_mesh_y, circuit.substrate_mesh_z, circuit.substrate_mesh_x, 'FaceAlpha',0.3,'EdgeColor','none')
-                  hold on
-                  colormap copper
-                  xlabel('mesh y'),ylabel('mesh z')
-          end
-
+            disp('Plotting substrate map...')
+            figure(211) 
+                surf(circuit.substrate.map_MeshY/10, circuit.substrate.map_MeshZ/10, circuit.substrate.map_MeshX/10, 'FaceAlpha',0.3,'EdgeColor','none')
+                hold on
+                title('Substrate')
+                colormap copper
+                xlabel('y [nm]'),ylabel('z [nm]'),zlabel('Substrate [nm]')
+                view([1 1 1])
         case 'random'
             fprintf('Using random substrate map [%.2f nm]...\n',circuit.substrate.averageRoughness/10);
     end
@@ -51,12 +49,12 @@ function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,circu
         if strcmp(circuit.substrate.mode,'random')
             %random roughness
             roughness_shift = circuit.substrate.averageRoughness*(rand(1) - 0.5);
-        else
+        elseif strcmp(circuit.substrate.mode,'map')
             %interp data
             roughness_shift = meshInterp(...
-                circuit.substrate_mesh_y,...
-                circuit.substrate_mesh_z,...
-                circuit.substrate_mesh_x,...
+                circuit.substrate.map_MeshY,...
+                circuit.substrate.map_MeshZ,...
+                circuit.substrate.map_MeshX,...
                 y_anchor,z_anchor);
 
             %if molecule position is out of range, set roughness to 0
@@ -72,7 +70,9 @@ function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,circu
 
       %plot
       if plot_substrate_map == 1
-          plot3(y_anchor,z_anchor,roughness_shift,'or')
+          figure(212), hold on
+          plot3([1 1]*y_anchor/10,[1 1]*z_anchor/10,[0 roughness_shift]/10,'k')
+          plot3(y_anchor/10,z_anchor/10,roughness_shift/10,'or')
       end
 
     end
@@ -94,9 +94,9 @@ function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,circu
         else
             %interp data
             roughness_shift = meshInterp(...
-                circuit.substrate_mesh_y,...
-                circuit.substrate_mesh_z,...
-                circuit.substrate_mesh_x,...
+                circuit.substrate.map_MeshY,...
+                circuit.substrate.map_MeshZ,...
+                circuit.substrate.map_MeshX,...
                 y_anchor,z_anchor);
             
             %if molecule position is out of range, set roughness to 0
@@ -112,12 +112,18 @@ function [stack_mol,stack_driver] = applyRoughness (stack_mol,stack_driver,circu
 
       %plot
       if plot_substrate_map == 1
-          plot3(y_anchor,z_anchor,roughness_shift,'or')
+          figure(212), hold on
+          plot3([1 1]*y_anchor/10,[1 1]*z_anchor/10,[0 roughness_shift]/10,'k')
+          plot3(y_anchor/10,z_anchor/10,roughness_shift/10,'ob')
       end
 
     end
    
     if plot_substrate_map==1
+        title('Molecule position on the substrate')
+        view([1 1 1]), xlabel('y [nm]'), ylabel('z [nm]'), zlabel('-x [nm]')
+        grid on, grid minor, axis equal
+        fprintf('\n\nPlotting Substrate... Press any key to continue...\n')
         pause
     end
 

@@ -17,8 +17,9 @@
 %                                   10.1109/TVLSI.2020.3045198             %
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [] = ConvergenceTable(stack_mol,pre_driver_effect,Vout,CK,max_error)
+function [] = ConvergenceTable(stack_mol,pre_driver_effect,Vout,CK,max_error,settings)
 
+%preallocation of the convergence matrix
 convergenceMatrix = zeros(stack_mol.num, stack_mol.num + 4);
 
 for ii = 1:stack_mol.num %charge update
@@ -53,10 +54,18 @@ for ii = 1:stack_mol.num
 
 end
 
-%disp(convergenceMatrix)
-fprintf('Maximum allowed SCERPA error is: %10f\n',max_error);
-fprintf('Average voltage error is: %10f\n',mean(convergenceMatrix(:,end)));
-fprintf('Maximum voltage error is: %10f\n',max(convergenceMatrix(:,end)));
+if settings.printConvergenceTable == 1
+    fprintf('\nConvergene table\n\nDriver contribution, [N Voltage contributions], Sum of contributions, SCERPA Vin, Absolute Error\n\n')
+    disp(convergenceMatrix)
+end
 
+%disp(convergenceMatrix)
+if settings.printConvergenceSummary == 1
+    fprintf('Maximum allowed SCERPA error is: %10f\n',max_error);
+    fprintf('Average voltage error is: %10f\n',mean(convergenceMatrix(:,end)));
+    fprintf('Maximum voltage error is: %10f\n',max(convergenceMatrix(:,end)));
+end
+
+fprintf('\nPress any key to continue...\n')
 pause
 end

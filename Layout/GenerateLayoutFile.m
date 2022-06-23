@@ -32,7 +32,7 @@ fprintf(' - www.vlsilab.polito.it\n\n');
 
 %% input management
 if QCA_circuit.magcadImporter == 1
-    [stack_driver, stack_mol, stack_output] = importQLL(QCA_circuit);
+    [stack_driver, stack_mol, stack_output,QCA_circuit.dist_y,QCA_circuit.dist_z] = importQLL(QCA_circuit);
     qll_path = regexp(QCA_circuit.qllFile,'\','split');
     simulation_file_name = qll_path{end};
     if ~isfield(QCA_circuit,'magcadMolOverwrite')
@@ -44,6 +44,21 @@ else
     [stack_driver, stack_mol, stack_output] = GenerateStacks(QCA_circuit);
     simulation_file_name = 'matlabDrawing';
 end
+
+
+%evaluate circuit area
+moleculePositions=[stack_mol.stack.position];
+molecularArea = (stack_mol.num+stack_driver.num)*QCA_circuit.dist_y*QCA_circuit.dist_z/100;
+size_z= max(moleculePositions(3:3:end  ))-min(moleculePositions(3:3:end  ))+1;
+size_y= max(moleculePositions(2:3:end-1))-min(moleculePositions(2:3:end-1))+1;
+chipArea = QCA_circuit.dist_y/10*size_y*QCA_circuit.dist_z/10*size_z;
+
+%print circuit info
+fprintf('Layout grid is: %d x %d \n',size_y,size_z)
+fprintf('Intermolecular distance: %.2f nm\n',QCA_circuit.dist_z/10)
+fprintf('Vertical intermolecular distance: %.2f nm\n',QCA_circuit.dist_y/10)
+fprintf('Area occupied by molecules, by considering also drivers: %.2f nm^2\n',molecularArea)
+fprintf('Chip area occupied by molecules: %.2f nm^2\n',chipArea)
 
 %clock management
 if ~isfield(QCA_circuit,'clockMode')
@@ -64,7 +79,7 @@ end
 
 %plot layout
 if isfield(QCA_circuit,'plotLayout') && QCA_circuit.plotLayout == 1
-    Plotting(stack_mol, stack_driver,stack_output)
+    PlotLayout(stack_mol, stack_driver,stack_output)
 end
 
 

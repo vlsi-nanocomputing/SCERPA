@@ -18,12 +18,7 @@
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function ScerpaRun(settingsArg)
-%============================================================================================================================================%
-%/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\%
-%\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/%
-%============================================================================================================================================%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   INITIALIZATION   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 disp('Loading SCERPA')
 if ~exist('settingsArg','var')
     settingsArg=0;
@@ -57,44 +52,6 @@ filename_out = fullfile(layout_data_location,'Data_Output.mat');
 filename_phase = fullfile(layout_data_location,'Fake_Phases.mat');
 filename_values_dr =  fullfile(layout_data_location,'Values_Driver.mat');
 
-% Output Files
-Sim_Output_file = fullfile(settings.out_path,'Simulation_Output.log');
-fileID = fopen(Sim_Output_file,'wt');
-header = [  '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',...
-            '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n',...
-            '%%\n',...
-            '%%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)\n',...
-            '%% \n',...
-            '%%       VLSI Nanocomputing Research Group \n',...
-            '%%       Dept. of Electronics and Telecommunications  \n',...
-            '%%       Politecnico di Torino, Turin, Italy \n',...
-            '%%       (https://www.vlsilab.polito.it/) \n',...
-            '%% \n',...
-            '%%       People [people you may contact for info] \n',...
-            '%%         Yuri Ardesi (yuri.ardesi@polito.it)\n',...
-            '%%         Giuliana Beretta (giuliana.beretta@polito.it)\n',...
-            '%% \n',...
-            '%%       Supervision: Gianluca Piccinini, Mariagrazia Graziano \n',...
-            '%% \n',...
-            '%%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360 \n',...
-            '%%                                   10.1109/TVLSI.2020.3045198  \n',...
-            '%% \n',...
-            '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',...
-            '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n\n'];
-
-fprintf(fileID,header);
-fprintf(fileID,'%%%% Files Analysed:\n');
-fprintf(fileID,'%%%%    %s\n', filename_mol);
-fprintf(fileID,'%%%%    %s\n', filename_driv);
-fprintf(fileID,'%%%%    %s\n', filename_out);
-fprintf(fileID,'%%%%    %s\n', filename_phase);
-fprintf(fileID,'%%%%    %s\n', filename_values_dr);
-
-
-fprintf(fileID,'\n\n%%%%    Configuration of data output: \n');
-fprintf(fileID,'%%%%    ID - Vin - Q1 ... QN: \n');
-
-
 %disable MATLAB optimization
 if settings.enableJit == 0
     feature jit off
@@ -104,7 +61,6 @@ end
 %algorithm, though, available for viewer)
 disp('Importing Layout...')
 [stack_mol,stack_driver,stack_output,stack_clock,driver_values] = Function_Reader(filename_mol,filename_driv,filename_out,filename_phase,filename_values_dr);
-
 
 %Import molecule library data
 disp('Importing Libraries...')
@@ -133,36 +89,20 @@ fileTable = Function_SaveTable(1,settings,stack_mol,stack_driver,stack_output);
 run('solverE.m') 
 
 
-%%
+fprintf('Total computation Time: %f s\n\n ',sum(timeComputation))
 
 %%%%%%%% DEBUG: IMPORTANT: this code should not create dependances on the
 %%%%%%%% rest of the code, if this part is erased the computaiton should
 %%%%%%%% not be affected. ALl variables should start with DEBUG_
 
 
-%run('yfullEnergy.m')
-
-% ConvergenceTable(stack_mol,pre_driver_effect,Vout,CK);
-% run('ConvergenceTable.m')
-
-
 
 %%%%%%%% END DEBUG
-
-fclose(fileID);
 fclose(fileTable);
-
-% for MATLAB versions following 2019a
-%writematrix(output_txt,'Additional_Information.txt','Delimiter','tab')
-
-% for all MATLAB versions
-
 
 
 
 %%
-% myicon = imread('good.png');
-% h=msgbox('Brave Yourself... The Operation is Completed', 'Success!!!!', 'custom', myicon);
 disp(' ');
 disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 disp('%  Brave Yourself... The Operation is Completed %');
@@ -171,6 +111,6 @@ disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 disp(' ');
 
 %save workspace for analysis
-save(strcat(settings.out_path,'/simulation_output'));
+save(fullfile(settings.out_path,'simulation_output'));
 end
 
