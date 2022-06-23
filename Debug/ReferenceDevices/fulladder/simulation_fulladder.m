@@ -27,7 +27,7 @@ R1 = D0;
 
 %layout (MagCAD)
 file = 'fulladder.qll';
-settings.out_path = fullfile(pwd,'fulladder'); 
+settings.out_path = fullfile('/mnt/44CEE091CEE07D14/PhD/tmp','fulladder'); 
            
 %circuit configuration
 circuit.dist_z = 10;
@@ -52,10 +52,9 @@ circuit.stack_phase(3,:) = [pReset pReset,    pCycle pCycle pCycle pCycle pCycle
 circuit.stack_phase(4,:) = [pReset pReset pReset,    pCycle pCycle pCycle pCycle pCycle pCycle pCycle pCycle pCycle pCycle pCycle pCycle];
 
 %SCERPA settings
-settings.doubleMolDriverMode = 1;
 settings.damping = 0.6;
 settings.activeRegionThreshold=0.005;
-settings.verbosity = 1;
+settings.verbosity = 0;
 settings.conv_threshold_HP = 0.005;
 settings.enableRefining = 0;
 settings.enableActiveRegion = 1;
@@ -71,7 +70,7 @@ plotSettings.plot_potential = 1;
 plotSettings.plotSpan = 7;
 plotSettings.plotList = [309:330];
 plotSettings.plot_waveform = 1;
-plotSettings.fig_saver = 1;
+plotSettings.fig_saver = 0;
 
 %copy outputh path from algorithm settings if specified by the user
 if isfield(settings,'out_path') 
@@ -80,8 +79,8 @@ end
 
 %%%%
 this_path = pwd;
-scerpa_path = fullfile('SCERPA');
+scerpa_path = fullfile('/mnt/44CEE091CEE07D14','scerpa');
 cd(scerpa_path)
-generation_status = SCERPA('generateLaunch', circuit, settings);
-                    SCERPA('plotSteps', plotSettings);
+% SCERPA('generateLaunchView', circuit, settings, plotSettings);
+SCERPA('plotSteps', plotSettings);
 cd(this_path)

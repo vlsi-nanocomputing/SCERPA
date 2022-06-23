@@ -9,6 +9,5 @@
 [009] Shift(y) matrix is not well defined (size is not consistent)!
 [010] Shift(z) matrix is not well defined (size is not consistent)!
 [011] Vext matrix is not well defined (size is not consistent)!
-[012] Relative convergence is not implemented yet!
 [013] Unknown molecule (circuit.molecule)
-[ERROR][014] Wrong molecule format, please write the corresponding number (circuit.molecule)
+[014] Wrong molecule format, please write the corresponding number (circuit.molecule)
