@@ -59,9 +59,9 @@ else
     ha = gca;
     uistack(ha,'bottom');
     ha2=axes('OuterPosition',[0,0, 1,1],'Position',[0,0, 0.14,0.14]);
-    [LogoImage, map] = imread(fullfile('..','Documentation','scerpa_logo.png'));
+    [LogoImage, mapImage] = imread(fullfile('..','Documentation','scerpa_logo.png'));
     image(LogoImage)
-    colormap (map)
+    colormap (mapImage)
     set(ha2,'handlevisibility','off','visible','off')
 end
     

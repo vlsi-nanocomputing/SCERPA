@@ -21,7 +21,7 @@ function fileTable = Function_SaveTable(constructMode,settings,stack_mol,stack_d
 
 if constructMode ==1
     %create file
-    add_info_path = strcat(settings.out_path,'/Additional_Information.txt');
+    add_info_path = fullfile(settings.out_path,'Additional_Information.txt');
     fileTable = fopen(add_info_path,'wt');
     fprintf(fileTable,'Time');
     
