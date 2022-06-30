@@ -21,7 +21,7 @@ function out_fig = PlotWaveform(file,driverStack,molStack,settings)
 
 %import file
 disp('Loading simulation table')
-data = readtable(file);
+data = readtable(file,'VariableNamingRule','preserve');
 
 %%%% further configuration parameters
 % plotListDriver = [10 2 18 ];
@@ -30,6 +30,7 @@ data = readtable(file);
 % out_rules = [35 95];
 
 %analyse tabular data
+data.Properties.VariableNames{1} = 'Time'; %rename time column
 availableRows = data.Properties.VariableNames;
 
 %driver management
