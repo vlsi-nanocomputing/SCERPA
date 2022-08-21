@@ -30,6 +30,7 @@ fprintf('Running SCERPA Version %1.f \n',SCERPA_version);
 fprintf(' - Politecnico di Torino |  VLSI nanocomputing\n');
 fprintf(' - www.vlsilab.polito.it\n\n');              
 
+
 %% input management
 if QCA_circuit.magcadImporter == 1
     [stack_driver, stack_mol, stack_output,QCA_circuit.dist_y,QCA_circuit.dist_z] = importQLL(QCA_circuit);
@@ -44,6 +45,24 @@ else
     [stack_driver, stack_mol, stack_output] = GenerateStacks(QCA_circuit);
     simulation_file_name = 'matlabDrawing';
 end
+
+% print the related work
+citeFilePath = fullfile('..','Database','cite.txt');
+citeFileName = fileread(citeFilePath);
+molTypeList = str2double(unique([QCA_circuit.components(:)]));
+
+disp(' ')
+disp('#############')
+disp('RELATED WORKS')
+disp(' ')
+disp('FOR SCERPA')
+disp(citeFileName)
+disp('FOR USED MOLECULES')
+molCitation(molTypeList);
+disp(' ')
+disp('#############')
+disp(' ')
+
 
 
 %evaluate circuit area
@@ -248,3 +267,4 @@ fprintf('[DONE] \n')
 fprintf('\nSCERPA is ready to start.\n\n')
 
 end
+

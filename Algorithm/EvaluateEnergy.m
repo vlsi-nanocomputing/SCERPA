@@ -20,9 +20,6 @@
 function [W_0_TOT,W_mu,W_ex,W_clk,W_tot] = EvaluateEnergy(settings, stack_driver, stack_mol, Vout, CK)
 %first driver
 
-%settings is conformation, internal, polarization, clock
-settings.evalEnergy=[0 0 1 0];
-    
 % %dots
 % D_DOT1 = stack_driver.stack(1).charge(1);
 % D_DOT2 = stack_driver.stack(1).charge(2);
@@ -91,10 +88,12 @@ energy_data = regexp(in_str, xpr, 'match');
 
 if isempty(energy_data)
     warning('No information on energy in the info.txt file, energy evaluation disabled!')
-    W_int = 0;
+    W_0_TOT = 0;
+    W_mu= 0;
     W_ex = 0;
-    W_clk = 0;
-    W_tot = 0;
+    W_clk = 0; 
+    W_tot = 0; 
+    W_int = 0;
 else
     abq = '([^"]+)'; 
     xpr = ['W_0\s*=\s*([-+]?\d*\.?\d+)\s*a.u.\r?\n'];
