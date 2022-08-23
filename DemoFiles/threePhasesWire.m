@@ -77,7 +77,7 @@ diary on
 this_path = pwd;
 scerpa_path = fullfile('../');
 cd(scerpa_path)
-SCERPA('generateLaunchView', circuit, settings, plotSettings);
-%SCERPA('plotSteps', plotSettings);
+% SCERPA('generateLaunchView', circuit, settings, plotSettings);
+SCERPA('plotSteps', plotSettings);
 cd(this_path)
-diary off, movefile('diary','logfile.log')
+diary off, movefile('diary',fullfile(settings.out_path,'logfile.log'))
