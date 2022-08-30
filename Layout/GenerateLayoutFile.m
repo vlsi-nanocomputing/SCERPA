@@ -39,17 +39,18 @@ if QCA_circuit.magcadImporter == 1
     if ~isfield(QCA_circuit,'magcadMolOverwrite')
         QCA_circuit.magcadMolOverwrite = 0;
     end
+    molTypeList = unique([[stack_driver.stack.molType] [stack_mol.stack.molType] [stack_output.stack.molType]]);
 else
     QCA_circuit = importMatlab(QCA_circuit);
     % create the molecule and the driver stacks
     [stack_driver, stack_mol, stack_output] = GenerateStacks(QCA_circuit);
     simulation_file_name = 'matlabDrawing';
+    molTypeList = str2double(unique([QCA_circuit.components(:)]));
 end
 
 % print the related work
 citeFilePath = fullfile('..','Database','cite.txt');
 citeFileName = fileread(citeFilePath);
-molTypeList = str2double(unique([QCA_circuit.components(:)]));
 
 disp(' ')
 disp('#############')

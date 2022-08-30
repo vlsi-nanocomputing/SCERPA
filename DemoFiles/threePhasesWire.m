@@ -9,7 +9,7 @@ clock_step = 3;
 %layout (MagCAD)
 % file = 'threePhasesWire.qll';
 % circuit.qllFile = fullfile(pwd,file);
-% circuit.doubleMolDriverMode = 1;   sc
+% circuit.doubleMolDriverMode = 1;   
 % circuit.magcadImporter = 1;
 
 %molecule
