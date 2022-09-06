@@ -1,3 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function out_fig = Plot3DAC(stack_mol, stack_driver, stack_output, settings)
 
 %WARNING: x-z axis are swapped
@@ -14,7 +33,26 @@ end
 textOffset = 2;
 
 %Figure definition
-out_fig = figure('visible','off');
+if settings.HQimage
+    dpi = 150;            % Resolution
+    sz = [0 0 2880 1800]; % Image size in pixels
+    out_fig = figure('visible','off','PaperUnits','inches','PaperPosition', sz/dpi,'PaperPositionMode','manual','position',[0 0  1920 1080]);
+    ha = gca;
+    uistack(ha,'bottom');
+    ha2=axes('OuterPosition',[0,0, 1,1],'Position',[0,0, 0.14,0.14]);
+    hIm = imshow(fullfile('..','Documentation','scerpa_logo.png'));
+    set(ha2,'handlevisibility','off','visible','off')
+else
+    out_fig = figure('visible','off');
+    ha = gca;
+    uistack(ha,'bottom');
+    ha2=axes('OuterPosition',[0,0, 1,1],'Position',[0,0, 0.14,0.14]);
+    [LogoImage, mapImage] = imread(fullfile('..','Documentation','scerpa_logo.png'));
+    image(LogoImage)
+    colormap (mapImage)
+    set(ha2,'handlevisibility','off','visible','off')
+end
+
 hold on, grid on
 set(gca, 'Projection','perspective'), view(-45,25)
 axis equal, axis vis3d, view(-40,50)

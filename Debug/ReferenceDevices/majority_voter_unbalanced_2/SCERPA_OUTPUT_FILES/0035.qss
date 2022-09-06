@@ -1,0 +1,66 @@
+############################################################
+#
+# Self-Consistent Electrostatic Potential Algorithm (SCERPA)
+#					#
+# VLSI Nanocomputing Research Group 
+# Dept. of Electronics and Telecommunications 
+# Politecnico di Torino, Turin, Italy  
+# (https://www.vlsilab.polito.it/) 
+#
+# People [people you may contact for info] 
+# 	 Yuri Ardesi (yuri.ardesi@polito.it) 
+# 	 Giuliana Beretta (giuliana.beretta@polito.it) 
+#
+# Supervision: Gianluca Piccinini, Mariagrazia Graziano 
+#
+# Relevant pubblications doi  
+# 	 10.1109/TCAD.2019.2960360   
+# 	 10.1109/TVLSI.2020.3045198  
+#
+############################################################
+# Begin: Header
+# Title: majority_voter_unbalanced_2.qll
+#
+# Desc: Optional description line.
+# Desc: Total simulation time:  35 ps
+# valuedim: 4    ## Value dimension: number of values per element
+#
+# valueunits: a.u. a.u. a.u. a.u.
+# valuelabels: "Q1 Aggregated Charge"  "Q2 Aggregated Charge" "Q3 Aggregated Charge" "Q4 Aggregated Charge"
+#
+# End: Header
+#
+#
+# Begin: data text
+0011a   0.0030   0.9270   -0.2120  -0.7170
+0011b   0.9290   0.0000   -0.2120  -0.7170
+0012a   0.9290   0.0000   -0.2120  -0.7170
+0012b   0.0030   0.9270   -0.2120  -0.7170
+0013a   0.9290   0.0000   -0.2120  -0.7170
+0013b   0.0030   0.9270   -0.2120  -0.7170
+0001a   0.6375   0.2995   -0.2183  -0.7180
+0001b   0.4661   0.4714   -0.2197  -0.7180
+0002a   0.3392   0.5978   -0.2195  -0.7180
+0002b   0.7720   0.1614   -0.2164  -0.7170
+0003a   0.9022   0.0252   -0.2104  -0.7170
+0003b   0.0107   0.9142   -0.2079  -0.7170
+0005a   0.0273   0.0257   0.1410  -0.1940
+0005b   0.0273   0.0257   0.1410  -0.1940
+0006a   0.0553   0.8742   -0.2125  -0.7170
+0006b   0.9029   0.0245   -0.2104  -0.7170
+0007a   0.8277   0.1034   -0.2142  -0.7170
+0007b   0.0195   0.9077   -0.2101  -0.7170
+0008a   0.0271   0.0259   0.1410  -0.1940
+0008b   0.0253   0.0277   0.1410  -0.1940
+0009a   0.0272   0.0258   0.1410  -0.1940
+0009b   0.0272   0.0258   0.1410  -0.1940
+0010a   0.0273   0.0257   0.1410  -0.1940
+0010b   0.0273   0.0257   0.1410  -0.1940
+0014a   0.8992   0.0284   -0.2107  -0.7170
+0014b   0.1976   0.7365   -0.2170  -0.7179
+0015a   0.5837   0.3534   -0.2200  -0.7180
+0015b   0.3208   0.6162   -0.2192  -0.7180
+0016a   0.2965   0.6402   -0.2188  -0.7180
+0016b   0.6108   0.3262   -0.2192  -0.7180
+# End: data text
+

@@ -27,8 +27,8 @@ OUTPUT_FILES/figures/*.jpg
 OUTPUT_FILES/figures/*.fig
 
 # ignore layout files
-Layout/Database/*.mat
-Layout/Database/*.txt
+Layout/Data/*.mat
+Layout/Data/*.txt
 
 # ignore documentation aux files
 Documentation/documentation.aux

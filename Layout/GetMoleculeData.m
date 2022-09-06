@@ -1,121 +1,76 @@
-function [initial_charge, dot_position, draw_association] = GetMoleculeData(molType) 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [chargeNum, dot_position, draw_association] = GetMoleculeData(molType) 
     % The function GetMoleculeData is used to get geometry information 
     % about the molecule type specified by <<molType>>. 
     % The input should be a string containing the number associated to the
     % molecule under test.
-    % The function returns three informations:
-    %   initial_charge -> is a matrix containing the initial charge on each
-    %                     dot
+    % The function returns two informations:
     %   dot_position -> is a matrix containing the xyz coordinates for each
     %                   dot (1st row <-> 1st dot, 2nd row <-> 2nd dot, ...)
     %   draw_association -> is a matrix containing the couple of dots which
     %                       are connected
     
-    switch(molType)
-        case {'0','1','3','4','5','6'} % 'bisfe_4' -> Bisferrocene with 4 charges
-            %initial_charge   = [0.475, 0.471, -0.223, 0.277];  % charge ck=+2V
-            initial_charge   = [0.370, 0.352, -0.023, 0.307];  % charge ck=+0V              
-            %initial_charge   = [0.027, 0.026,  0.141, 0.806];  % charge ck=-2V
-            dot_position =  [ -3.622      -5.062,    -0.094;  %[dot1_x, dot1_y, dot1_z]
-                              -3.588      +5.083,    -0.094;  %[dot2_x, dot2_y, dot2_z]
-                              +3.133515   -0.011731, -0.755;  %[dot3_x, dot3_y, dot3_z]
-                              +11.776298  -0.053777, +0.409]; %[dot4_x, dot4_y, dot4_z]
-            draw_association =[1 3; 2 3; 3 4];
-            
-        case '2' % 'bisfe_4_orca' -> Bisferrocene with 4 charges
-            initial_charge   = [0.475, 0.471, -0.223, 0.277];  % charge ck=+2V
-            %initial_charge   = [0.370, 0.352, -0.023, 0.307];  % charge ck=+0V              
-            %initial_charge   = [0.027, 0.026,  0.141, 0.806];  % charge ck=-2V
-            dot_position =  [ -3.621776   -5.061555   -0.093920;  %[dot1_x, dot1_y, dot1_z]
-                              -3.588201    5.082574   -0.093538;  %[dot2_x, dot2_y, dot2_z]
-                              3.133515   -0.011731   -0.755438;  %[dot3_x, dot3_y, dot3_z]
-                              11.776298   -0.053777    0.409313]; %[dot4_x, dot4_y, dot4_z]
-            draw_association =[1 3; 2 3; 3 4];
-            
-        case '10' % 'decatriene' -> Decatriene
-            initial_charge   = [-0.041 -0.025 0.574 0];  % charge ck=+0V 
-            dot_position =  [ -2.8      -2.8,    0;  %[dot1_x, dot1_y, dot1_z]
-                              -2.8      +2.8,    0;  %[dot2_x, dot2_y, dot2_z]
-                              +0         0,      0;  %[dot3_x, dot3_y, dot3_z]
-                              +0         0,      0]; %[dot4_x, dot4_y, dot4_z]
-            draw_association =[1 3; 2 3];
-            
-        case {'7','8'} % 'butane' -> Butane
-            initial_charge   = [0.526 0.509 -0.036 0];  % charge ck=+0V 
-            dot_position =  [ -5      -3.5,    0;  %[dot1_x, dot1_y, dot1_z]
-                              -5      +3.5,    0;  %[dot2_x, dot2_y, dot2_z]
-                              -5         0,    0;  %[dot3_x, dot3_y, dot3_z]
-                              -5         0,    0]; %[dot4_x, dot4_y, dot4_z]
-            draw_association =[1 2];
-            
-        case '9' % 'butaneCam' -> Butane
-            initial_charge   = [0.296967000000000   0.703032000000000 0 0];  % charge ck=+0V 
-            dot_position = [ 0.000098442895707  -3.167642443146320  -0.138914848936393
-                            -0.000106442860152   3.167642445754046   0.138913848655400
-                             0                   0                   0
-                             0                   0                   0];            
-            draw_association =[1 2];
-            
-        case {'11','12'} % 'linear_w7' -> Butane
-            initial_charge   = [0.5 0.5 0 0];  % charge ck=+0V 
-            dot_position =  [ -5,      -3.5,    0;
-                              -5,      +3.5,    0;
-                               0,       0,      0;
-                               1,       0,      0];                     
-            draw_association =[1 2];
-            
-        case '13' % 'linear_w9' -> Butane
-            initial_charge   = [0.5 0.5 0 0];  % charge ck=+0V 
-            dot_position =  [  -5,      -4.5,    0;
-                               -5,      +4.5,    0;
-                                0,       0,      0;
-                                1,       0,      0];                    
-            draw_association =[1 2];
-            
-        case '14' % 'linear_w95' -> Butane
-            initial_charge   = [0.5 0.5 0 0];  % charge ck=+0V 
-            dot_position =  [ -5,      -4.25,    0;
-                              -5,      +4.25,    0;
-                               0,       0,       0;
-                               1,       0,       0];                     
-            draw_association =[1 2];
-        
-        case '15' % Neutra -> paper neutre
-            initial_charge   = [0, 0, 0,  0];  % charge ck=+2V              
-            dot_position =  [ -5      -5           0;  %[dot1_x, dot1_y, dot1_z]
-                              -5      +5           0;  %[dot2_x, dot2_y, dot2_z]
-                              0         0           0;  %[dot3_x, dot3_y, dot3_z]
-                              +10       0           0]; %[dot4_x, dot4_y, dot4_z]
-            draw_association =[1 3; 2 3];
-            
-        case '16' % Ossidata -> paper neutre
-            initial_charge   = [0.5, 0.5, 0, 0];  % charge ck=+2V              
-            dot_position =  [ -5      -5           0;  %[dot1_x, dot1_y, dot1_z]
-                              -5      +5           0;  %[dot2_x, dot2_y, dot2_z]
-                              0         0           0;  %[dot3_x, dot3_y, dot3_z]
-                              +10       0           0];  %[dot4_x, dot4_y, dot4_z]
-            draw_association =[1 3; 2 3];
-        
-        case '17' % Zwitter -> paper neutre
-            initial_charge   = [0.5, 0.5, -1, 0];  % charge ck=+2V              
-            dot_position =  [ -5      -5           0;  %[dot1_x, dot1_y, dot1_z]
-                              -5      +5           0;  %[dot2_x, dot2_y, dot2_z]
-                              0        0           0;  %[dot3_x, dot3_y, dot3_z]
-                              +10       0           0]; %[dot4_x, dot4_y, dot4_z]
-            draw_association =[1 3; 2 3];
-        case '18' % oxidized counterion -> paper neutre
-            initial_charge   = [0.5, 0.5, 0, -1];  % charge ck=+2V              
-            dot_position =  [ -3.622      -5.062,    -0.094;  %[dot1_x, dot1_y, dot1_z]
-                              -3.588      +5.083,    -0.094;  %[dot2_x, dot2_y, dot2_z]
-                              +3.133515   -0.011731, -0.755;  %[dot3_x, dot3_y, dot3_z]
-                              +11.776298  -0.053777, +0.409]; %[dot4_x, dot4_y, dot4_z]
-            
-%             dot_position =  [ -5      -5           0;  %[dot1_x, dot1_y, dot1_z]
-%                               -5      +5           0;  %[dot2_x, dot2_y, dot2_z]
-%                               0         0           0;  %[dot3_x, dot3_y, dot3_z]
-%                               +1       0           0];  %[dot4_x, dot4_y, dot4_z]
-            draw_association =[1 3; 2 3];
-             
+    
+
+    % get the directory name of the molecule
+    dirList = dir(fullfile('..','Database'));
+    dirNamesList = {dirList(:).name};
+    molIdentifier = sprintf('%d.',str2double(molType));
+    index = strncmp(dirNamesList,molIdentifier,2);
+    directoryName = dirNamesList{index};
+    filename = fullfile('..','Database',directoryName,'info.txt');
+    
+
+    in_str=fileread(filename); % string to analyze
+
+    % read num of charges from database file
+    xpr = ['CHARGES (\d)\r?\n'];
+    nCharges = regexp(in_str, xpr, 'tokens');
+    chargeNum = str2double(cell2mat(nCharges{1,1}));
+
+    % read dots coordinates from database file
+    xcoo_expr = '(?<x>[-+]?\d*\.?\d+)[ ]{1,}';
+    ycoo_expr = '(?<y>[-+]?\d*\.?\d+)[ ]{1,}';
+    zcoo_expr = '(?<z>[-+]?\d*\.?\d+)\r?\n';
+    coo_xpr = [ xcoo_expr ycoo_expr zcoo_expr];
+    coo = regexp(in_str,coo_xpr,'names');
+    
+    dot_position(:,1) = str2num(char({coo.x})); %assign x coordinates to first column
+    dot_position(:,2) = str2num(char({coo.y})); %assign y coordinates to second column
+    dot_position(:,3) = str2num(char({coo.z})); %assign z coordinates to third column
+
+    % read dots associations from database file
+    xpr = ['ASSOCIATION\s*(\d)\r?\n'];
+    num_associations_cell = regexp(in_str,xpr,'tokens');
+    num_associations = str2double(cell2mat(num_associations_cell{1,1}));
+    
+    xpr = ['ASSOCIATION\s*\d\r?\n[\d\s*\d\s*\r?\n]+'];
+    match_str = regexp(in_str, xpr, 'match');
+    associations_cell = regexp(char(match_str),'(\d)\s*(\d)\s*\r?\n+','tokens');
+    
+    draw_association = zeros(num_associations,2);
+    for ii=1:num_associations
+        draw_association(ii,:) = str2num(char(associations_cell{1,ii}))';
     end
     
+  
 end
+    

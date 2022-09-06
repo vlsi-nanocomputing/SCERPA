@@ -1,0 +1,46 @@
+############################################################
+#
+# Self-Consistent Electrostatic Potential Algorithm (SCERPA)
+#					#
+# VLSI Nanocomputing Research Group 
+# Dept. of Electronics and Telecommunications 
+# Politecnico di Torino, Turin, Italy  
+# (https://www.vlsilab.polito.it/) 
+#
+# People [people you may contact for info] 
+# 	 Yuri Ardesi (yuri.ardesi@polito.it) 
+# 	 Giuliana Beretta (giuliana.beretta@polito.it) 
+#
+# Supervision: Gianluca Piccinini, Mariagrazia Graziano 
+#
+# Relevant pubblications doi  
+# 	 10.1109/TCAD.2019.2960360   
+# 	 10.1109/TVLSI.2020.3045198  
+#
+############################################################
+# Begin: Header
+# Title: matlabDrawing
+#
+# Desc: Optional description line.
+# Desc: Total simulation time:  22 ps
+# valuedim: 4    ## Value dimension: number of values per element
+#
+# valueunits: a.u. a.u. a.u. a.u.
+# valuelabels: "Q1 Aggregated Charge"  "Q2 Aggregated Charge" "Q3 Aggregated Charge" "Q4 Aggregated Charge"
+#
+# End: Header
+#
+#
+# Begin: data text
+0006a   0.9290   0.0000   -0.2120  -0.7170
+0006b   0.0030   0.9270   -0.2120  -0.7170
+0001a   0.3027   0.0531   0.0539  -0.4092
+0001b   0.1599   0.1987   0.0590  -0.4175
+0002a   0.1832   0.1703   0.0620  -0.4153
+0002b   0.1782   0.1783   0.0609  -0.4172
+0003a   0.1794   0.1763   0.0611  -0.4167
+0003b   0.1791   0.1768   0.0611  -0.4169
+0004a   0.1791   0.1768   0.0611  -0.4169
+0004b   0.1795   0.1762   0.0612  -0.4167
+# End: data text
+

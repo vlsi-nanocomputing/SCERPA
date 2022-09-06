@@ -1,0 +1,58 @@
+############################################################
+#
+# Self-Consistent Electrostatic Potential Algorithm (SCERPA)
+#					#
+# VLSI Nanocomputing Research Group 
+# Dept. of Electronics and Telecommunications 
+# Politecnico di Torino, Turin, Italy  
+# (https://www.vlsilab.polito.it/) 
+#
+# People [people you may contact for info] 
+# 	 Yuri Ardesi (yuri.ardesi@polito.it) 
+# 	 Giuliana Beretta (giuliana.beretta@polito.it) 
+#
+# Supervision: Gianluca Piccinini, Mariagrazia Graziano 
+#
+# Relevant pubblications doi  
+# 	 10.1109/TCAD.2019.2960360   
+# 	 10.1109/TVLSI.2020.3045198  
+#
+############################################################
+# Begin: Header
+# Title: majority_voter.qll
+#
+# Desc: Optional description line.
+# Desc: Total simulation time:  102 ps
+# valuedim: 4    ## Value dimension: number of values per element
+#
+# valueunits: a.u. a.u. a.u. a.u.
+# valuelabels: "Q1 Aggregated Charge"  "Q2 Aggregated Charge" "Q3 Aggregated Charge" "Q4 Aggregated Charge"
+#
+# End: Header
+#
+#
+# Begin: data text
+0010a   0.0030   0.9270   -0.2120  -0.7170
+0010b   0.9290   0.0000   -0.2120  -0.7170
+0011a   0.0030   0.9270   -0.2120  -0.7170
+0011b   0.9290   0.0000   -0.2120  -0.7170
+0012a   0.9290   0.0000   -0.2120  -0.7170
+0012b   0.0030   0.9270   -0.2120  -0.7170
+0002a   0.5752   0.0823   -0.0331  -0.6243
+0002b   0.0458   0.6721   -0.0833  -0.6346
+0003a   0.6940   0.0268   -0.0906  -0.6302
+0003b   0.0454   0.6482   -0.0607  -0.6335
+0004a   0.7999   0.0157   -0.1733  -0.6423
+0004b   0.0519   0.6143   -0.0413  -0.6249
+0005a   0.1687   0.4616   -0.0138  -0.6165
+0005b   0.3089   0.3593   -0.0230  -0.6452
+0006a   0.8877   0.0408   -0.2115  -0.7170
+0006b   0.0131   0.9124   -0.2085  -0.7170
+0007a   0.6897   0.0306   -0.0896  -0.6307
+0007b   0.0653   0.6392   -0.0633  -0.6414
+0008a   0.6831   0.0301   -0.0833  -0.6300
+0008b   0.0686   0.6451   -0.0704  -0.6433
+0009a   0.6659   0.0300   -0.0679  -0.6280
+0009b   0.0612   0.6556   -0.0759  -0.6409
+# End: data text
+

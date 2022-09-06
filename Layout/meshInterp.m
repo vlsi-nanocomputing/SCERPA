@@ -1,3 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function z0 = meshInterp(x,y,z,x0,y0) 
 %Given meshes x,y, and values z, the function returns the value z0 associated to
 %point (x0,y) by interpolation.

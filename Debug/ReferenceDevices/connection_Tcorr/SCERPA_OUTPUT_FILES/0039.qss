@@ -1,0 +1,64 @@
+############################################################
+#
+# Self-Consistent Electrostatic Potential Algorithm (SCERPA)
+#					#
+# VLSI Nanocomputing Research Group 
+# Dept. of Electronics and Telecommunications 
+# Politecnico di Torino, Turin, Italy  
+# (https://www.vlsilab.polito.it/) 
+#
+# People [people you may contact for info] 
+# 	 Yuri Ardesi (yuri.ardesi@polito.it) 
+# 	 Giuliana Beretta (giuliana.beretta@polito.it) 
+#
+# Supervision: Gianluca Piccinini, Mariagrazia Graziano 
+#
+# Relevant pubblications doi  
+# 	 10.1109/TCAD.2019.2960360   
+# 	 10.1109/TVLSI.2020.3045198  
+#
+############################################################
+# Begin: Header
+# Title: Tcorr.qll
+#
+# Desc: Optional description line.
+# Desc: Total simulation time:  39 ps
+# valuedim: 4    ## Value dimension: number of values per element
+#
+# valueunits: a.u. a.u. a.u. a.u.
+# valuelabels: "Q1 Aggregated Charge"  "Q2 Aggregated Charge" "Q3 Aggregated Charge" "Q4 Aggregated Charge"
+#
+# End: Header
+#
+#
+# Begin: data text
+0014a   0.9290   0.0000   -0.2120  -0.7170
+0014b   0.0030   0.9270   -0.2120  -0.7170
+0001a   0.0273   0.0257   0.1410  -0.1940
+0001b   0.0273   0.0257   0.1410  -0.1940
+0002a   0.1168   0.2266   0.0634  -0.4067
+0002b   0.1147   0.2279   0.0638  -0.4065
+0003a   0.1604   0.1983   0.0590  -0.4177
+0003b   0.1587   0.1996   0.0590  -0.4172
+0004a   0.1813   0.1734   0.0616  -0.4161
+0004b   0.1797   0.1759   0.0612  -0.4166
+0005a   0.2032   0.1392   0.0663  -0.4083
+0005b   0.2035   0.1386   0.0664  -0.4081
+0006a   0.2397   0.1015   0.0645  -0.4057
+0006b   0.2530   0.0916   0.0620  -0.4065
+0007a   0.2022   0.1406   0.0661  -0.4086
+0007b   0.2076   0.1324   0.0672  -0.4067
+0008a   0.1852   0.1672   0.0625  -0.4146
+0008b   0.1891   0.1610   0.0634  -0.4132
+0009a   0.1588   0.1995   0.0590  -0.4172
+0009b   0.1596   0.1989   0.0590  -0.4175
+0010a   0.0273   0.0257   0.1410  -0.1940
+0010b   0.0273   0.0257   0.1410  -0.1940
+0011a   0.0273   0.0257   0.1410  -0.1940
+0011b   0.0273   0.0257   0.1410  -0.1940
+0012a   0.0273   0.0257   0.1410  -0.1940
+0012b   0.0274   0.0256   0.1410  -0.1940
+0013a   0.0278   0.0252   0.1410  -0.1940
+0013b   0.0312   0.0230   0.1419  -0.1954
+# End: data text
+

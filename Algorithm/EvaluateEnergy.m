@@ -1,9 +1,25 @@
-function [W_int,W_ex,W_clk,W_tot] = EvaluateEnergy(stack_driver, stack_mol, Vout, CK)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [W_0_TOT,W_mu,W_ex,W_clk,W_tot] = EvaluateEnergy(settings, stack_driver, stack_mol, Vout, CK)
 %first driver
 
-%settings is conformation, internal, polarization, clock
-settings.evalEnergy=[0 0 1 0];
-    
 % %dots
 % D_DOT1 = stack_driver.stack(1).charge(1);
 % D_DOT2 = stack_driver.stack(1).charge(2);
@@ -58,53 +74,93 @@ for ii_system = stack_driver.num+1:stack_mol.num+stack_driver.num
 end
 
 %molecule data
-W_0 = 0;
-% Pz=99999999; Py=1.1101e-37; Px=99999999; 7.6720e-33 %bisferrocene
-Pz=99999999; Py=3.6716e-38; Px=99999999; %diallylbutano
-mu0= [0 7.671972000000000e-33 0]; %diallylbutano
-% clock = 2;
+% get the directory name of the molecule
+dirList = dir(fullfile('..','Database'));
+dirNamesList = {dirList(:).name};
+molIdentifier = sprintf('%d.',stack_mol.stack(1).molType);
+index = strncmp(dirNamesList,molIdentifier,2);
+directoryName = dirNamesList{index};
+filename = fullfile('..','Database',directoryName,'info.txt');
+in_str=fileread(filename); % string to analyze
+  
+xpr = 'ENERGY\r?\n';
+energy_data = regexp(in_str, xpr, 'match');
 
-%evalute total conformation energy
-W_0_TOT = 0;
-if settings.evalEnergy(1)==1
-    W_0_TOT =  length(mol)*W_0;
-end
+if isempty(energy_data)
+    warning('No information on energy in the info.txt file, energy evaluation disabled!')
+    W_0_TOT = 0;
+    W_mu= 0;
+    W_ex = 0;
+    W_clk = 0; 
+    W_tot = 0; 
+    W_int = 0;
+else
+    abq = '([^"]+)'; 
+    xpr = ['W_0\s*=\s*([-+]?\d*\.?\d+)\s*a.u.\r?\n'];
+    conformationEnergy = regexp(in_str, xpr, 'tokens');
+    W_0_hartree = str2double(char(conformationEnergy{:}));
+    W_0 = W_0_hartree*4.359748199e-18; %conformation energy from Hartree to Joule
 
-%evaluate internal energy
-W_int = 0;
-if settings.evalEnergy(2)==1
-    for ii_mol = 1:length(mol)
-         W_int(ii_mol) = EvaluateInternalEnergy( mol(ii_mol), Px, Py, Pz, mu0);
+    xpr = ['mu_0\s*=\s*(?<x>[-+]?\d*\.?\d+e[-+]?\d)\s*;\s*(?<y>[-+]?\d*\.?\d+e[-+]?\d)\s*;\s*(?<z>[-+]?\d*\.?\d+e[-+]?\d)\s*D\r?\n'];
+    dipole = regexp(in_str,xpr,'names');
+    mu0(1) = str2double(char(dipole.x))*3.33564e-30; %conversion from Debye to SI
+    mu0(2) = str2double(char(dipole.y))*3.33564e-30; %conversion from Debye to SI
+    mu0(3) = str2double(char(dipole.z))*3.33564e-30; %conversion from Debye to SI
+    
+    xpr = ['alpha_xx\s*=\s*"([^"]+)"\s*a.u.\s*'];
+    alpha_xx = regexp(in_str, xpr, 'tokens');
+    Px = str2double(char(alpha_xx{1}))*1.648777273798380e-41; %conversion from a.u. to SI
+
+    xpr = ['alpha_yy\s*=\s*"([^"]+)"\s*a.u.'];
+    alpha_yy = regexp(in_str, xpr, 'tokens');
+    Py = str2double(char(alpha_yy{1}))*1.648777273798380e-41; %conversion from a.u. to SI
+
+    xpr = ['alpha_zz\s*=\s*"([^"]+)"\s*a.u.'];
+    alpha_zz = regexp(in_str, xpr, 'tokens');
+    Pz = str2double(char(alpha_zz{1}))*1.648777273798380e-41; %conversion from a.u. to SI
+
+    %evalute total conformation energy
+    W_0_TOT = 0;
+    if settings.evalConformationEnergy==1
+        W_0_TOT = length(mol)*W_0;
     end
-end
-W_int_sum = sum(W_int);
-
-%evaluate exchange energy
-W_ex = 0;
-if settings.evalEnergy(3)==1
-    for ii_mol = 1:length(mol)
-        for jj_mol = (ii_mol+1):length(mol)
-            W_ex = W_ex + EvaluateExchangeEnergy( mol(ii_mol), mol(jj_mol));
+    
+    %evaluate polarization energy
+    W_mu = zeros(1,length(mol));
+    if settings.evalPolarizationEnergy==1
+        for ii_mol = 1:length(mol)
+             W_mu(ii_mol) = EvaluatePolarizationEnergy( mol(ii_mol), Px, Py, Pz, mu0);
         end
     end
-end
-
-%evaluate clock energy
-W_clk = 0;
-if settings.evalEnergy(4)==1
-    for ii_mol = 1:length(mol)
-         W_clk = W_clk + EvaluateMolEnergyV3( mol(ii_mol), -clock, 0, 0) - + EvaluateMolEnergyV3( mol(ii_mol), 0, 0, 0);
+    W_mu_sum = sum(W_mu);
+    
+    %evaluate exchange energy
+    W_ex = 0;
+    if settings.evalIntermolecularEnergy==1
+        for ii_mol = 1:length(mol)
+            for jj_mol = (ii_mol+1):length(mol)
+                W_ex = W_ex + EvaluateIntermolecularEnergy( mol(ii_mol), mol(jj_mol));
+            end
+        end
     end
+    
+    %evaluate clock energy
+    W_clk = 0;
+    if settings.evalFieldEnergy==1
+        for ii_mol = 1:length(mol)
+             W_clk = W_clk + EvaluateFieldEnergy( mol(ii_mol),-stack_mol.stack(ii).clock, 0, 0);
+        end
+    end
+    
+    %evaluate total energy
+    W_tot = W_0_TOT + W_mu_sum + W_ex + W_clk;
+    
+    %convert energies to eV
+    qq=1.6e-19;
+    W_ex = W_ex/qq;
+    W_mu = W_mu_sum/qq;
+    W_tot = W_tot/qq;
 end
-
-%evaluate total energy
-W_tot = W_0_TOT + W_int_sum + W_ex + W_clk;
-
-%convert energies to eV
-qq=1.6e-19;
-W_ex = W_ex/qq;
-W_int = W_int_sum/qq;
-W_tot = W_tot/qq;
 
 end
 

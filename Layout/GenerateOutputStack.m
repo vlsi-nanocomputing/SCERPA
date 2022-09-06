@@ -1,4 +1,23 @@
-function [output_stack]=GenerateOutputStack(circuit, row, column, output_stack, dot_position, draw_association)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [output_stack]=GenerateOutputStack(circuit, row, column, output_stack, dot_position, draw_association,nCharges)
         % The function GenerateOutputStack is used to create an istance of
         % the stack containing output information. It extracts the
         % information from the <<circuit>>, based on the actual position in 
@@ -33,9 +52,8 @@ function [output_stack]=GenerateOutputStack(circuit, row, column, output_stack, 
 
         
         %eval position of each dot 
-        n_dots = length(dot_position(:,1));
-        for dd=1:n_dots
-            %rotate - dot(i) =[x y z]
+        out_para.chargeNum = nCharges;
+        for dd=1:nCharges
             dot_rotated = Rx*Ry*Rz*[dot_position(dd,1); dot_position(dd,2); dot_position(dd,3)];
             
             %evaluate new position (rotation+shift)

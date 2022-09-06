@@ -1,0 +1,13 @@
+[001] Missing command! SCERPA does not know what to do. Type SCERPA('help') to open the documentation.
+[002] Missing circuit.
+[003] Command not valid! Type SCERPA('help') to open the documentation.
+[004] Components matrix is not well defined (size is not consistent)!
+[005] Rotation(x) matrix is not well defined (size is not consistent)!
+[006] Rotation(y) matrix is not well defined (size is not consistent)!
+[007] Rotation(z) matrix is not well defined (size is not consistent)!
+[008] Shift(x) matrix is not well defined (size is not consistent)!
+[009] Shift(y) matrix is not well defined (size is not consistent)!
+[010] Shift(z) matrix is not well defined (size is not consistent)!
+[011] Vext matrix is not well defined (size is not consistent)!
+[013] Unknown molecule (circuit.molecule)
+[014] Wrong molecule format, please write the corresponding number (circuit.molecule)

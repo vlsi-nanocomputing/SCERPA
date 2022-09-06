@@ -1,4 +1,23 @@
-function [mol_stack]=GenerateMolStack(circuit, row, column, mol_stack, dot_position, draw_association, initial_charge)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [mol_stack]=GenerateMolStack(circuit, row, column, mol_stack, dot_position, draw_association,nCharges)
         % The function GenerateMolStack is used to create an istance of
         % the stack containing molecules information. It extracts the
         % information from the <<circuit>>, based on the actual position in 
@@ -32,13 +51,12 @@ function [mol_stack]=GenerateMolStack(circuit, row, column, mol_stack, dot_posit
               0               ,       0          , 1 ];
           
         %eval position of each dot 
-        n_dots = length(dot_position(:,1));
-        for dd=1:n_dots
-            %rotate - dot(i) =[x y z]
+        mol_para.chargeNum = nCharges;
+        for dd=1:nCharges
             dot_rotated = Rx*Ry*Rz*[dot_position(dd,1); dot_position(dd,2); dot_position(dd,3)];
             
             %evaluate new position (rotation+shift)
-            mol_para.charge(dd).q = initial_charge(dd);
+            mol_para.charge(dd).q = 0;
             mol_para.charge(dd).x = dot_rotated(1) + shift_x;
             mol_para.charge(dd).y = (row-1)*(dist_y)+dot_rotated(2) + shift_y;
             mol_para.charge(dd).z = (column-1)*(dist_z)+dot_rotated(3) + shift_z;

@@ -1,3 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function scerpaSettings = importSettings(userSettings)
 % The function importSetting verifies if the user specified the settings:
 % for those cases the function selects the proper userSettings field,
@@ -7,27 +26,26 @@ function scerpaSettings = importSettings(userSettings)
 % time definition
 scerpaSettings.timestep = setDefault(userSettings,'timestep',1);
 
-% topo integration
-% scerpaSettings.magcadImporter = setDefault(userSettings,'magcadImporter',0);
-% scerpaSettings.doubleMolDriverMode = setDefault(userSettings,'doubleMolDriverMode',0);
-
 % Energy
 scerpaSettings.energyEval = setDefault(userSettings,'energyEval',0);
+scerpaSettings.evalConformationEnergy = setDefault(userSettings,'evalConformationEnergy',0);
+scerpaSettings.evalIntermolecularEnergy = setDefault(userSettings,'evalIntermolecularEnergy',0);
+scerpaSettings.evalPolarizationEnergy = setDefault(userSettings,'evalPolarizationEnergy',0);
+scerpaSettings.evalFieldEnergy = setDefault(userSettings,'evalFieldEnergy',0);
 
 % output plot
 if isfield(userSettings,'out_path') 
     % set by user
-    scerpaSettings.out_path = strcat(userSettings.out_path,'/SCERPA_OUTPUT_FILES');
-    mkdir (scerpaSettings.out_path)
+    scerpaSettings.out_path = fullfile(userSettings.out_path,'SCERPA_OUTPUT_FILES');
+    mkdir(scerpaSettings.out_path)
 else
     % not set by the user!
-    scerpaSettings.out_path = '../OUTPUT_FILES';
+    scerpaSettings.out_path = fullfile('..','OUTPUT_FILES');
 end
 scerpaSettings.plot_plotAbsoluteCharge = setDefault(userSettings,'plot_plotAbsoluteCharge',1);
 scerpaSettings.plotIntermediateSteps = setDefault(userSettings,'plotIntermediateSteps',0);
 scerpaSettings.plotActiveRegionWindow = setDefault(userSettings,'plotActiveRegionWindow',0);
 scerpaSettings.plot_3dfig = setDefault(userSettings,'plot_3dfig',0);
-scerpaSettings.plot_voltage = setDefault(userSettings,'plot_voltage',0);
 scerpaSettings.plot_chargeFig = setDefault(userSettings,'plot_chargeFig',0);
 scerpaSettings.plot_clock = setDefault(userSettings,'plot_clock',0);
 scerpaSettings.plot_molnum = setDefault(userSettings,'plot_molnum',1);
@@ -49,8 +67,10 @@ scerpaSettings.activeRegionThreshold = setDefault(userSettings,'activeRegionThre
 scerpaSettings.enableInteractionRadiusMode = setDefault(userSettings,'enableInteractionRadiusMode',1); 
 scerpaSettings.interactionRadius = setDefault(userSettings,'interactionRadius',101); 
 
-% DEBUG informations
+% DEBUG information
 scerpaSettings.printConvergenceTable = setDefault(userSettings,'printConvergenceTable',0); 
+scerpaSettings.printConvergenceSummary = setDefault(userSettings,'printConvergenceSummary',0); 
+
 
 % LP-LPP modes
 scerpaSettings.LPmode = setDefault(userSettings,'LPmode',200); 
@@ -72,14 +92,6 @@ scerpaSettings.dumpDriver = setDefault(userSettings,'dumpDriver',0);
 scerpaSettings.dumpOutput = setDefault(userSettings,'dumpOutput',0);
 scerpaSettings.dumpComputationTime = setDefault(userSettings,'dumpComputationTime',0);
 scerpaSettings.dumpEnergy = setDefault(userSettings,'dumpEnergy',0);
-
-% compatibility
-scerpaSettings.y.enable_escape = 1;
-scerpaSettings.y.show_intermediate_steps = scerpaSettings.plotIntermediateSteps;
-scerpaSettings.y.LPmode = scerpaSettings.LPmode;
-scerpaSettings.y.LPPmode = scerpaSettings.LPPmode;
-scerpaSettings.y.immediateUpdate = scerpaSettings.immediateUpdate;
-scerpaSettings.y.damping = scerpaSettings.damping;
 
 end
 

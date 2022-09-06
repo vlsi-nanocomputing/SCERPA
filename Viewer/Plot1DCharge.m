@@ -1,3 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function out_fig = Plot1DCharge(stack_mol, stack_driver, stack_output, settings)
 
 %number of charge to be plotted
@@ -41,16 +60,35 @@ end
 
 dataTable = sortrows(dataTable,1);
 
-out_fig = figure('visible','off');
+
+%figure creation
+if settings.HQimage
+    dpi = 150;            % Resolution
+    sz = [0 0 2880 1800]; % Image size in pixels
+    out_fig = figure('visible','off','PaperUnits','inches','PaperPosition', sz/dpi,'PaperPositionMode','manual','position',[0 0  1920 1080]);
+    ha = gca;
+    uistack(ha,'bottom');
+    ha2=axes('OuterPosition',[0,0, 1,1],'Position',[0,0, 0.14,0.14]);
+    hIm = imshow(fullfile('..','Documentation','scerpa_logo.png'));
+    set(ha2,'handlevisibility','off','visible','off')
+else
+    out_fig = figure('visible','off');
+    ha = gca;
+    uistack(ha,'bottom');
+    ha2=axes('OuterPosition',[0,0, 1,1],'Position',[0,0, 0.14,0.14]);
+    [LogoImage, mapImage] = imread(fullfile('..','Documentation','scerpa_logo.png'));
+    image(LogoImage)
+    colormap (mapImage)
+    set(ha2,'handlevisibility','off','visible','off')
+end
+
 hold on, grid on;
 plot(cell2mat(dataTable(:,1)),cell2mat(dataTable(:,3)),'b--*',cell2mat(dataTable(:,1)),cell2mat(dataTable(:,4)),'r--*','Linewidth',4,'MarkerSize',10);
 axis([0 number_of_mols -0.2 1.2])
 xticks(cell2mat(dataTable(:,1)));xticklabels(string(dataTable(:,2)));xtickangle(90);
 set(gca,'TickLabelInterpreter','none')
- 
 legend('Dot1','Dot2');title('Charge distribution');
 xlabel('Molecule'); ylabel('Aggregated charge distribution Dot1 & Dot2'); 
-
 
 
  end

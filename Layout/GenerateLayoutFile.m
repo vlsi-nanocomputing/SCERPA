@@ -1,9 +1,26 @@
-function return_code = GenerateLayoutFile(QCA_circuit)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function GenerateLayoutFile(QCA_circuit)
 % The function GenerateLayoutFile checks the correctness of the inputs
 % provided by the user in the <<QCA_circuit>>, creates the layout files and
 % saves them in the Database directory.
-
-
 
 %SCERPA version
 SCERPA_version = 4;
@@ -13,20 +30,55 @@ fprintf('Running SCERPA Version %1.f \n',SCERPA_version);
 fprintf(' - Politecnico di Torino |  VLSI nanocomputing\n');
 fprintf(' - www.vlsilab.polito.it\n\n');              
 
+
 %% input management
 if QCA_circuit.magcadImporter == 1
-    [stack_driver, stack_mol, stack_output] = importQLL(QCA_circuit);
+    [stack_driver, stack_mol, stack_output,QCA_circuit.dist_y,QCA_circuit.dist_z] = importQLL(QCA_circuit);
     qll_path = regexp(QCA_circuit.qllFile,'\','split');
     simulation_file_name = qll_path{end};
+    if ~isfield(QCA_circuit,'magcadMolOverwrite')
+        QCA_circuit.magcadMolOverwrite = 0;
+    end
+    molTypeList = unique([[stack_driver.stack.molType] [stack_mol.stack.molType] [stack_output.stack.molType]]);
 else
     QCA_circuit = importMatlab(QCA_circuit);
     % create the molecule and the driver stacks
     [stack_driver, stack_mol, stack_output] = GenerateStacks(QCA_circuit);
     simulation_file_name = 'matlabDrawing';
+    molTypeList = str2double(unique([QCA_circuit.components(:)]));
 end
 
-%compatibility 
-Values_Dr = QCA_circuit.Values_Dr;
+% print the related work
+citeFilePath = fullfile('..','Database','cite.txt');
+citeFileName = fileread(citeFilePath);
+
+disp(' ')
+disp('#############')
+disp('RELATED WORKS')
+disp(' ')
+disp('FOR SCERPA')
+disp(citeFileName)
+disp('FOR USED MOLECULES')
+molCitation(molTypeList);
+disp(' ')
+disp('#############')
+disp(' ')
+
+
+
+%evaluate circuit area
+moleculePositions=[stack_mol.stack.position];
+molecularArea = (stack_mol.num+stack_driver.num)*QCA_circuit.dist_y*QCA_circuit.dist_z/100;
+size_z= max(moleculePositions(3:3:end  ))-min(moleculePositions(3:3:end  ))+1;
+size_y= max(moleculePositions(2:3:end-1))-min(moleculePositions(2:3:end-1))+1;
+chipArea = QCA_circuit.dist_y/10*size_y*QCA_circuit.dist_z/10*size_z;
+
+%print circuit info
+fprintf('Layout grid is: %d x %d \n',size_y,size_z)
+fprintf('Intermolecular distance: %.2f nm\n',QCA_circuit.dist_z/10)
+fprintf('Vertical intermolecular distance: %.2f nm\n',QCA_circuit.dist_y/10)
+fprintf('Area occupied by molecules, by considering also drivers: %.2f nm^2\n',molecularArea)
+fprintf('Chip area occupied by molecules: %.2f nm^2\n',chipArea)
 
 %clock management
 if ~isfield(QCA_circuit,'clockMode')
@@ -47,179 +99,22 @@ end
 
 %plot layout
 if isfield(QCA_circuit,'plotLayout') && QCA_circuit.plotLayout == 1
-    Plotting(stack_mol, stack_driver,stack_output)
+    PlotLayout(stack_mol, stack_driver,stack_output)
 end
-%% creation of the layout
-
-
-% [m,n]=size(QCA_circuit.structure);
-% [X,Y] = meshgrid(0:dist_y:(n-1)*dist_y,0:dist_z:(m-1)*dist_z);
-% Z = (1/2)*sin(X/50) - (Y/80).^2;
-% plot3(X,Y,Z)
-% QCASurface=Z;
-% QCASurface=[0  0  0 0 0  0  0 0 0  0  0 0 0  0  0 0 0   ];
-%||*||*||*||*||*||*||*||*||*||*||*||*||*||*||*||*||*||*||*||
-% process_variation='off';
-%||*||*||*||*||*||*||*||*||*||*||*||*||*||*||*||*||*||*||*||
-%\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\%
-%----------------------------auto variation---------------------------%
-%         auto_variations='off';
-%\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\./.\%        
-%|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|%
-%-------------------------electrode variaiton-------------------------%
-%         electrode_variation='off';
-%|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|%
-% Number of Process Variations
-%     kind_proc_variaiton = 'Gaussian';
-%     num_processor = 1;
-% Kind of Process Variations : Gaussian Distribution
-% if strcmp(process_variation,'on')
-%     if strcmp(auto_variations,'on')
-%     pv.rotation_x.make = 'map';     % X Rotation
-%         pv.rotation_x.mu = 10;
-%         pv.rotation_x.sigma = 0.1;   
-%     pv.rotation_y.make = 'map';     % Y Rotation
-%         pv.rotation_y.mu = 0;
-%         pv.rotation_y.sigma = 5;
-%     pv.rotation_z.make = 'map';     % Z Rotation
-%         pv.rotation_z.mu = 0;
-%         pv.rotation_z.sigma = 1;   
-%     pv.shift_x.make  = 'map';        % X Shift
-%         pv.shift_x.mu = 0;
-%         pv.shift_x.sigma = 0.2;
-%     pv.shift_y.make  = 'map';        % Y Shift
-%         pv.shift_y.mu = 0;
-%         pv.shift_y.sigma = 0.2;
-%     pv.shift_z.make  = 'map';        % Z Shift
-%         pv.shift_z.mu = 0;
-%         pv.shift_z.sigma = 1;
-%     pv.charge.make   = 'no';        % Charge --- NOISE??????      
-%         pv.charge.mu = 0;           % the values are set in "initial_charge" variable.
-%         pv.charge.sigma = 0.01;
-%     end
-%     if strcmp(auto_variations,'off')
-%         pv.rotation_x.make = 'on';     % X Rotation
-%         pv.rotation_x.mu = 10;
-%         pv.rotation_x.sigma = 90;   
-%     pv.rotation_y.make = 'on';     % Y Rotation
-%         pv.rotation_y.mu = 0;
-%         pv.rotation_y.sigma = 90;
-%     pv.rotation_z.make = 'on';     % Z Rotation
-%         pv.rotation_z.mu = 0;
-%         pv.rotation_z.sigma = 90;   
-%     pv.shift_x.make  = 'on';        % X Shift
-%         pv.shift_x.mu = 0;
-%         pv.shift_x.sigma = 4;
-%     pv.shift_y.make  = 'on';        % Y Shift
-%         pv.shift_y.mu = 0;
-%         pv.shift_y.sigma = 4;
-%     pv.shift_z.make  = 'on';        % Z Shift
-%         pv.shift_z.mu = 0;
-%         pv.shift_z.sigma = 4;
-%     pv.charge.make   = 'no';        % Charge --- NOISE??????      
-%         pv.charge.mu = 0;           % the values are set in "initial_charge" variable.
-%         pv.charge.sigma = 0.01;
-%     end
-% else
-%     pv.rotation_x.make = 'no';     % X Rotation
-%         pv.rotation_x.mu = 10;
-%         pv.rotation_x.sigma = 0.1;   
-%     pv.rotation_y.make = 'no';     % Y Rotation
-%         pv.rotation_y.mu = 0;
-%         pv.rotation_y.sigma = 5;
-%     pv.rotation_z.make = 'no';     % Z Rotation
-%         pv.rotation_z.mu = 0;
-%         pv.rotation_z.sigma = 1;   
-%     pv.shift_x.make  = 'no';        % X Shift
-%         pv.shift_x.mu = 0;
-%         pv.shift_x.sigma = 0.2;
-%     pv.shift_y.make  = 'no';        % Y Shift
-%         pv.shift_y.mu = 0;
-%         pv.shift_y.sigma = 0.2;
-%     pv.shift_z.make  = 'no';        % Z Shift
-%         pv.shift_z.mu = 0;
-%         pv.shift_z.sigma = 1;
-%     pv.charge.make   = 'no';        % Charge --- NOISE??????      
-%         pv.charge.mu = 0;           % the values are set in "initial_charge" variable.
-%         pv.charge.sigma = 0.01;
-% end        
-
-% if strcmp(auto_variations,'on')
-%     cd '.\Process Variation';
-%     output_position = AuMapMatrix(AuMapName, 3);
-%     final_variations( AuMapName, output_position, QCA_circuit.structure, QCASurface )
-%     cd '..';
-% end
-
-
-
-% if strcmp(electrode_variation,'on')
-%     
-%     %if  electrode_variation do all the calculation here
-%     
-%         reset_switch_matrix=importdata('reset_switch.txt');
-%         switch_hold_matrix =importdata('switch_hold.txt');
-%         hold_release_matrix =importdata('hold_release.txt');
-%         release_reset_matrix =importdata('release_reset.txt');
-%         reset_matrix =importdata('reset.txt');
-%         switched_matrix  =importdata('switched.txt');
-%         
-%     for electrod_variation_index= 1:stack_mol.num
-%         %here read external txt files and store one row for cycle in the
-%         %following vectors
-%         
-%          
-%         Not_Enabled =   { nan   nan   nan    nan  nan   nan   nan    nan };
-%         reset_switch =  reset_switch_matrix(electrod_variation_index,:);   % Gradual Clock Changing -2V ->  0V
-%         switch_hold =   switch_hold_matrix(electrod_variation_index,:);   % Gradual Clock Changing  0V -> +2V
-%         hold_release =  hold_release_matrix(electrod_variation_index,:);   % Gradual Clock Changing +2V ->  0V
-%         release_reset = release_reset_matrix(electrod_variation_index,:);   % Gradual Clock Changing  0V -> -2V
-%         reset =         reset_matrix(electrod_variation_index,:);   % Just Reset State -2V
-%         switched  =     switched_matrix(electrod_variation_index,:);   % Just Reset State -2V
-%         
-% %stack_phase(1,:) = [    -2     reset_switch,    switch_hold,     hold_release,    release_reset,      reset,           reset,             reset      ];
-% stack_phase(1,:) = [    -2     reset_switch,    switch_hold,     hold_release,    release_reset,      reset,           reset,             reset      ];
-% stack_phase(2,:) = [    -2        reset,        reset_switch,    switch_hold,     hold_release,    release_reset,      reset,             reset      ];
-% stack_phase(3,:) = [    -2        reset,           reset,        reset_switch,    switch_hold ,    hold_release,    release_reset,        reset      ];
-% stack_phase(4,:) = [    -2        reset,           reset,           reset,        reset_switch,    switch_hold,     hold_release,     release_reset  ];
-% stack_phase(5,:) = [    -2        reset,           reset,           reset,           reset,        reset_switch,    switch_hold ,     hold_release   ];
-% stack_phase(6,:) = [    -2        reset,           reset,           reset,           reset,           reset,        reset_switch,     switch_hold    ];
-%         
-%         phase = stack_mol.stack(electrod_variation_index).phase(1);
-%         matrix_phase(electrod_variation_index,:) = [stack_mol.stack(electrod_variation_index).identifier num2cell(stack_phase(str2num(phase),:))];  
-% 
-%     end
-% else    
-%                      time1  |   time 2->9   |   time 10->17  |   time 18->25  |   time 26->33  |   time 26->33  |   time 34->41  |   time 42->49  |    
-% stack_phase(1,:) = [2];% -2 2 2];
-% stack_phase(2,:) = [    -2        reset,        reset_switch,    switch_hold,     hold_release,    release_reset,      reset,             reset      ];
-% stack_phase(3,:) = [    -2        reset,           reset,        reset_switch,    switch_hold ,    hold_release,    release_reset,        reset      ];
-% stack_phase(4,:) = [    -2        reset,           reset,           reset,        reset_switch,    switch_hold,     hold_release,     release_reset  ];
-% stack_phase(5,:) = [    -2        reset,           reset,           reset,           reset,        reset_switch,    switch_hold ,     hold_release   ];
-% stack_phase(6,:) = [    -2        reset,           reset,           reset,           reset,           reset,        reset_switch,     switch_hold    ];
-% end
 
 
 
 
 %% Output file creation
 % Check if the directory "Database" is present
-if exist('Database','dir')
-    delete('Database/*');  % delete its content 
+if isfolder('Data')
+    delete('Data/*');  % delete its content 
 else
-    mkdir('Database');     % if not present. It is created.
+    mkdir('Data');     % if not present. It is created.
 end
 
-%===================================================================================================================================================================
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   DATA MOLECULE & PROCESS VARIATION  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% for tt=1:num_processor
-%     ff = 1;
-%     run('Process Variation/Process_Variations.m');
-% %     close all;
-%     Plotting(stack_mol_PV, stack_driver, dot_position, dist_z, dist_y, QCA_circuit.structure, QCA_circuit.rotation, QCASurface, electrode_variation)
-
 % save simulation filename
-filename = sprintf('Database/Simulation_filename.txt');
+filename = fullfile('Data','Simulation_filename.txt');
 fileID = fopen(filename,'wt');
 fprintf(fileID,'%s', simulation_file_name);
 fclose(fileID);
@@ -277,22 +172,13 @@ end
 
     
 %%% FILE FOR MOLECULE DATA
-filename = sprintf('Database/Data_Molecule.mat');
+filename = fullfile('Data','Data_Molecule.mat');
 fprintf('Creating molecule data file "%s"... ', filename)
 save(filename,'matrix_mol');
 fprintf('[DONE] \n')
     
-%%% FILE FOR COMSOL
-filename = sprintf('Database/Comsol_data.txt');
-fprintf('Creating COMSOL file "%s"... ', filename)
-fileID = fopen(filename,'wt');
-fprintf(fileID,'%s\n', mol_parameter{:,1});
-fclose(fileID);
-fprintf('[DONE] \n')
-
-
-%===================================================================================================================================================================
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   DATA DRIVERS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% data drivers
+id_num = id_num+1;
 for ii=1:stack_driver.num
     k = (ii-1)*8 + 1;
     name = stack_driver.stack(ii).identifier;
@@ -322,18 +208,20 @@ for ii=1:stack_driver.num
 end
 
 %Driver files
-filename = 'Database/Data_Driver.mat';
+filename = fullfile('Data','Data_Driver.mat');
 fprintf('Creating driver geometry file "%s"... ', filename)
 save(filename,'matrix_driv');
 fprintf('[DONE] \n')
 
-filename = 'Database/Values_Driver.mat';
+filename = fullfile('Data','Values_Driver.mat');
 fprintf('Creating driver value file "%s"... ', filename)
+Values_Dr = QCA_circuit.Values_Dr;
 save(filename,'Values_Dr');
 fprintf('[DONE] \n')
 
 %===================================================================================================================================================================
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   DATA OUTPUTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+id_num = id_num+1;
 for ii=1:stack_output.num
     k = (ii-1)*8 + 1;
     name = stack_output.stack(ii).identifier;
@@ -364,51 +252,20 @@ end
 if stack_output.num == 0 % output may be not present
     matrix_out = cell(0,0);
 end
+
 %Output files
-filename = 'Database/Data_Output.mat';
+filename = 'Data/Data_Output.mat';
 fprintf('Creating output geometry file "%s"... ', filename)
 save(filename,'matrix_out');
 fprintf('[DONE] \n')
 
-
-    
-% string_dr_line_format= '%s'; %string format creation
-% for ss_line=1:length(Values_Dr(1,:))-1
-%     string_dr_line_format = strcat(string_dr_line_format,', %s');
-% end
-% string_dr_line_format = strcat(string_dr_line_format,'\n');  
-% 
-% filename = sprintf('Database/Values_Driver.csv', tt);
-% valuedriver_file = fopen(filename,'w');
-% for line = 1:length(Values_Dr(:,1))
-%    fprintf(valuedriver_file,string_dr_line_format,Values_Dr{line,:});
-% endD
-% fclose(valuedriver_file);
-
-%===================================================================================================================================================================
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   DATA FAKE PHASE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% if strcmp(electrode_variation,'on')
-%         
-% %in this case all the calculation hve been already calculated before
-%         
-% else    
-
-% matrix_phase = cell(stack_mol.num,length(stack_phase(phase,:)) + 1);
-% for jj=1:stack_mol.num
-%     phase = stack_mol.stack(jj).phase;
-%     matrix_phase(jj,:) = [stack_mol.stack(jj).identifier num2cell(stack_phase(phase,:))];
-% end
-
-% end
-
 %Clock file generation
-filename = 'Database/Fake_Phases.mat';
+filename = 'Data/Fake_Phases.mat';
 fprintf('Creating clock value file "%s"... ', filename)
 save(filename,'stack_clock');
 fprintf('[DONE] \n')
 
 fprintf('\nSCERPA is ready to start.\n\n')
 
-return_code=0;
-
 end
+

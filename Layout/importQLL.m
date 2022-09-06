@@ -1,9 +1,36 @@
-function [stack_driver, stack_mol, stack_output] = importQLL(QCA_circuit)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [stack_driver, stack_mol, stack_output,dist_y,dist_z] = importQLL(QCA_circuit)
 
 xmlStruct = xmlRead(QCA_circuit.qllFile);
 
 if ~isfield(QCA_circuit,'dist_y') 
     dist_y = 2*xmlStruct.dist_z;
+else
+    dist_y = QCA_circuit.dist_y;
+end
+
+dist_z=xmlStruct.dist_z;
+
+if ~isfield(QCA_circuit,'magcadMolOverwrite') 
+    QCA_circuit.magcadMolOverwrite = 0;
 end
 
 %% create driver stack
@@ -18,11 +45,20 @@ for ii = 1:length(xmlStruct.driver.name)
         stack_driver.stack(2*ii-1).position = [xmlStruct.driver.z(ii),xmlStruct.driver.y(ii),2*xmlStruct.driver.x(ii)];
         
         %set molType for the Drivers: driver is automatically assigned to first available molecule
-        stack_driver.stack(2*ii).molType = xmlStruct.molecules(1).molType;
-        stack_driver.stack(2*ii-1).molType = xmlStruct.molecules(1).molType;
+        if QCA_circuit.magcadMolOverwrite==1
+            stack_driver.stack(2*ii).molType = str2double(getMolType(QCA_circuit));
+            stack_driver.stack(2*ii-1).molType = str2double(getMolType(QCA_circuit));
+        else
+            stack_driver.stack(2*ii).molType = xmlStruct.molecules(1).molType;
+            stack_driver.stack(2*ii-1).molType = xmlStruct.molecules(1).molType;
+        end
         
-        [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_driver.stack(2*ii).molType));
-        number_of_charges = length(dot_position(:,1));
+
+        
+        [number_of_charges, dot_position, draw_association] = GetMoleculeData(num2str(stack_driver.stack(2*ii).molType));
+        %number_of_charges = length(dot_position(:,1));
+        stack_driver.stack(2*ii).chargeNum = number_of_charges;
+        stack_driver.stack(2*ii-1).chargeNum = number_of_charges;
 
         %effective position of the cell (necesssary for rotation implementation)
         y_cell_center = dist_y * xmlStruct.driver.y(ii); %position of cell center
@@ -45,8 +81,8 @@ for ii = 1:length(xmlStruct.driver.name)
             stack_driver.stack(2*ii).charge(cc).z = z_dot_in_cell_b*cosd(theta_driver) - y_dot_in_cell*sind(theta_driver) + z_cell_center; 
             stack_driver.stack(2*ii-1).charge(cc).z = z_dot_in_cell_a*cosd(theta_driver) - y_dot_in_cell*sind(theta_driver) + z_cell_center; 
             
-            stack_driver.stack(2*ii).charge(cc).q = initial_charge(cc);
-            stack_driver.stack(2*ii-1).charge(cc).q = initial_charge(cc);
+            stack_driver.stack(2*ii).charge(cc).q = 0;
+            stack_driver.stack(2*ii-1).charge(cc).q = 0;
         
         end 
         stack_driver.stack(2*ii).association = draw_association;
@@ -63,9 +99,13 @@ for ii = 1:length(xmlStruct.driver.name)
         stack_driver.stack(ii).position = [xmlStruct.driver.z(ii),xmlStruct.driver.y(ii),2*xmlStruct.driver.x(ii)+1];
         
         %set molType for the Drivers: driver is automatically assigned to first available molecule
-        stack_driver.stack(ii).molType = xmlStruct.molecules(1).molType;
-        [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_driver.stack(ii).molType));
-        number_of_charges = length(dot_position(:,1));
+        if QCA_circuit.magcadMolOverwrite==1
+            stack_driver.stack(ii).molType = str2double(getMolType(QCA_circuit));
+        else
+            stack_driver.stack(ii).molType = xmlStruct.molecules(1).molType;
+        end
+        [number_of_charges, dot_position, draw_association] = GetMoleculeData(num2str(stack_driver.stack(ii).molType));
+        %number_of_charges = length(dot_position(:,1));
 
         %effective position of the cell (necesssary for rotation implementation)
         y_cell_center = dist_y * xmlStruct.driver.y(ii); %position of cell center
@@ -73,6 +113,8 @@ for ii = 1:length(xmlStruct.driver.name)
         
         theta_driver = xmlStruct.driver.angle(ii);
         %update driver charge and positions (mol 1)
+        stack_driver.stack(ii).chargeNum = number_of_charges;
+
         for cc=1:number_of_charges
             stack_driver.stack(ii).charge(cc).x = dot_position(cc,1); 
             
@@ -82,7 +124,7 @@ for ii = 1:length(xmlStruct.driver.name)
             
             stack_driver.stack(ii).charge(cc).y = y_dot_in_cell*cosd(theta_driver) + z_dot_in_cell*sind(theta_driver) +  y_cell_center;
             stack_driver.stack(ii).charge(cc).z = z_dot_in_cell*cosd(theta_driver) - y_dot_in_cell*sind(theta_driver) + z_cell_center; 
-            stack_driver.stack(ii).charge(cc).q = initial_charge(cc);
+            stack_driver.stack(ii).charge(cc).q = 0;
             
         end 
         stack_driver.stack(ii).association = draw_association;
@@ -99,9 +141,15 @@ for ii = 1:stack_output.num
     stack_output.stack(ii).position = [xmlStruct.output.z(ii),xmlStruct.output.y(ii),2*xmlStruct.output.x(ii)+1];
         
     %set molType for the output: output is automatically assigned to first available molecule
-    stack_output.stack(ii).molType = xmlStruct.molecules(1).molType;
-    [~, dot_position, draw_association] = GetMoleculeData(num2str(stack_output.stack(ii).molType));
-    number_of_charges = length(dot_position(:,1));
+    if QCA_circuit.magcadMolOverwrite==1
+        stack_output.stack(ii).molType = str2double(getMolType(QCA_circuit));
+    else
+     	stack_output.stack(ii).molType = xmlStruct.molecules(1).molType;
+    end
+        
+    [number_of_charges, dot_position, draw_association] = GetMoleculeData(num2str(stack_output.stack(ii).molType));
+    %number_of_charges = length(dot_position(:,1));
+    stack_output.stack(ii).chargeNum = number_of_charges;
 
     %effective position of the cell (necesssary for rotation implementation)
     y_cell_center = dist_y * xmlStruct.output.y(ii); %position of cell center
@@ -135,48 +183,87 @@ for ii = 1:length(xmlStruct.molecules)
     if ~isfield(xmlStruct.molecules(ii),'xshift_a')
         mol1_xshift = 0;
     else
-        mol1_xshift = xmlStruct.molecules(ii).xshift_a;
+        if ~isempty(xmlStruct.molecules(ii).xshift_a)
+            mol1_xshift = xmlStruct.molecules(ii).xshift_a;
+        else
+            mol1_xshift = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'xshift_b')
         mol2_xshift = 0;
     else
-        mol2_xshift = xmlStruct.molecules(ii).xshift_b;
+        if ~isempty(xmlStruct.molecules(ii).xshift_b)
+            mol2_xshift = xmlStruct.molecules(ii).xshift_b;
+        else
+            mol2_xshift = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'yshift_a')
         mol1_yshift = 0;
     else
-        mol1_yshift = xmlStruct.molecules(ii).yshift_a;
+        if ~isempty(xmlStruct.molecules(ii).yshift_a)
+            mol1_yshift = xmlStruct.molecules(ii).yshift_a;
+        else 
+            mol1_yshift = 0;
+        end 
     end
     if ~isfield(xmlStruct.molecules(ii),'yshift_b')
         mol2_yshift = 0;
     else
-        mol2_yshift = xmlStruct.molecules(ii).yshift_b;
+        if ~isempty(xmlStruct.molecules(ii).yshift_b)
+            mol2_yshift = xmlStruct.molecules(ii).yshift_b;
+        else
+            mol2_yshift = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'zshift_a')
         mol1_zshift = 0;
     else
-        mol1_zshift = xmlStruct.molecules(ii).zshift_a;
+        if ~isempty(xmlStruct.molecules(ii).zshift_a)
+            mol1_zshift = xmlStruct.molecules(ii).zshift_a;
+        else
+            mol1_zshift = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'zshift_b')
         mol2_zshift = 0;
     else
-        mol2_zshift = xmlStruct.molecules(ii).zshift_b;
+        if ~isempty(xmlStruct.molecules(ii).zshift_b)
+            mol2_zshift = xmlStruct.molecules(ii).zshift_b;
+        else
+            mol2_zshift = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'angle_a')
         mol1_angle = 0;
     else
-        mol1_angle = xmlStruct.molecules(ii).angle_a;
+        if ~isempty(xmlStruct.molecules(ii).angle_a)
+            mol1_angle = xmlStruct.molecules(ii).angle_a;
+        else
+            mol1_angle = 0;
+        end
     end
     if ~isfield(xmlStruct.molecules(ii),'angle_b')
         mol2_angle = 0;
     else
-        mol2_angle = xmlStruct.molecules(ii).angle_b;
+        if ~isempty(xmlStruct.molecules(ii).angle_b)
+            mol2_angle = xmlStruct.molecules(ii).angle_b;
+        else
+            mol2_angle = 0;
+        end 
     end
     %effective position of the cell (necessary for rotation implementation)
     y_cell_center = dist_y * xmlStruct.molecules(ii).y; %position of cell center
     z_cell_center = 2*xmlStruct.dist_z *(0.5+xmlStruct.molecules(ii).x);
 
-    if ~isfield(xmlStruct.molecules(ii),'disabled_a') % if the molecule is present
+    %check if molA exists
+    if ~isfield(xmlStruct.molecules(ii),'disabled_a')
+        flag_mola_Exists = 1;
+    else
+        flag_mola_Exists = isempty(xmlStruct.molecules(ii).disabled_a);
+    end
+        
+    if flag_mola_Exists % if the molecule is present
         stack_mol.num = stack_mol.num + 1;
         stack_mol.stack(stack_mol.num).position = [xmlStruct.molecules(ii).z,xmlStruct.molecules(ii).y,2*xmlStruct.molecules(ii).x+1];
         
@@ -184,10 +271,15 @@ for ii = 1:length(xmlStruct.molecules)
         stack_mol.stack(stack_mol.num).phase = xmlStruct.molecules(ii).phase + 1; % phases in magcad starts from 0 instead of 1
         
         %set molType for the molecules
-        stack_mol.stack(stack_mol.num).molType = xmlStruct.molecules(ii).molType;
+        if QCA_circuit.magcadMolOverwrite==1
+            stack_mol.stack(stack_mol.num).molType = str2double(getMolType(QCA_circuit));
+        else
+            stack_mol.stack(stack_mol.num).molType = xmlStruct.molecules(ii).molType;
+        end
 
-        [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_mol.stack(ii).molType));
-        number_of_charges = length(dot_position(:,1)); 
+        [number_of_charges, dot_position, draw_association] = GetMoleculeData(num2str(stack_mol.stack(ii).molType));
+        %number_of_charges = length(dot_position(:,1)); 
+        stack_mol.stack(stack_mol.num).chargeNum = number_of_charges;
 
         %update molecule charge and positions (mol 1)
         for cc=1:number_of_charges
@@ -202,7 +294,7 @@ for ii = 1:length(xmlStruct.molecules)
             stack_mol.stack(stack_mol.num).charge(cc).y = y_mol_rotation*cosd(theta_cell) + z_mol_rotation*sind(theta_cell) + y_cell_center + mol1_yshift;
             stack_mol.stack(stack_mol.num).charge(cc).z = z_mol_rotation*cosd(theta_cell) - y_mol_rotation*sind(theta_cell) + z_cell_center + mol1_xshift; 
             
-            stack_mol.stack(stack_mol.num).charge(cc).q = initial_charge(cc);
+            stack_mol.stack(stack_mol.num).charge(cc).q = 0;
         end 
         stack_mol.stack(stack_mol.num).association = draw_association;
         
@@ -214,7 +306,14 @@ for ii = 1:length(xmlStruct.molecules)
         stack_mol.stack(stack_mol.num).identifier_qll = sprintf('%.4da',str2double(xmlStruct.molecules(ii).id));
     end
     
-    if ~isfield(xmlStruct.molecules(ii),'disabled_b') % if the molecule is present
+    %check if molB exists
+    if ~isfield(xmlStruct.molecules(ii),'disabled_b')
+        flag_molb_Exists = 1;
+    else
+        flag_molb_Exists = isempty(xmlStruct.molecules(ii).disabled_b);
+    end
+        
+    if flag_molb_Exists % if the molecule is present
         stack_mol.num = stack_mol.num + 1;
         stack_mol.stack(stack_mol.num).position = [xmlStruct.molecules(ii).z,xmlStruct.molecules(ii).y,2*xmlStruct.molecules(ii).x];
         
@@ -222,10 +321,16 @@ for ii = 1:length(xmlStruct.molecules)
         stack_mol.stack(stack_mol.num).phase = xmlStruct.molecules(ii).phase + 1; % phases in magcad starts from 0 instead of 1
         
         %set molType for the molecules
-        stack_mol.stack(stack_mol.num).molType = xmlStruct.molecules(ii).molType;
+        if QCA_circuit.magcadMolOverwrite==1
+            stack_mol.stack(stack_mol.num).molType = str2double(getMolType(QCA_circuit));
+        else
+            stack_mol.stack(stack_mol.num).molType = xmlStruct.molecules(ii).molType;
+        end
+        
 
-        [initial_charge, dot_position, draw_association] = GetMoleculeData(num2str(stack_mol.stack(ii).molType));
-        number_of_charges = length(dot_position(:,1));
+        [number_of_charges, dot_position, draw_association] = GetMoleculeData(num2str(stack_mol.stack(ii).molType));
+        %number_of_charges = length(dot_position(:,1));
+        stack_mol.stack(stack_mol.num).chargeNum = number_of_charges;
 
         %update molecule charge and positions (mol 1)
         for cc=1:number_of_charges
@@ -240,7 +345,7 @@ for ii = 1:length(xmlStruct.molecules)
             stack_mol.stack(stack_mol.num).charge(cc).y = y_mol_rotation*cosd(theta_cell) + z_mol_rotation*sind(theta_cell) + y_cell_center + mol2_yshift;
             stack_mol.stack(stack_mol.num).charge(cc).z = z_mol_rotation*cosd(theta_cell) - y_mol_rotation*sind(theta_cell) + z_cell_center + mol2_xshift; 
             
-            stack_mol.stack(stack_mol.num).charge(cc).q = initial_charge(cc);
+            stack_mol.stack(stack_mol.num).charge(cc).q = 0;
         end 
         stack_mol.stack(stack_mol.num).association = draw_association;
         

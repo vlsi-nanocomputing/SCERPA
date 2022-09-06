@@ -1,0 +1,13 @@
+CHARGES 4
+-5      -3.5    0
+-5      +3.5    0
+-5        0     0
+-5        0     0
+
+ASSOCIATION 1
+1 2
+
+CLOCKDATA 3
+<1> buta1.txt -2 V 21 values </1>
+<2> buta2.txt 0 V 21 values </2>
+<3> buta3.txt +2 V 21 values </3>

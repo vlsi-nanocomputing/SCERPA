@@ -1,9 +1,22 @@
-%TODO
-% autodamping
-% interaction range auto-enlargement
-% AR threshold auto-decrease
-% flag system (i.e. settings stracture but that can be modified by the
-%   software)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Ncharges = 4; 
 
@@ -23,7 +36,6 @@ if settings.enableInteractionRadiusMode || settings.enableActiveRegion
             if jj_mol ~= ii_mol
 
                 %evaluate distance
-                %ii_jj_distance = DIST_MATRIX(ii_mol,jj_mol,end,end);
                 ii_jj_distance = 0.5*(DIST_MATRIX(ii_mol,jj_mol,1,1)+DIST_MATRIX(ii_mol,jj_mol,2,2)); %average btw r_dot_11 and r_dot_22
                 
                 %evaluate interaction condition
@@ -59,13 +71,22 @@ for out_mol =1:stack_output.num
     end
 end
 
-convergence_absolute = 'true';
+%preallocation of variables
+n_times = size(stack_clock,2)-1;
 pre_driver_effect = 0;
 Charge_on_wire_done(stack_mol.num,5)=0; %preallocation charge_on_wire
-n_times = size(stack_clock,2)-1;
+if settings.energyEval==1
+    stack_energy(1:n_times)=struct('time', 0, 'steps', 0);
+else
+    stack_energy=0;
+end
 
 %create time vector
-timeComputation =zeros(1,n_times);
+timeComputation = zeros(1,n_times);
+
+%clock energy dissipation 
+EvaluateClockingPower(stack_mol,stack_clock,settings); 
+
 
 %%Time loop
 disp('Starting Time evaluation')
@@ -77,17 +98,13 @@ for time = 1:n_times
     
     %enable approximations
     refiningMode=0;
-
     interactionRadiusMode = settings.enableInteractionRadiusMode;
-
     activeRegionMode = settings.enableActiveRegion;
 
     %prepare energy stack for this time
     if settings.energyEval==1
         stack_energy(time).time = time;
         stack_energy(time).steps = 0;
-    else
-        stack_energy = 0;
     end
    
     %Initialize drivers
@@ -122,10 +139,7 @@ for time = 1:n_times
     end 
     
     
-    %evaluate driver changes
-    %WARNING: qui al posto di mettere il controllo su time si pu? fare sul
-    %flag del driver cambiato
-    
+    %evaluate driver changes 
     if time>1 %not the first time
         
         %save current voltage (before changing)
@@ -167,12 +181,8 @@ for time = 1:n_times
         Vout = zeros(1,stack_mol.num) + Vext;
         preV_beforeDriverChange = zeros(1,stack_mol.num);
         newVout_wodamping = zeros(1,stack_mol.num);
-        voltageVariation = abs(V_driver + Vext); % It should be abs(V_driver - 0)
+        voltageVariation = abs(V_driver + Vext);
         
-        %Initialize clocks
-%         for ii_mol =1:stack_mol.num
-%             stack_mol.stack(ii_mol).clock = stack_clock{ii_mol,time+1};
-%         end
         [stack_mol.stack.clock] = stack_clock{:,time+1}; %vectorized
     end
     
@@ -203,15 +213,15 @@ for time = 1:n_times
             
             %max step reached, increase tolerance (LP Mode)
             max_error=settings.conv_threshold_LP;
-            disp('Warning: low precision');
+            warning('Low precision');
             
             if (scfStep==settings.max_step + settings.LPmode)
                 
                 %max step reached, LP mode didn't converge, increase tolerance
                 max_error=settings.conv_threshold_LLP;
-                disp('Warning very low precision');
+                warning('Very low precision');
                 if (scfStep==settings.max_step + settings.LPmode + settings.LLPmode)
-                    disp('No convergence');
+                    warning('No convergence');
                     pause
                     break;
                 end
@@ -237,17 +247,7 @@ for time = 1:n_times
             end
             
             if settings.plotActiveRegionWindow==1
-                plot_activeMol = zeros(1,stack_mol.num);
-                plot_activeMol(activeMolecules) = 0.05;
-
-                plot_evaluationMol = zeros(1,stack_mol.num);
-%                 plot_evaluationMol(find(activeListMolecule==1)) = 1;
-                plot_evaluationMol(activeListMolecule==1) = 0.05;
-
-                figure(2000000), clf, hold on
-                    plot(1:stack_mol.num,voltageVariation, [1 stack_mol.num], [settings.activeRegionThreshold settings.activeRegionThreshold], 1:stack_mol.num, plot_activeMol, 1:stack_mol.num, plot_evaluationMol)
-                    legend('Voltage variation','TH','active','evaluated')
-                    drawnow
+                plotActiveRegionWindow(stack_mol.num,activeMolecules,activeListMolecule,voltageVariation,settings.activeRegionThreshold)
             end
             
             evaluationRange = find(activeListMolecule==1);
@@ -264,22 +264,7 @@ for time = 1:n_times
             evaluationRange = 1:stack_mol.num;
             activeRegionMode = 2; %avoid re-evaluation in refining mode
         end
-           
-        %plot of AR mode
-        if settings.plotActiveRegionWindow==1
-            plot_activeMol = zeros(1,stack_mol.num);
-            plot_activeMol(activeMolecules) = 0.05;
-
-            plot_evaluationMol = zeros(1,stack_mol.num);
-    %                 plot_evaluationMol(find(activeListMolecule==1)) = 1;
-            plot_evaluationMol(activeListMolecule==1) = 0.05;
-
-            figure(2000000), clf, hold on
-                plot(1:stack_mol.num,voltageVariation, [1 stack_mol.num], [settings.activeRegionThreshold settings.activeRegionThreshold], 1:stack_mol.num, plot_activeMol, 1:stack_mol.num, plot_evaluationMol)
-                legend('Voltage variation','TH','active','evaluated')
-                drawnow
-        end
-         
+        
         
         %evaluate voltage on each molecule
         for jj_mol=evaluationRange
@@ -289,7 +274,7 @@ for time = 1:n_times
 
             %if refining is active, evaluate the interaction with all
             %molecules
-            if interactionRadiusMode==1 %si pu� fare in modo pi� furbo
+            if interactionRadiusMode==1 %si può fare in modo più furbo
                 nearMolecules = stack_mol.stack(jj_mol).interactionRXlist;
             else
                 nearMolecules = 1:stack_mol.num;
@@ -301,91 +286,56 @@ for time = 1:n_times
                     Vout(jj_mol) = Vout(jj_mol) + ChargeBased_CalPotential_DIST(stack_mol,ii_mol,jj_mol,DIST_MATRIX);
                 end    
             end
-
-            if settings.immediateUpdate == 1
-                %update charges
-                newVout_wodamping(jj_mol) = Vout(jj_mol); %save to evaluate convergence
-                deltaV = abs(Vout(jj_mol) - preV_afterVoltageVariation(jj_mol));
-                if settings.autodamping == 1    
-                    if scfStep<=0.8*settings.max_step    
-                        if deltaV <= 0.05
-                            damping = 1-0.2;
-                        elseif deltaV <= 0.15
-                            damping = 1-0.4;
-                        else
-                            damping = 1-0.6;
-                        end
-                    else
-                        damping = 1-0.6;
-                    end
-                else
-                    damping = 1 - settings.damping;
-                end
-                Vout(jj_mol) = preV_afterVoltageVariation(jj_mol) + damping*(Vout(jj_mol) - preV_afterVoltageVariation(jj_mol));
-%                 Vout(jj_mol) = preV_afterVoltageVariation(jj_mol) + (1-settings.y.damping)*(Vout(jj_mol) - preV_afterVoltageVariation(jj_mol));
-                
-                mm = cell2mat(stack_mol.stack(jj_mol).molType);
-                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK.stack(mm+1));
-                stack_mol.stack(jj_mol).charge(1).q =  Q1;    
-                stack_mol.stack(jj_mol).charge(2).q =  Q2;   
-                stack_mol.stack(jj_mol).charge(3).q =  Q3;   
-                stack_mol.stack(jj_mol).charge(4).q =  Q4;  
-            end
-            
+           
         end %end of first of two calculation loops
 
-        %delayed update
-        if settings.y.immediateUpdate == 0
-            newVout_wodamping = Vout;
-            deltaV = abs(Vout - preV_afterVoltageVariation);
-            if settings.autodamping == 1 
-                if scfStep<=0.8*settings.max_step    
-                    if deltaV <= 0.05
-                        damping = 1-0.2;
-                    elseif deltaV <= 0.15
-                        damping = 1-0.4;
-                    else
-                        damping = 1-0.6;
-                    end
+
+        newVout_wodamping = Vout;
+        deltaV = abs(Vout - preV_afterVoltageVariation);
+        if settings.autodamping == 1 
+            if scfStep<=0.8*settings.max_step    
+                if deltaV <= 0.05
+                    damping = 1-0.2;
+                elseif deltaV <= 0.15
+                    damping = 1-0.4;
                 else
                     damping = 1-0.6;
                 end
             else
-                damping = 1 - settings.damping;
+                damping = 1-0.6;
             end
-            Vout = preV_afterVoltageVariation + damping*(Vout - preV_afterVoltageVariation);
-%             Vout = preV_afterVoltageVariation + (1-settings.y.damping)*(Vout - preV_afterVoltageVariation);
-            for jj_mol=1:stack_mol.num
-                mm = stack_mol.stack(jj_mol).molType;
-                %update charges
-                [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK.stack(mm+1));
-                stack_mol.stack(jj_mol).charge(1).q =  Q1;   
-                stack_mol.stack(jj_mol).charge(2).q =  Q2;   
-                stack_mol.stack(jj_mol).charge(3).q =  Q3;   
-                stack_mol.stack(jj_mol).charge(4).q =  Q4;   
-            end
+        else
+            damping = 1 - settings.damping;
         end
+        Vout = preV_afterVoltageVariation + damping*(Vout - preV_afterVoltageVariation);
+%             Vout = preV_afterVoltageVariation + (1-settings.y.damping)*(Vout - preV_afterVoltageVariation);
+        for jj_mol=1:stack_mol.num
+            mm = stack_mol.stack(jj_mol).molType;
+            %update charges
+            [Q1, Q2, Q3, Q4] = applyTranschar(Vout(jj_mol),stack_mol.stack(jj_mol).clock,CK.stack(mm+1));
+            stack_mol.stack(jj_mol).charge(1).q =  Q1;   
+            stack_mol.stack(jj_mol).charge(2).q =  Q2;   
+            stack_mol.stack(jj_mol).charge(3).q =  Q3;   
+            stack_mol.stack(jj_mol).charge(4).q =  Q4;   
+        end
+
         
         %convergence evaluation
         voltageVariation = abs(newVout_wodamping-preV_afterVoltageVariation);
-        if (strcmp(convergence_absolute,'true'))
-                if max(voltageVariation(evaluationRange))< max_error
-                    
-                    %continue evaluation if refining is required
-                    if refiningMode==0 && settings.enableRefining==1
-                        %activate Refining Mode and disable IR/AR Modes
-                        refiningMode=1;
-                        activeRegionMode=0;
-                        interactionRadiusMode=0;
-                        disp('Refining solution! ActiveRegion and InteractionRadius disabled!')
-                    else
-                        convergence_flag=1;
-                    end
-                end
-        else
-            %%%%% Not implemented
-            error('[SCERPA] Relative convergence is not implemented yet!')
+        if max(voltageVariation(evaluationRange))< max_error
+
+            %continue evaluation if refining is required
+            if refiningMode==0 && settings.enableRefining==1
+                %activate Refining Mode and disable IR/AR Modes
+                refiningMode=1;
+                activeRegionMode=0;
+                interactionRadiusMode=0;
+                disp('Refining solution! ActiveRegion and InteractionRadius disabled!')
+            else
+                convergence_flag=1;
+            end
         end
+   
 
         if settings.plotIntermediateSteps == 1
                
@@ -412,8 +362,9 @@ for time = 1:n_times
         
         %save energy
         if settings.energyEval==1
-            [W_int,W_ex,W_clk,W_tot] = EvaluateEnergy(stack_driver, stack_mol, Vout, CK);
+            [W_0_tot,W_int,W_ex,W_clk,W_tot] = EvaluateEnergy(settings, stack_driver, stack_mol, Vout, CK);
             stack_energy(time).steps = stack_energy(time).steps+1;
+            stack_energy(time).W_0_tot(stack_energy(time).steps) = W_0_tot;
             stack_energy(time).W_int(stack_energy(time).steps) = W_int;
             stack_energy(time).W_ex(stack_energy(time).steps) = W_ex;
             stack_energy(time).W_clk(stack_energy(time).steps) = W_clk;
@@ -426,7 +377,7 @@ for time = 1:n_times
                 scfStep,...
                 max(voltageVariation(evaluationRange)),...
                 max_error,...
-                settings.y.damping,...
+                settings.damping,...
                 interactionRadiusMode,...
                 sum(activeListMolecule)/stack_mol.num,...
                 activeRegionMode);
@@ -448,10 +399,13 @@ for time = 1:n_times
         end
     end
    
-   
-%     run('ConvergenceTable.m')
+
     timeComputation(time) = toc;
-    disp(timeComputation(time))
+    fprintf('Computation Time: %f s\n\n ',timeComputation(time))
+    
+    if (settings.printConvergenceTable||settings.printConvergenceSummary)
+       ConvergenceTable(stack_mol,pre_driver_effect,Vout,CK,max_error,settings)
+    end
 
     %evaluate output
     if stack_output.num ~= 0
@@ -465,12 +419,8 @@ for time = 1:n_times
     
     %plot and save data
     RunTimePlotting(Vout, Charge_on_wire_done, stack_mol, stack_driver, stack_output, settings, 3*time-2);
-    Function_Saver(0, time, fileID, Vout, Charge_on_wire_done, stack_mol, stack_driver);    
     Function_SaveQSS(time, stack_mol, stack_driver,simulation_file_name,settings.out_path);    
     Function_SaveTable(0,settings,stack_mol,stack_driver,stack_output,fileTable, time, Vout, driver_values,timeComputation(time),stack_energy);
-    
-%     clock_tmp(1,:) = [stack_mol.stack.clock];
-%     output_txt(time,:) = [clock_tmp Vout];
-    
+   
 end %end of time loop
 

@@ -1,3 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [driver_stack, mol_stack, out_stack] = GenerateStacks(QCA_circuit)
     % The function GenerateStacks analyses each position in the layout
     % matrix and, according to the element type in the position under test,
@@ -17,14 +36,14 @@ function [driver_stack, mol_stack, out_stack] = GenerateStacks(QCA_circuit)
     for i=1:row
         for l=1:column
             if (strncmp(QCA_circuit.structure(i,l),'Dr',2)) % if there is a driver
-                [~, dot_position, draw_association] = GetMoleculeData(QCA_circuit.components{i,l});
-                [driver_stack] = GenerateDriverStack(QCA_circuit, i, l, driver_stack, dot_position, draw_association);
-            elseif (strncmp(QCA_circuit.structure(i,l),'out',3)) % if there is an output
-                [~, dot_position, draw_association] = GetMoleculeData(QCA_circuit.components{i,l});
-                [out_stack] = GenerateOutputStack(QCA_circuit, i, l, out_stack, dot_position, draw_association);
+                [nCharges,dot_position, draw_association] = GetMoleculeData(QCA_circuit.components{i,l});
+                [driver_stack] = GenerateDriverStack(QCA_circuit, i, l, driver_stack, dot_position, draw_association,nCharges);
+            elseif (strncmp(QCA_circuit.structure(i,l),'Out',3)) % if there is an output
+                [nCharges,dot_position, draw_association] = GetMoleculeData(QCA_circuit.components{i,l});
+                [out_stack] = GenerateOutputStack(QCA_circuit, i, l, out_stack, dot_position, draw_association,nCharges);
             elseif QCA_circuit.structure{i,l}~=0 % if there is a molecule
-                [initial_charge, dot_position, draw_association] = GetMoleculeData(QCA_circuit.components{i,l});
-                [mol_stack] = GenerateMolStack(QCA_circuit, i, l, mol_stack, dot_position, draw_association, initial_charge);
+                [nCharges,dot_position, draw_association] = GetMoleculeData(QCA_circuit.components{i,l});
+                [mol_stack] = GenerateMolStack(QCA_circuit, i, l, mol_stack, dot_position, draw_association,nCharges);
             end
         end
     end

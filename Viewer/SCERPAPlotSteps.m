@@ -1,16 +1,39 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function SCERPAPlotSteps(plotSettings)
 
+if ~exist('plotSettings','var')
+    plotSettings=0;
+end
+
 %set default settings
-plotSettings.proceed=1; %be sure plotSettings exists, even if user didn't set anything
+%plotSettings.proceed=1; %be sure plotSettings exists, even if user didn't set anything
 plotSettings = importSettings(plotSettings);
 
 %% FROM SCERPA
-load(strcat(plotSettings.out_path,'/simulation_output.mat'),'stack_mol')
-load(strcat(plotSettings.out_path,'/simulation_output.mat'),'stack_output')
-load(strcat(plotSettings.out_path,'/simulation_output.mat'),'stack_driver')
+load(fullfile(plotSettings.out_path,'simulation_output.mat'),'stack_mol')
+load(fullfile(plotSettings.out_path,'simulation_output.mat'),'stack_output')
+load(fullfile(plotSettings.out_path,'simulation_output.mat'),'stack_driver')
 
 %delete old simulation files
-figure_path = strcat(plotSettings.out_path,'/figures');
+figure_path = fullfile(plotSettings.out_path,'figures');
 if ~exist(figure_path,'dir')
     mkdir (figure_path)
 end
@@ -34,14 +57,19 @@ else
     
 end
 
+if plotSettings.HQimage 
+    warning('High quality images, simulation will last longer.')
+end
+
 % Plot additional information data
 
 if plotSettings.plot_waveform == 1
-    waveformFig = PlotWaveform(strcat(plotSettings.out_path,'/Additional_Information.txt'), plotSettings);
+    waveformFig = PlotWaveform(fullfile(plotSettings.out_path,'Additional_Information.txt'), stack_driver,stack_mol,plotSettings);
     if plotSettings.fig_saver == 1
-        savefig(waveformFig,strcat(figure_path,'/waveformFig.fig'))
+        savefig(waveformFig,fullfile(figure_path,'waveformFig.fig'))
     end
-    saveas(waveformFig,strcat(figure_path,'/waveformFig.jpg'))
+    saveas(waveformFig,fullfile(figure_path,'waveformFig.jpg'))
+    %print('-r150','-dtiff','histogram.tiff');
 end
 
 % Plot steps
@@ -52,7 +80,6 @@ for ff=stepToPrint
     
     %import file
     filename = qssfiles(ff).name;
-    %QSSFile = sprintf('../OUTPUT_FILES/%s',filename);
     QSSFile = fullfile(plotSettings.out_path,filename);
    
     [stack_mol,stack_driver] = importQSS(stack_mol,stack_driver,QSSFile);
@@ -70,33 +97,33 @@ for ff=stepToPrint
     if plotSettings.plot_3dfig == 1
         threeDfig = Plot3DAC(stack_mol, stack_driver, stack_output, plotSettings);
         if plotSettings.fig_saver == 1
-            savefig(threeDfig,sprintf('%s/figures/threeFig%s.fig',plotSettings.out_path,filename))
+            savefig(threeDfig,fullfile(plotSettings.out_path,'figures',['threeFig' filename '.fig']))
         end
-        saveas(threeDfig,sprintf('%s/figures/threeFig%s.jpg',plotSettings.out_path,filename))
+        saveas(threeDfig,fullfile(plotSettings.out_path,'figures',['threeFig' filename '.jpg']))
     end
     
     if plotSettings.plot_potential == 1
         potFig = PlotPotential(stack_mol, stack_driver, stack_output, plotSettings);
         if plotSettings.fig_saver == 1
-            savefig(potFig,sprintf('%s/figures/potFig%s.fig',plotSettings.out_path,filename))
+            savefig(potFig,fullfile(plotSettings.out_path,'figures',['potFig' filename '.fig']))
         end
-        saveas(potFig,sprintf('%s/figures/potFig%s.jpg',plotSettings.out_path,filename))
+        saveas(potFig,fullfile(plotSettings.out_path,'figures',['potFig' filename '.jpg']))
     end
   
     if plotSettings.plot_logic == 1
         logicFig = PlotLogic(stack_mol, stack_driver, stack_output, plotSettings);
         if plotSettings.fig_saver == 1
-            savefig(logicFig,sprintf('%s/figures/logicFig%s.fig',plotSettings.out_path,filename))
+            savefig(logicFig,fullfile(plotSettings.out_path,'figures',['logicFig' filename '.fig']))
         end
-        saveas(logicFig,sprintf('%s/figures/logicFig%s.jpg',plotSettings.out_path,filename))
+        saveas(logicFig,fullfile(plotSettings.out_path,'figures',['logicFig' filename '.jpg']))
     end
     
     if plotSettings.plot_1DCharge== 1
         wireChargeFig = Plot1DCharge(stack_mol, stack_driver, stack_output, plotSettings);
         if plotSettings.fig_saver == 1
-            savefig(wireChargeFig,sprintf('%s/figures/1DChargeFig%s.fig',plotSettings.out_path,filename))
+            savefig(wireChargeFig,fullfile(plotSettings.out_path,'figures',['1DChargeFig' filename '.fig']))
         end
-        saveas(wireChargeFig,sprintf('%s/figures/1DChargeFig%s.jpg',plotSettings.out_path,filename))
+        saveas(wireChargeFig,fullfile(plotSettings.out_path,'figures',['1DChargeFig' filename '.jpg']))
     end
     
     fprintf("DONE. \n")

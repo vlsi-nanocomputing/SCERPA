@@ -1,4 +1,4 @@
-clear all
+clear variables
 close all
 
 %clock values definitions
@@ -6,18 +6,18 @@ clock_low = -2;
 clock_high = +2;
 clock_step = 3;
 
-%layout (MagCAD)
-file = 'threePhasesWire.qll';
-circuit.qllFile = sprintf('%s\\%s',pwd,file);
-circuit.doubleMolDriverMode = 1;
-circuit.magcadImporter = 1;
+% %layout (MagCAD)
+% file = 'threePhasesWire.qll';
+% circuit.qllFile = sprintf('%s\\%s',pwd,file);
+% circuit.doubleMolDriverMode = 1;
+circuit.magcadImporter = 0;
 
 %molecule
 % circuit.molecule = 'bisfe_4';
 
 %layout (MATLAB)
-% circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3'};
-% circuit.magcadImporter = 0;
+circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3'};
+circuit.magcadImporter = 0;
  
 %drivers and clock
 D0 = num2cell(-4.5*ones(1,clock_step*4));
@@ -43,6 +43,7 @@ circuit.ckmap.coords = [z y];
 circuit.ckmap.field = [Eclock1 Eclock2 Eclock3];
 
 %SCERPA settings
+settings.out_path = pwd;
 settings.damping = 0.6;
 settings.verbosity = 2;
 settings.plotIntermediateSteps = 0;
@@ -57,10 +58,17 @@ plotSettings.plotSpan = 1;
 plotSettings.fig_saver = 0;
 plotSettings.plotList = 0;
 
+%copy outputh path from algorithm settings if specified by the user
+if isfield(settings,'out_path') 
+    plotSettings.out_path = settings.out_path;
+end
+
 %%%%
+diary on
 this_path = pwd;
-scerpa_path = '..\';
+scerpa_path = fullfile('../');
 cd(scerpa_path)
-generation_status = SCERPA('generateLaunch', circuit, settings);
-                    SCERPA('plotSteps', plotSettings);
+SCERPA('generateLaunch', circuit, settings, plotSettings);
+%SCERPA('plotSteps', plotSettings);
 cd(this_path)
+diary off, movefile('diary','logfile.log')

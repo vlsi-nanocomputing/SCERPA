@@ -1,23 +1,39 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                          %
+%       Self-Consistent Electrostatic Potential Algorithm (SCERPA)         %
+%                                                                          %
+%       VLSI Nanocomputing Research Group                                  %
+%       Dept. of Electronics and Telecommunications                        %
+%       Politecnico di Torino, Turin, Italy                                %
+%       (https://www.vlsilab.polito.it/)                                   %
+%                                                                          %
+%       People [people you may contact for info]                           %
+%         Yuri Ardesi (yuri.ardesi@polito.it)                              %
+%         Giuliana Beretta (giuliana.beretta@polito.it)                    %
+%                                                                          %
+%       Supervision: Gianluca Piccinini, Mariagrazia Graziano              %
+%                                                                          %
+%       Relevant pubblications doi: 10.1109/TCAD.2019.2960360              %
+%                                   10.1109/TVLSI.2020.3045198             %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [CK] = Interp_coeff_bilinear(molecule)
 
 formatSpec = '%f %f %f %f %f'; % file format for reading
 
 % get the directory name of the molecule
-% cd Characteristics_Setting
-dirList = dir('Characteristics_Setting');
+dirList = dir(fullfile('..','Database'));
 dirNamesList = {dirList(:).name};
 molIdentifier = sprintf('%d.',molecule);
 index = strncmp(dirNamesList,molIdentifier,2);
 directoryName = dirNamesList{index};
 
-% filename_setting = sprintf('%s/characteristics_data.xlsx',directoryName);
-% [num_data,txt_data,raw_data] = xlsread(filename_setting);
 
-filename_setting = sprintf('Characteristics_Setting/%s/info.txt',directoryName);
+filename_setting = fullfile('..','Database',directoryName,'info.txt');
 molInfo = molInfoRead(filename_setting);
 
-for jj = 1:molInfo.nClockData
-    filename = sprintf('Characteristics_Setting/%s/%s', directoryName, molInfo.file{jj});
+for jj = 1:double(molInfo.nClockData)
+    filename = fullfile('..','Database',directoryName,molInfo.file{jj});
     fileID = fopen(filename,'r');
     sizeA = [5 molInfo.values(jj)];
     A = fscanf(fileID,formatSpec, sizeA);
@@ -36,39 +52,3 @@ for jj = 1:molInfo.nClockData
 end
 
 end
-
-% function [CK] = Interp_coeff_bilinear(molecule)
-% 
-% formatSpec = '%f %f %f %f %f'; % file format for reading
-% 
-% % get the directory name of the molecule
-% cd Characteristics_Setting
-% dirList = dir;
-% dirNamesList = {dirList(:).name};
-% molIdentifier = sprintf('%d.',molecule);
-% index = strncmp(dirNamesList,molIdentifier,2);
-% directoryName = dirNamesList{index};
-% 
-% filename_setting = sprintf('%s/characteristics_data.xlsx',directoryName);
-% [~,~,raw_data] = xlsread(filename_setting);
-% 
-% for jj = 2:size(raw_data,1)
-%     filename = sprintf('%s/%s', directoryName, raw_data{jj,1});
-%     fileID = fopen(filename,'r');
-%     sizeA = [5 raw_data{jj,3}];
-%     A = fscanf(fileID,formatSpec, sizeA);
-%     
-%     fclose(fileID);
-%     A=A';
-%     
-%     for t=1:raw_data{jj,3}
-%         M(raw_data{jj,3}-t+1,:) = A(t,:);  %the matrix rows are inverted to start from left saturation
-%     end
-%     
-%     CK.characteristic(jj-1).data(:,:,1) = M(1:raw_data{jj,3},:);   
-%     CK.characteristic(jj-1).value = raw_data{jj,2};
-%     CK.num = jj-1;
-%     CK.molID = molecule; 
-% end
-% cd ..
-% end
