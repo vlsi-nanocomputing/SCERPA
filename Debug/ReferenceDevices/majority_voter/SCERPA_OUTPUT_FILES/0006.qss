@@ -1,0 +1,58 @@
+############################################################
+#
+# Self-Consistent Electrostatic Potential Algorithm (SCERPA)
+#					#
+# VLSI Nanocomputing Research Group 
+# Dept. of Electronics and Telecommunications 
+# Politecnico di Torino, Turin, Italy  
+# (https://www.vlsilab.polito.it/) 
+#
+# People [people you may contact for info] 
+# 	 Yuri Ardesi (yuri.ardesi@polito.it) 
+# 	 Giuliana Beretta (giuliana.beretta@polito.it) 
+#
+# Supervision: Gianluca Piccinini, Mariagrazia Graziano 
+#
+# Relevant pubblications doi  
+# 	 10.1109/TCAD.2019.2960360   
+# 	 10.1109/TVLSI.2020.3045198  
+#
+############################################################
+# Begin: Header
+# Title: majority_voter.qll
+#
+# Desc: Optional description line.
+# Desc: Total simulation time:  6 ps
+# valuedim: 4    ## Value dimension: number of values per element
+#
+# valueunits: a.u. a.u. a.u. a.u.
+# valuelabels: "Q1 Aggregated Charge"  "Q2 Aggregated Charge" "Q3 Aggregated Charge" "Q4 Aggregated Charge"
+#
+# End: Header
+#
+#
+# Begin: data text
+0010a   0.9290   0.0000   -0.2120  -0.7170
+0010b   0.0030   0.9270   -0.2120  -0.7170
+0011a   0.9290   0.0000   -0.2120  -0.7170
+0011b   0.0030   0.9270   -0.2120  -0.7170
+0012a   0.9290   0.0000   -0.2120  -0.7170
+0012b   0.0030   0.9270   -0.2120  -0.7170
+0002a   0.0273   0.0257   0.1410  -0.1940
+0002b   0.0273   0.0257   0.1410  -0.1940
+0003a   0.3563   0.4826   -0.1529  -0.6867
+0003b   0.7449   0.1181   -0.1747  -0.6883
+0004a   0.0325   0.8184   -0.1634  -0.6877
+0004b   0.7148   0.1431   -0.1703  -0.6877
+0005a   0.3110   0.5232   -0.1503  -0.6845
+0005b   0.6993   0.1521   -0.1647  -0.6869
+0006a   0.0253   0.0277   0.1410  -0.1940
+0006b   0.0298   0.0240   0.1410  -0.1940
+0007a   0.0269   0.0261   0.1410  -0.1940
+0007b   0.0261   0.0269   0.1410  -0.1940
+0008a   0.0272   0.0258   0.1410  -0.1940
+0008b   0.0272   0.0258   0.1410  -0.1940
+0009a   0.0273   0.0257   0.1410  -0.1940
+0009b   0.0273   0.0257   0.1410  -0.1940
+# End: data text
+

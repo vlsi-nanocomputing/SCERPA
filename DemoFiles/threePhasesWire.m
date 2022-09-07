@@ -17,6 +17,7 @@ circuit.molecule = '1';
 
 %layout (MATLAB)
 circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3' 'Out_y'};
+% circuit.components = {'6' '6' '6' '6' '6' '6' '6' '6' '6' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7'};;
 circuit.magcadImporter = 0;
  
 %drivers and clock
@@ -42,11 +43,18 @@ circuit.stack_phase(3,:) = [pReset pReset, pCycle pCycle ];
 
 
 %SCERPA settings
+settings.out_path = fullfile('/media/giuliana/DATA/PhD/tmp','/threePhaseWire'); 
 settings.damping = 0.6;
 settings.verbosity = 0;
 settings.dumpDriver = 1;
 settings.dumpOutput = 1;
 settings.dumpClock = 1;
+settings.dumpEnergy = 1;
+settings.evalConformationEnergy = 1;
+settings.evalIntermolecularEnergy = 1;
+settings.evalPolarizationEnergy = 1;
+settings.evalFieldEnergy = 1;
+settings.energyEval = 1;
 
 
 %PLOT settings
@@ -56,7 +64,7 @@ plotSettings.plot_1DCharge = 1;
 plotSettings.plot_logic = 1;
 plotSettings.plot_potential = 1;
 plotSettings.plotSpan = 3;
-plotSettings.fig_saver = 0;
+plotSettings.fig_saver = 1;
 plotSettings.HQimage = 1;
 
 %copy outputh path from algorithm settings if specified by the user
@@ -69,9 +77,7 @@ diary on
 this_path = pwd;
 scerpa_path = fullfile('../');
 cd(scerpa_path)
-SCERPA('generateLaunchView', circuit, settings, plotSettings);
+% SCERPA('generateLaunchView', circuit, settings, plotSettings);
+SCERPA('plotSteps', plotSettings);
 cd(this_path)
-diary off
-if isfield(settings,'out_path') 
-    movefile('diary',fullfile(settings.out_path,'logfile.log'))
-end
+diary off, movefile('diary',fullfile(settings.out_path,'logfile.log'))

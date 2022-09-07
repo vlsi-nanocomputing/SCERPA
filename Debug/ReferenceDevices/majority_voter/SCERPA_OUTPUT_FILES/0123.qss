@@ -1,0 +1,58 @@
+############################################################
+#
+# Self-Consistent Electrostatic Potential Algorithm (SCERPA)
+#					#
+# VLSI Nanocomputing Research Group 
+# Dept. of Electronics and Telecommunications 
+# Politecnico di Torino, Turin, Italy  
+# (https://www.vlsilab.polito.it/) 
+#
+# People [people you may contact for info] 
+# 	 Yuri Ardesi (yuri.ardesi@polito.it) 
+# 	 Giuliana Beretta (giuliana.beretta@polito.it) 
+#
+# Supervision: Gianluca Piccinini, Mariagrazia Graziano 
+#
+# Relevant pubblications doi  
+# 	 10.1109/TCAD.2019.2960360   
+# 	 10.1109/TVLSI.2020.3045198  
+#
+############################################################
+# Begin: Header
+# Title: majority_voter.qll
+#
+# Desc: Optional description line.
+# Desc: Total simulation time:  123 ps
+# valuedim: 4    ## Value dimension: number of values per element
+#
+# valueunits: a.u. a.u. a.u. a.u.
+# valuelabels: "Q1 Aggregated Charge"  "Q2 Aggregated Charge" "Q3 Aggregated Charge" "Q4 Aggregated Charge"
+#
+# End: Header
+#
+#
+# Begin: data text
+0010a   0.9290   0.0000   -0.2120  -0.7170
+0010b   0.0030   0.9270   -0.2120  -0.7170
+0011a   0.9290   0.0000   -0.2120  -0.7170
+0011b   0.0030   0.9270   -0.2120  -0.7170
+0012a   0.0030   0.9270   -0.2120  -0.7170
+0012b   0.9290   0.0000   -0.2120  -0.7170
+0002a   0.0273   0.0257   0.1410  -0.1940
+0002b   0.0273   0.0257   0.1410  -0.1940
+0003a   0.0317   0.8965   -0.2113  -0.7170
+0003b   0.9070   0.0201   -0.2101  -0.7170
+0004a   0.0597   0.8700   -0.2127  -0.7170
+0004b   0.9210   0.0051   -0.2091  -0.7170
+0005a   0.6489   0.2880   -0.2180  -0.7180
+0005b   0.2418   0.6938   -0.2178  -0.7180
+0006a   0.0628   0.5811   -0.0218  -0.6220
+0006b   0.8147   0.0163   -0.1884  -0.6426
+0007a   0.0275   0.0255   0.1410  -0.1940
+0007b   0.0290   0.0241   0.1410  -0.1940
+0008a   0.0273   0.0257   0.1410  -0.1940
+0008b   0.0274   0.0256   0.1410  -0.1940
+0009a   0.0273   0.0257   0.1410  -0.1940
+0009b   0.0273   0.0257   0.1410  -0.1940
+# End: data text
+

@@ -1,0 +1,64 @@
+############################################################
+#
+# Self-Consistent Electrostatic Potential Algorithm (SCERPA)
+#					#
+# VLSI Nanocomputing Research Group 
+# Dept. of Electronics and Telecommunications 
+# Politecnico di Torino, Turin, Italy  
+# (https://www.vlsilab.polito.it/) 
+#
+# People [people you may contact for info] 
+# 	 Yuri Ardesi (yuri.ardesi@polito.it) 
+# 	 Giuliana Beretta (giuliana.beretta@polito.it) 
+#
+# Supervision: Gianluca Piccinini, Mariagrazia Graziano 
+#
+# Relevant pubblications doi  
+# 	 10.1109/TCAD.2019.2960360   
+# 	 10.1109/TVLSI.2020.3045198  
+#
+############################################################
+# Begin: Header
+# Title: Tcorr.qll
+#
+# Desc: Optional description line.
+# Desc: Total simulation time:  8 ps
+# valuedim: 4    ## Value dimension: number of values per element
+#
+# valueunits: a.u. a.u. a.u. a.u.
+# valuelabels: "Q1 Aggregated Charge"  "Q2 Aggregated Charge" "Q3 Aggregated Charge" "Q4 Aggregated Charge"
+#
+# End: Header
+#
+#
+# Begin: data text
+0014a   0.0030   0.9270   -0.2120  -0.7170
+0014b   0.9290   0.0000   -0.2120  -0.7170
+0001a   0.5900   0.3470   -0.2199  -0.7180
+0001b   0.2741   0.6623   -0.2184  -0.7180
+0002a   0.3296   0.3301   -0.0192  -0.6402
+0002b   0.0451   0.6721   -0.0831  -0.6341
+0003a   0.5575   0.0982   -0.0320  -0.6237
+0003b   0.0723   0.6399   -0.0677  -0.6445
+0004a   0.5608   0.0677   -0.0091  -0.6184
+0004b   0.0725   0.6382   -0.0663  -0.6444
+0005a   0.5743   0.0814   -0.0316  -0.6239
+0005b   0.0230   0.7189   -0.1120  -0.6306
+0006a   0.6584   0.0300   -0.0612  -0.6272
+0006b   0.4199   0.2073   -0.0089  -0.6179
+0007a   0.7874   0.0202   -0.1688  -0.6388
+0007b   0.2206   0.4178   -0.0172  -0.6212
+0008a   0.8258   0.0173   -0.2006  -0.6425
+0008b   0.1733   0.4565   -0.0131  -0.6167
+0009a   0.8099   0.0161   -0.1834  -0.6425
+0009b   0.2197   0.4184   -0.0170  -0.6211
+0010a   0.9211   0.0050   -0.2091  -0.7170
+0010b   0.0076   0.9168   -0.2074  -0.7170
+0011a   0.8914   0.0369   -0.2112  -0.7170
+0011b   0.0171   0.9095   -0.2095  -0.7170
+0012a   0.9081   0.0189   -0.2100  -0.7170
+0012b   0.0174   0.9092   -0.2096  -0.7170
+0013a   0.9095   0.0175   -0.2099  -0.7170
+0013b   0.0174   0.9092   -0.2096  -0.7170
+# End: data text
+

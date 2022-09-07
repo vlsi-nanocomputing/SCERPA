@@ -1,0 +1,58 @@
+############################################################
+#
+# Self-Consistent Electrostatic Potential Algorithm (SCERPA)
+#					#
+# VLSI Nanocomputing Research Group 
+# Dept. of Electronics and Telecommunications 
+# Politecnico di Torino, Turin, Italy  
+# (https://www.vlsilab.polito.it/) 
+#
+# People [people you may contact for info] 
+# 	 Yuri Ardesi (yuri.ardesi@polito.it) 
+# 	 Giuliana Beretta (giuliana.beretta@polito.it) 
+#
+# Supervision: Gianluca Piccinini, Mariagrazia Graziano 
+#
+# Relevant pubblications doi  
+# 	 10.1109/TCAD.2019.2960360   
+# 	 10.1109/TVLSI.2020.3045198  
+#
+############################################################
+# Begin: Header
+# Title: majority_voter.qll
+#
+# Desc: Optional description line.
+# Desc: Total simulation time:  116 ps
+# valuedim: 4    ## Value dimension: number of values per element
+#
+# valueunits: a.u. a.u. a.u. a.u.
+# valuelabels: "Q1 Aggregated Charge"  "Q2 Aggregated Charge" "Q3 Aggregated Charge" "Q4 Aggregated Charge"
+#
+# End: Header
+#
+#
+# Begin: data text
+0010a   0.9290   0.0000   -0.2120  -0.7170
+0010b   0.0030   0.9270   -0.2120  -0.7170
+0011a   0.9290   0.0000   -0.2120  -0.7170
+0011b   0.0030   0.9270   -0.2120  -0.7170
+0012a   0.0030   0.9270   -0.2120  -0.7170
+0012b   0.9290   0.0000   -0.2120  -0.7170
+0002a   0.5744   0.0816   -0.0319  -0.6240
+0002b   0.0433   0.6723   -0.0826  -0.6330
+0003a   0.1726   0.4572   -0.0132  -0.6166
+0003b   0.6640   0.0300   -0.0662  -0.6278
+0004a   0.0668   0.6477   -0.0718  -0.6427
+0004b   0.5715   0.0788   -0.0271  -0.6228
+0005a   0.6798   0.0300   -0.0802  -0.6296
+0005b   0.0937   0.5339   -0.0091  -0.6185
+0006a   0.0286   0.0244   0.1410  -0.1940
+0006b   0.0286   0.0244   0.1410  -0.1940
+0007a   0.6370   0.0479   -0.0586  -0.6257
+0007b   0.1777   0.4518   -0.0127  -0.6169
+0008a   0.6556   0.0300   -0.0587  -0.6269
+0008b   0.0493   0.6717   -0.0842  -0.6368
+0009a   0.6526   0.0300   -0.0560  -0.6265
+0009b   0.0490   0.6717   -0.0841  -0.6367
+# End: data text
+
