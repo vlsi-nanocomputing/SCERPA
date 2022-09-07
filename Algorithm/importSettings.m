@@ -41,6 +41,7 @@ if isfield(userSettings,'out_path')
 else
     % not set by the user!
     scerpaSettings.out_path = fullfile('..','OUTPUT_FILES');
+    mkdir(scerpaSettings.out_path)
 end
 scerpaSettings.plot_plotAbsoluteCharge = setDefault(userSettings,'plot_plotAbsoluteCharge',1);
 scerpaSettings.plotIntermediateSteps = setDefault(userSettings,'plotIntermediateSteps',0);

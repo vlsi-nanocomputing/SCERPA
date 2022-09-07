@@ -12,14 +12,11 @@ clock_step = 3;
 % circuit.doubleMolDriverMode = 1;  
 % circuit.magcadImporter = 1;
 
-%molecule
-circuit.molecule = '9';
 
 % layout (MATLAB)
 circuit.structure = {'Dr1_c' 'Dr1' '1' '1' '1' '1' '1' '1' '1' '1' '2' '2' '2' '2' '2' '2' '2' '2' '3' '3' '3' '3' '3' '3' '3' '3' 'Out_y'};
-                   
-% circuit.components = {'7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7' '7'};
 circuit.magcadImporter = 0;
+circuit.molecule = '9';
  
 %drivers and clock
 D0 = num2cell(+4.5*ones(1,clock_step*4));
@@ -44,7 +41,7 @@ circuit.stack_phase(3,:) = [pReset pReset, pCycle pCycle ];
 
 circuit.substrate.PVenable=1;
 circuit.substrate.mode='random';
-circuit.substrate.averageRoughness=10;
+circuit.substrate.averageRoughness=2;
 
 % circuit.substrate.mode='map';
 % [circuit.substrate.map_MeshY, circuit.substrate.map_MeshZ]=meshgrid(linspace(0,400),linspace(0,400));
@@ -86,6 +83,8 @@ this_path = pwd;
 scerpa_path = fullfile('../');
 cd(scerpa_path)
 SCERPA('generateLaunchView', circuit, settings, plotSettings);
-%SCERPA('plotSteps', plotSettings);
 cd(this_path)
-diary off, movefile('diary','logfile.log')
+diary off
+if isfield(settings,'out_path') 
+    movefile('diary',fullfile(settings.out_path,'logfile.log'))
+end

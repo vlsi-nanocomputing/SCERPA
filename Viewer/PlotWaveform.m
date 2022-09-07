@@ -21,7 +21,7 @@ function out_fig = PlotWaveform(file,driverStack,molStack,settings)
 
 %import file
 disp('Loading simulation table')
-data = readtable(file,'VariableNamingRule','preserve');
+data = readtable(file,'VariableNamesLine',1);
 
 %%%% further configuration parameters
 % plotListDriver = [10 2 18 ];
