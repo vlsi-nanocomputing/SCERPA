@@ -1,2 +1,0 @@
-<1> Ardesi Y., Pulimeno A., Graziano M., Riente F., and Piccinini G., "Effectiveness of Molecules for Quantum Cellular Automata as Computing Devices." J. Low Power Electron. Appl. 2018, 8, 24. DOI: 10.3390/jlpea8030024 </1>
-<2> Lu Y., Liu M., and Lent C., "Molecular quantum-dot cellular automata: From molecular structure to circuit dynamics." Journal of Applied Physics 2007, 102, 034311. DOI: 10.1063/1.2767382 </2>

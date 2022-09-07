@@ -54,7 +54,7 @@ function SCERPA(command,option1,option2,option3)
             end
             cd ..
         
-        case char('plotSteps')
+        case char('plotSteps') % launch viewer
             disp('Plotting Results!')
             cd Viewer
             if exist('option1','var')
@@ -77,7 +77,7 @@ function SCERPA(command,option1,option2,option3)
                 error('[ERROR][002] Missing circuit.')
             end
 
-        case('generateLaunchView') %generate and launch
+        case('generateLaunchView') %generate and launch and view
             if exist('option1','var') 
                 if exist('option2','var') && exist('option3','var')
                     SCERPA('generateLaunch',option1,option2);

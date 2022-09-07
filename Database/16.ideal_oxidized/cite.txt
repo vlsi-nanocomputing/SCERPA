@@ -1,1 +1,0 @@
-< Ardesi Y., Beretta G., Vacca M., Piccinini G., and Graziano M., "Impact of Molecular Electrostatics on Field-Coupled Nanocomputing and Quantum-Dot Cellular Automata Circuits." Electronics 2022, 11, 276. DOI: 10.3390/electronics11020276 >

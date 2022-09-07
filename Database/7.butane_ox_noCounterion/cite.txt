@@ -1,2 +1,0 @@
-<1> Craig S. L., Isaksen B., and Lieberman M., "Molecular quantum-dot cellular automata." Journal of the American Chemical Society 125.4 (2003): 1056-1063. DOI: 10.1021/ja026856g </1>
-<2> Ardesi Y., Pulimeno A., Graziano M., Riente F., and Piccinini G., "Effectiveness of Molecules for Quantum Cellular Automata as Computing Devices." J. Low Power Electron. Appl. 2018, 8, 24. DOI: 10.3390/jlpea8030024 </2>
