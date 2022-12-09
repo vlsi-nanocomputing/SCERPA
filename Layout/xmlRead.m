@@ -29,7 +29,7 @@ intermolecular_distance = regexp(in_str, xpr, 'tokens');
 outStruct.dist_z = str2double(cell2mat(intermolecular_distance{1,1}))/100; %convert pm to angstrom
 
 % extract list of molecular types present in the layout
-xpr = ['<item tech="MolQCA" name="',abq,'"/>'];
+xpr = ['<item tech="MolFCN" name="',abq,'"/>'];
 molecule = regexp(in_str, xpr, 'tokens');
 molTypeList = zeros(1,length(molecule));
 for ii=1:length(molecule)
@@ -42,7 +42,7 @@ for ii=1:length(molecule)
 end
 
 % extract drivers list
-xpr = ['\s*<pin tech="MolQCA" name="',abq,'" direction="0" id="',abq,'"( angle="',abq,'")? x="',abq,'" y="',abq,'" layer="0"/>\s*'];
+xpr = ['\s*<pin tech="MolFCN" name="',abq,'" direction="0" id="',abq,'"( angle="',abq,'")? x="',abq,'" y="',abq,'" layer="0"/>\s*'];
 tmp = regexp(in_str, xpr, 'tokens');
 drivers = cell(5,length(tmp)); % preallocate drivers cell array, # of rows is fixed (it equals the number of fields for drivers)
 for ii=1:length(tmp)
@@ -62,7 +62,7 @@ outStruct.driver.y = str2double(drivers(5,:));
 outStruct.driver.z = zeros(1,length(drivers)); % it would be "layer" in the future
 
 % extract outputs list
-xpr = ['\s*<pin tech="MolQCA" name="',abq,'" direction="1" id="',abq,'"( angle="',abq,'")? x="',abq,'" y="',abq,'" layer="0"/>\s*'];
+xpr = ['\s*<pin tech="MolFCN" name="',abq,'" direction="1" id="',abq,'"( angle="',abq,'")? x="',abq,'" y="',abq,'" layer="0"/>\s*'];
 tmp = regexp(in_str, xpr, 'tokens');
 outputs = cell(5,length(tmp)); % preallocate output cell array, # of rows is fixed (it equals the number of fields for drivers)
 for ii=1:length(tmp)
