@@ -2,7 +2,7 @@
 <!--File describing the layout of a QCA circuit-->
 <qcalayout>
     <technologies>
-        <settings tech="MolQCA">
+        <settings tech="MolFCN">
             <property name="layersEnabled" value="false"/>
             <property name="PhaseNumber" value="3"/>
             <property name="Intermolecular Distance" value="1000"/>
@@ -12,8 +12,8 @@
         </settings>
     </technologies>
     <components>
-        <item tech="MolQCA" name="Butane"/>
-        <item tech="MolQCA" name="Bisferrocene"/>
+	    <item tech="MolFCN" name="Butane"/>
+        <item tech="MolFCN" name="Bisferrocene"/>
     </components>
     <layout>
         <item comp="0" id="1" x="12" y="0" layer="0">
@@ -28,8 +28,8 @@
         <item comp="0" id="4" x="9" y="0" layer="0">
             <property name="phase" value="2"/>
         </item>
-        <pin tech="MolQCA" name="y" direction="1" id="5" x="13" y="0" layer="0"/>
-        <pin tech="MolQCA" name="Dr1" direction="0" id="6" x="0" y="0" layer="0"/>
+        <pin tech="MolFCN" name="y" direction="1" id="5" x="13" y="0" layer="0"/>
+        <pin tech="MolFCN" name="Dr1" direction="0" id="6" x="0" y="0" layer="0"/>
         <item comp="1" id="7" x="6" y="0" layer="0">
             <property name="phase" value="1"/>
         </item>
